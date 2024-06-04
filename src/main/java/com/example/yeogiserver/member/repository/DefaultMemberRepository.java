@@ -2,7 +2,7 @@ package com.example.yeogiserver.member.repository;
 
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.domain.MemberRepository;
-import com.example.yeogiserver.member.domain.Token;
+import com.example.yeogiserver.commom.domain.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

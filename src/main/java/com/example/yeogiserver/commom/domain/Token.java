@@ -1,4 +1,4 @@
-package com.example.yeogiserver.member.domain;
+package com.example.yeogiserver.commom.domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

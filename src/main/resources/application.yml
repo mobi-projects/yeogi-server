@@ -4,3 +4,18 @@ spring:
       port: 6379
       password:
       host: localhost
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:tcp://localhost/~/yeogi
+
+jwt:
+  secret-key : 6ae381eece6e5be0fcb4559dc952e1b95aa80d33d00d6078bb348c1fa9820498
