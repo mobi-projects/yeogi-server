@@ -4,6 +4,7 @@ import com.example.yeogiserver.common.application.RedisService;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.security.filter.JwtAuthenticationFilter;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
+import com.example.yeogiserver.security.filter.JwtVerificationFilter;
 import com.example.yeogiserver.security.handler.LoginFailureHandler;
 import com.example.yeogiserver.security.handler.LoginSuccessHandler;
 import jakarta.servlet.ServletException;
@@ -100,12 +101,14 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, memberQueryService , redisService);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenProvider, redisService);
 
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new LoginSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new LoginFailureHandler());
 
             builder.addFilter(jwtAuthenticationFilter);
+            builder.addFilterAfter(jwtVerificationFilter , JwtAuthenticationFilter.class);
             super.configure(builder);
         }
 

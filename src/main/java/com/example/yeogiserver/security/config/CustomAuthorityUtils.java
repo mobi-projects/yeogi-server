@@ -1,7 +1,7 @@
 package com.example.yeogiserver.security.config;
 
 import com.example.yeogiserver.member.domain.Role;
-import com.example.yeogiserver.common.exception.customException;
+import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,9 +19,9 @@ public class CustomAuthorityUtils {
 
     public static void verifiedRole(String role) {
         if(role == null) {
-            throw new customException(ErrorCode.MEMBER_ROLE_DOES_NOT_EXISTS);
+            throw new CustomException(ErrorCode.MEMBER_ROLE_DOES_NOT_EXISTS);
         }else if (!role.equals(USER) && !role.equals(ADMIN)) {
-            throw new customException(ErrorCode.MEMBER_ROLE_INVALID);
+            throw new CustomException(ErrorCode.MEMBER_ROLE_INVALID);
         }
     }
 }

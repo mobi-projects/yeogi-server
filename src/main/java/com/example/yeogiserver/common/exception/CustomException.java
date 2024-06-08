@@ -5,9 +5,9 @@ import lombok.Getter;
 import java.io.Serializable;
 
 @Getter
-public class customException extends RuntimeException implements Serializable {
+public class CustomException extends RuntimeException implements Serializable {
 
-    public customException(ErrorCode errorCode) {
+    public CustomException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

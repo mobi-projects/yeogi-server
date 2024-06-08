@@ -26,8 +26,17 @@ public class CustomUserDetails extends Member implements UserDetails {
         this.role = member.getRole();
     }
 
+    private CustomUserDetails(String email , Role role) {
+        this.email = email;
+        this.role = role;
+    }
+
     public static CustomUserDetails of(Member member) {
         return new CustomUserDetails(member);
+    }
+
+    public static CustomUserDetails of(String email , Role role) {
+        return new CustomUserDetails(email , role);
     }
 
     @Override
