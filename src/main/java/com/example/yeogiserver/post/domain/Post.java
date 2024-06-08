@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,9 @@ public class Post {
     @Column(nullable = false)
     private String region;
 
-    @Column(nullable = false)
-    private String tripPeriod;
+    private LocalDateTime tripStarDate;
+
+    private LocalDateTime tripEndDate;
 
     @Column(nullable = false)
     private String title;
@@ -47,17 +49,19 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) // TODO : eager 해도 될수도
     private List<ShortPost> shortPostList = new ArrayList<>();
 
-    public Post(String region, String tripPeriod, String title, String content, Member member) {
+    public Post(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author) {
         this.region = region;
-        this.tripPeriod = tripPeriod;
+        this.tripStarDate = tripStarDate;
+        this.tripEndDate = tripEndDate;
         this.title = title;
         this.content = content;
-        this.author = member;
+        this.author = author;
     }
 
-    public void updateFields(String region, String tripPeriod, String title, String content) {
+    public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content) {
         this.region = region;
-        this.tripPeriod = tripPeriod;
+        this.tripStarDate = tripStarDate;
+        this.tripEndDate = tripEndDate;
         this.title = title;
         this.content = content;
     }

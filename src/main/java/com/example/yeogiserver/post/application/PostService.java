@@ -32,7 +32,7 @@ public class PostService {
 
     public void createPost(Long authorMemberId, PostRequestDto postRequestDto) {
         Member author = memberJpaRepository.findById(authorMemberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
-        Post post = postRequestDto.toEntity(author, postRequestDto);
+        Post post = postRequestDto.toEntity(author);
 
         List<String> shortPosts = postRequestDto.shortPosts();
 
@@ -47,7 +47,7 @@ public class PostService {
     public void updatePost(Long id, PostRequestDto postRequestDto) {
         Post post = getPost(id);
 
-        post.updateFields(postRequestDto.region(), postRequestDto.tripPeriod(), postRequestDto.title(), postRequestDto.title());
+        post.updateFields(postRequestDto.region(), postRequestDto.tripStarDate(), postRequestDto.tripEndDate(), postRequestDto.title(), postRequestDto.title());
     }
 
     public void delete(Long id) {

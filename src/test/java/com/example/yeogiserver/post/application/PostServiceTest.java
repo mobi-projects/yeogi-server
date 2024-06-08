@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,8 @@ class PostServiceTest {
 
         // when
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
-        postService.createPost(1L, new PostRequestDto("test", "test", "test", "test", memoStrings));
+        PostRequestDto postRequestDto = new PostRequestDto("test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", memoStrings);
+        postService.createPost(1L, postRequestDto);
         em.clear();
 
         // then
