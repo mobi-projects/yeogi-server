@@ -8,4 +8,8 @@ public interface PostRepository {
     Optional<Post> findById(Long id);
 
     void deleteById(Long id);
+
+    boolean isLikeExist(Long postId, Long memberId);
+
+    Optional<PostLike> findPostLikeByPostIdAndMemberId(Long postId, Long memberId);
 }

@@ -49,4 +49,14 @@ public class PostController {
     public void deleteMemo(@PathVariable Long postId, @PathVariable Long shortPostId) {
         postService.deleteShortPost(postId, shortPostId);
     }
+
+    @PostMapping("/posts/{postId}/likes")
+    public void likePost(@AuthenticationPrincipal Member member, @PathVariable Long postId) {
+        postService.likePost(member.getId(), postId);
+    }
+
+    @DeleteMapping("/posts/{postId}/likes")
+    public void unlikePost(@AuthenticationPrincipal Member member, @PathVariable Long postId) {
+        postService.dislikePost(member.getId(), postId);
+    }
 }

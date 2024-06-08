@@ -5,6 +5,7 @@ import com.example.yeogiserver.member.repository.MemberJpaRepository;
 import com.example.yeogiserver.post.application.dto.PostRequestDto;
 import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.PostLike;
 import com.example.yeogiserver.post.domain.PostRepository;
 import com.example.yeogiserver.post.domain.ShortPost;
 import com.example.yeogiserver.post.domain.ShortPostRepository;
@@ -72,5 +73,25 @@ public class PostService {
         ShortPost shortPost = shortPostRepository.findById(shortPostId).orElseThrow(() -> new IllegalArgumentException("Memo not found"));
 
         post.removeShortPost(shortPost);
+    }
+
+    public void likePost(Long postId, Long memberId){
+        boolean likeExist = postRepository.isLikeExist(postId, memberId);
+        if (likeExist){
+            throw new IllegalArgumentException("Member already like this post");
+        }
+
+        Post post = getPost(postId);
+        PostLike postLike = new PostLike(memberId);
+        post.addPostLike(postLike);
+    }
+
+    public void dislikePost(Long memberId, Long postId){
+        PostLike postLike = postRepository.findPostLikeByPostIdAndMemberId(postId, memberId).orElseThrow(
+                () -> new IllegalArgumentException("Member has not like this post")
+        );
+
+        Post post = getPost(postId);
+        post.removePostLike(postLike);
     }
 }

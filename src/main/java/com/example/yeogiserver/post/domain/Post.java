@@ -46,8 +46,12 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) // TODO : eager 해도 될수도
+    // TODO : eager 해도 될수도
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ShortPost> shortPostList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<PostLike> postLikeList = new ArrayList<>();
 
     public Post(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author) {
         this.region = region;
@@ -75,5 +79,15 @@ public class Post {
     public void removeShortPost(ShortPost shortPost) {
         shortPostList.remove(shortPost);
         shortPost.assignPost(null);
+    }
+
+    public void addPostLike(PostLike postLike) {
+        postLikeList.add(postLike);
+        postLike.assignPost(this);
+    }
+
+    public void removePostLike(PostLike postLike) {
+        postLikeList.remove(postLike);
+        postLike.assignPost(null);
     }
 }
