@@ -1,5 +1,7 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.repository.MemberJpaRepository;
 import com.example.yeogiserver.post.application.dto.PostRequestDto;
 import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
@@ -21,12 +23,16 @@ public class PostService {
 
     private final ShortPostRepository shortPostRepository;
 
+    // TODO : 멤버서비스 완료 시 제거하고, 서비스로 바꿀 것.
+    private final MemberJpaRepository memberJpaRepository;
+
     private Post getPost(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
     }
 
-    public void createPost(PostRequestDto postRequestDto) {
-        Post post = postRequestDto.toEntity(postRequestDto);
+    public void createPost(Long authorMemberId, PostRequestDto postRequestDto) {
+        Member author = memberJpaRepository.findById(authorMemberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Post post = postRequestDto.toEntity(author, postRequestDto);
 
         List<String> shortPosts = postRequestDto.shortPosts();
 

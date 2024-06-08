@@ -1,9 +1,11 @@
 package com.example.yeogiserver.post.presentation;
 
+import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.post.application.PostService;
 import com.example.yeogiserver.post.application.dto.PostRequestDto;
 import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +20,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public void createPost(@RequestBody PostRequestDto postRequestDto) {
-        postService.createPost(postRequestDto);
+    public void createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal Member member) {
+        // TODO : 인증 구성 완료 시 Member -> UserDetails 로 변경할 것
+        postService.createPost(member.getId(), postRequestDto);
     }
 
     @PutMapping("/posts/{postId}")
