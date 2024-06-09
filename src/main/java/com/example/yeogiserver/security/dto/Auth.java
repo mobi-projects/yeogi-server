@@ -1,4 +1,4 @@
-package com.example.yeogiserver.security.domain;
+package com.example.yeogiserver.security.dto;
 
 import com.example.yeogiserver.member.domain.Role;
 import lombok.AllArgsConstructor;
@@ -22,8 +22,7 @@ public class Auth {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class LoginResponse{
-        private String email;
-        private String nickname;
-        private Role role;
+        private String accessToken;
+        private String refreshToken;
     }
 }

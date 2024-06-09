@@ -1,6 +1,7 @@
 package com.example.yeogiserver.member.application;
 
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,10 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final DefaultMemberRepository memberRepository;
 
-    public void signup(Member member) {
-        Member signmember = member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickName(), member.getGender(), member.getBirthday());
-        memberRepository.save(signmember);
+    public SignupMember.Response signup(SignupMember.Request member) {
+        Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getGender(), member.getBirthday());
+        Member saveMember = memberRepository.save(signmember);
+        return new SignupMember.Response(saveMember.getEmail() , saveMember.getNickname());
     }
 
 }

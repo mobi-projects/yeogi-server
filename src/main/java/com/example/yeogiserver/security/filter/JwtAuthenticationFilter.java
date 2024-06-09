@@ -4,7 +4,7 @@ import com.example.yeogiserver.common.application.RedisService;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
-import com.example.yeogiserver.security.domain.Auth;
+import com.example.yeogiserver.security.dto.Auth;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import com.example.yeogiserver.security.domain.Token;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,13 +50,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
         Token token = jwtTokenProvider.generateToken(customUserDetails);
+        System.out.println("token = " + token);
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
-        jwtTokenProvider.setAccessToken(response , accessToken);
-        jwtTokenProvider.setRefreshToken(response , refreshToken);
 
         Member member = memberQueryService.findMember(customUserDetails.getEmail());
-        loginSuccessResponse(response , member);
+        loginSuccessResponse(response , accessToken , refreshToken);
 
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
         redisService.setValue(member.getEmail() , refreshToken , Duration.ofMillis(refreshTokenExpirationMillis));
@@ -64,15 +63,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         getSuccessHandler().onAuthenticationSuccess(request , response , authResult);
     }
 
-    public void loginSuccessResponse(HttpServletResponse response , Member member) throws IOException {
+    public void loginSuccessResponse(HttpServletResponse response , String accessToken , String refreshToken) throws IOException {
 
         Gson gson = new Gson();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         Auth.LoginResponse loginResponse = Auth.LoginResponse.builder()
-                .email(member.getEmail())
-                .nickname(member.getNickName())
-                .role(member.getRole())
-                .build();
+                        .accessToken("Bearer " + accessToken)
+                                .refreshToken(refreshToken)
+                                        .build();
 
         response.getWriter().write(gson.toJson(loginResponse));
     }

@@ -100,6 +100,14 @@ public class JwtTokenProvider {
         return null;
     }
 
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(REFRESH_HEADER);
+        if(StringUtils.hasText(bearerToken)){
+            return bearerToken;
+        }
+        return null;
+    }
+
     public Authentication getAuthentication(String token) {
         Claims claims = parseClaims(token);
 

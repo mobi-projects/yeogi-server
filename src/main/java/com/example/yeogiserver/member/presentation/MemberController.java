@@ -3,6 +3,7 @@ package com.example.yeogiserver.member.presentation;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.application.MemberService;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,8 +21,8 @@ public class MemberController {
     private final MemberQueryService memberQueryService;
 
     @PostMapping("signup")
-    public void signup(@RequestBody Member member) {
-        memberService.signup(member);
+    public SignupMember.Response signup(@RequestBody SignupMember.Request member) {
+        return memberService.signup(member);
     }
 
     @GetMapping()

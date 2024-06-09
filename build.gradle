@@ -1,7 +1,15 @@
+buildscript {
+    ext {
+        restdocsApiSpecVersion = '0.17.1'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.5'
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.example'
@@ -19,6 +27,22 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+swaggerSources {
+    sample {
+        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+    }
+}
+
+openapi3 {
+    servers = [
+            { url = "http://localhost:8080" }
+    ]
+    title = "API 문서"
+    description = "RestDocsWithSwagger Docs"
+    version = "0.0.1"
+    format = "yaml"
 }
 
 dependencies {
@@ -57,8 +81,35 @@ dependencies {
     // tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:' + restdocsApiSpecVersion
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+    doFirst {
+        def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
+
+        def securitySchemesContent =  "  securitySchemes:\n" +  \
+                                      "    APIKey:\n" +  \
+                                      "      type: apiKey\n" +  \
+                                      "      name: Authorization\n" +  \
+                                      "      in: header\n" + \
+                                      "security:\n" +
+                "  - APIKey: []  # Apply the security scheme here"
+
+        swaggerUIFile.append securitySchemesContent
+    }
+}
+
+bootJar {
+    dependsOn generateSwaggerUISample
+    from("${generateSwaggerUISample.outputDir}") {
+        into 'static/docs'
+    }
 }

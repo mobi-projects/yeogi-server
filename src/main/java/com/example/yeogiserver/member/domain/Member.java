@@ -24,7 +24,7 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    private String nickName;
+    private String nickname;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -34,11 +34,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Member of (String email , String password , String nickName , Gender gender , LocalDate birthday) {
+    public static Member of (String email , String password , String nickName , Gender gender , LocalDate birthday) {
         return Member.builder()
                 .email(email)
                 .password(password)
-                .nickName(nickName)
+                .nickname(nickName)
                 .birthday(birthday)
                 .gender(gender)
                 .role(Role.USER)
