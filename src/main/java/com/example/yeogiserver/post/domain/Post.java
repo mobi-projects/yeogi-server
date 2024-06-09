@@ -1,5 +1,6 @@
 package com.example.yeogiserver.post.domain;
 
+import com.example.yeogiserver.base.TimeStamp;
 import com.example.yeogiserver.member.domain.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,7 +23,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Post {
+public class Post extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
