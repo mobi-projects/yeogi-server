@@ -91,7 +91,7 @@ public class AuthControllerTest {
                         preprocessRequest(prettyPrint()) ,
                         preprocessResponse(prettyPrint()),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("Login API")
+                                .tag("인증 API")
                                 .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("유저 이메일"),
@@ -126,12 +126,47 @@ public class AuthControllerTest {
                         preprocessRequest(prettyPrint()) ,
                         preprocessResponse(prettyPrint()),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("Logout API")
+                                .tag("인증 API")
                                 .summary("로그아웃")
                                 .requestHeaders(
                                         headerWithName("Authorization").description("JWT 토큰"),
                                         headerWithName("Refresh").description("JWT Refresh 토큰")
                                 ).build()
+                        )
+                ));
+    }
+
+    @DisplayName("JWT 토큰 재발급")
+    @Test
+    void reissue() throws Exception{
+        CustomUserDetails customUserDetails = CustomUserDetails.of("mobi@gmail.com", Role.USER);
+        Token token = jwtTokenProvider.generateToken(customUserDetails);
+        String accessToken = token.getAccessToken();
+        String refreshToken = token.getRefreshToken();
+        redisService.setValue(customUserDetails.getEmail(), refreshToken , Duration.ofMillis(token.getAccessTokenExpiresIn()));
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization" , "Bearer " + accessToken);
+        httpHeaders.set("Refresh" , refreshToken);
+
+        mocMvc.perform(post("/auth/reissue")
+                        .headers(httpHeaders))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("JWT 토큰 재발급",
+                        preprocessRequest(prettyPrint()) ,
+                        preprocessResponse(prettyPrint()),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 API")
+                                .summary("JWT 토큰 재발급")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("JWT 토큰"),
+                                        headerWithName("Refresh").description("JWT Refresh 토큰")
+                                ).responseFields(
+                                        fieldWithPath("accessToken").description("JWT 토큰"),
+                                        fieldWithPath("refreshToken").description("JWT Refresh 토큰")
+                                )
+                                .build()
                         )
                 ));
     }

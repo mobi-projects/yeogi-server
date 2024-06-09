@@ -2,6 +2,7 @@ package com.example.yeogiserver.security.presentation;
 
 import com.example.yeogiserver.security.application.AuthService;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
+import com.example.yeogiserver.security.dto.Auth;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,16 @@ public class AuthController {
         authService.logout(refreshToken , accessToken);
 
         return new ResponseEntity("로그아웃 되었습니다." , HttpStatus.OK);
+    }
+
+    @RequestMapping("reissue")
+    public Auth.LoginResponse reissue(HttpServletRequest request) {
+        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
+        String accessToken = authService.reissue(refreshToken);
+
+        Auth.LoginResponse response = new Auth.LoginResponse();
+        response.setAccessToken("Bearer " + accessToken);
+
+        return response;
     }
 }

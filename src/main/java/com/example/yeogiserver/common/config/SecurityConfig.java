@@ -72,8 +72,14 @@ public class SecurityConfig {
                 })
         );
 
+//        http.authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers("/auth/**" , "member/signup").permitAll()
+//                .anyRequest().authenticated()
+//        );
+
         http.authorizeHttpRequests(authorize -> authorize
-                .anyRequest().permitAll());
+                .anyRequest().permitAll()
+        );
 
         http.with(new CustomFilterConfigurer() , CustomFilterConfigurer::build);
 
