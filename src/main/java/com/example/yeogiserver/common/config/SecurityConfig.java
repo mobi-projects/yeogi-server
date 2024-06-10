@@ -2,11 +2,13 @@ package com.example.yeogiserver.common.config;
 
 import com.example.yeogiserver.common.application.RedisService;
 import com.example.yeogiserver.member.application.MemberQueryService;
+import com.example.yeogiserver.security.application.CustomOAuth2UserService;
 import com.example.yeogiserver.security.filter.JwtAuthenticationFilter;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
 import com.example.yeogiserver.security.filter.JwtVerificationFilter;
 import com.example.yeogiserver.security.handler.LoginFailureHandler;
 import com.example.yeogiserver.security.handler.LoginSuccessHandler;
+import com.example.yeogiserver.security.handler.OAuth2LoginSuccessHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
@@ -39,10 +42,17 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberQueryService memberQueryService;
     private final RedisService redisService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers("/error", "/favicon.ico");
     }
 
     @Bean
@@ -72,8 +82,13 @@ public class SecurityConfig {
                 })
         );
 
+        http.oauth2Login(oauth ->
+                oauth.userInfoEndpoint(c -> c.userService(customOAuth2UserService))
+                        .successHandler(new OAuth2LoginSuccessHandler(jwtTokenProvider , redisService))
+                );
+
 //        http.authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers("/auth/**" , "member/signup").permitAll()
+//                .requestMatchers("/auth/**" , "member/signup" , "/oauth2/**").permitAll()
 //                .anyRequest().authenticated()
 //        );
 

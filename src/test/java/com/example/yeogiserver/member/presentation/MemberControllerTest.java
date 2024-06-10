@@ -62,7 +62,7 @@ public class MemberControllerTest {
     @Test
     void signup() throws Exception {
 
-        SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", LocalDate.now());
+        SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29");
         SignupMember.Response response = new SignupMember.Response("mobi@gmail.com", "mobi");
 
         given(memberService.signup(any(SignupMember.Request.class))).willReturn(response);

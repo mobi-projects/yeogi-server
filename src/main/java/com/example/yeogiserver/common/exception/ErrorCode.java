@@ -18,7 +18,10 @@ public enum ErrorCode {
     TOKEN_EXPIRED(400 , "토큰이 만료되었습니다."),
     TOKEN_UNSUPPORTED(400 , "지원하지 않는 형식의 토큰입니다."),
     TOKEN_ILLEGAL_ARGUMENT(400 , "올바르지 않은 토큰입니다."),
-    HEADER_REFRESH_TOKEN_NOT_EXISTS(404 , "헤더에 Refresh 토큰이 존재하지 않습니다.");
+    HEADER_REFRESH_TOKEN_NOT_EXISTS(404 , "헤더에 Refresh 토큰이 존재하지 않습니다."),
+
+    //OAuth
+    ILLEGAL_REGISTRATION_ID(400 , "올바르지 않은 registrationId 입니다.");
 
 
 

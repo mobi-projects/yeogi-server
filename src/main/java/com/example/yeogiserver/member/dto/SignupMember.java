@@ -17,7 +17,7 @@ public class SignupMember {
         private String password;
         private Gender gender;
         private String nickname;
-        private LocalDate birthday;
+        private String ageRange;
     }
 
 
