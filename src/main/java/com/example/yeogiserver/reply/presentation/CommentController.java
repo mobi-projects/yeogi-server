@@ -3,6 +3,7 @@ package com.example.yeogiserver.reply.presentation;
 
 import com.example.yeogiserver.reply.application.CommentService;
 import com.example.yeogiserver.reply.application.dto.CommentRequestDto;
+import com.example.yeogiserver.reply.application.dto.LikeRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,4 +25,8 @@ public class CommentController {
         commentService.deleteComment(commentId);
     }
 
+    @PostMapping("/comments/{commentId}")
+    public void addCommentLike(@RequestBody LikeRequestDto likeRequestDto) {
+        commentService.saveLike(likeRequestDto);
+    }
 }

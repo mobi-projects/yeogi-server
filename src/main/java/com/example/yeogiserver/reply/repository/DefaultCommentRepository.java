@@ -2,6 +2,7 @@ package com.example.yeogiserver.reply.repository;
 
 import com.example.yeogiserver.reply.domain.Comment;
 import com.example.yeogiserver.reply.domain.CommentRepository;
+import com.example.yeogiserver.reply.domain.Like;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class DefaultCommentRepository implements CommentRepository {
 
     private final JpaCommentRepository jpaCommentRepository;
-
+    private final JpaLikeRepository jpaLikeRepository;
     @Override
     public Comment saveComment(Comment comment) {
         return jpaCommentRepository.save(comment);
@@ -38,4 +39,10 @@ public class DefaultCommentRepository implements CommentRepository {
     public void deleteByCommentId(Long id) {
         jpaCommentRepository.deleteById(id);
     }
+
+    @Override
+    public Like saveLike(Like like) {
+        return jpaLikeRepository.save(like);
+    }
+
 }

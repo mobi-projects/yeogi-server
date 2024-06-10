@@ -4,6 +4,7 @@ import com.example.yeogiserver.member.domain.Member;
 
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.reply.application.dto.CommentRequestDto;
+import com.example.yeogiserver.reply.application.dto.LikeRequestDto;
 import com.example.yeogiserver.reply.domain.Comment;
 import com.example.yeogiserver.reply.domain.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +56,13 @@ public class CommentService {
         commentRepository.deleteByPostId(postId);
     }
 
+
+    public void saveLike(LikeRequestDto likeRequestDto) {
+        commentRepository.findById(likeRequestDto.comment().getId()).orElseThrow(() -> new RuntimeException("Comment not found"));
+
+
+        commentRepository.saveLike(likeRequestDto.toEntity());
+
+    }
 
 }
