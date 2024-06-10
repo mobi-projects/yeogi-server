@@ -1,9 +1,9 @@
-package com.example.yeogiserver.reply.presentation;
+package com.example.yeogiserver.comment.presentation;
 
 
-import com.example.yeogiserver.reply.application.CommentService;
-import com.example.yeogiserver.reply.application.dto.CommentRequestDto;
-import com.example.yeogiserver.reply.application.dto.LikeRequestDto;
+import com.example.yeogiserver.comment.application.CommentService;
+import com.example.yeogiserver.comment.application.dto.CommentRequestDto;
+import com.example.yeogiserver.comment.application.dto.LikeRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping("/comments/{commentId}")
-    public void addCommentLike(@RequestBody LikeRequestDto likeRequestDto) {
-        commentService.saveLike(likeRequestDto);
+    public void addCommentLike(@PathVariable Long commentId,@RequestBody LikeRequestDto likeRequestDto) {
+        commentService.saveLike(commentId,likeRequestDto);
     }
 }

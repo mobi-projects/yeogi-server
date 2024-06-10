@@ -1,15 +1,11 @@
-package com.example.yeogiserver.reply.domain;
+package com.example.yeogiserver.comment.domain;
 
-import com.example.yeogiserver.member.domain.Gender;
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.domain.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor

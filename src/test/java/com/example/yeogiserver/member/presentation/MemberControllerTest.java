@@ -67,7 +67,7 @@ public class MemberControllerTest {
 
         given(memberService.signup(any(SignupMember.Request.class))).willReturn(response);
 
-        mocMvc.perform(post("/member/signup")
+        mocMvc.perform(post("/member/signup"
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())

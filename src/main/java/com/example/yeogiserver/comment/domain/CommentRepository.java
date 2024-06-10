@@ -1,4 +1,4 @@
-package com.example.yeogiserver.reply.domain;
+package com.example.yeogiserver.comment.domain;
 
 import java.util.List;
 import java.util.Optional;

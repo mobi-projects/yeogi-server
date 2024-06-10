@@ -1,8 +1,8 @@
-package com.example.yeogiserver.reply.repository;
+package com.example.yeogiserver.comment.repository;
 
-import com.example.yeogiserver.reply.domain.Comment;
-import com.example.yeogiserver.reply.domain.CommentRepository;
-import com.example.yeogiserver.reply.domain.Like;
+import com.example.yeogiserver.comment.domain.Comment;
+import com.example.yeogiserver.comment.domain.CommentRepository;
+import com.example.yeogiserver.comment.domain.Like;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package com.example.yeogiserver.reply.repository;
+package com.example.yeogiserver.comment.repository;
 
-import com.example.yeogiserver.reply.domain.Like;
+import com.example.yeogiserver.comment.domain.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaLikeRepository extends JpaRepository<Like,Long> {

@@ -1,4 +1,4 @@
-package com.example.yeogiserver.reply.domain;
+package com.example.yeogiserver.comment.domain;
 
 import com.example.yeogiserver.member.domain.Member;
 import jakarta.persistence.*;
@@ -25,9 +25,8 @@ public class Like {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    public static Like of (Member author, Comment comment) {
+    public static Like of (Member author) {
         return Like.builder()
-                .comment(comment)
                 .author(author)
                 .build();
     }
