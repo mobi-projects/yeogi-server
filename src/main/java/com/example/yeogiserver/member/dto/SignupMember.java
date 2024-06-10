@@ -18,6 +18,7 @@ public class SignupMember {
         private Gender gender;
         private String nickname;
         private String ageRange;
+        private String profile;
     }
 
 

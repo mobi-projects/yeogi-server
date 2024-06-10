@@ -67,7 +67,7 @@ public class AuthControllerTest {
 
     @BeforeEach
     void init() {
-        SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29");
+        SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29" , "mobi.jpg");
         memberService.signup(request);
     }
 

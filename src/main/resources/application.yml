@@ -15,22 +15,22 @@ spring:
       client:
         registration:
           google:
-            client-id: 106642161039-utb59dmeun2m63rqchh1bs661chu10q4.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ENC(HLZZV31YwDzgaTYlipIrfHXxvMlXp8Zf/A24xwqyqh+UMCm+xSUdLEMONCRyPKbr8m+SZiX5FoO+jUVzTOdrvHqHvA/AXZXQ55YJk35TvEGclbUKIr7Now==)
+            client-secret: ENC(JUlt8kn7Pmz79FKF+RJch+ittYoIgZhthBUgDhSRVmcGassL5ZhPe0h89X9Bp3l9)
             scope:
               - profile
               - email
             redirect-uri: http://localhost:8080/login/oauth2/code/google
           naver:
-            client-id: 5EtyOfkLapGdvHgNMIE8
-            client-secret: WFFRLIng4T
+            client-id: ENC(NxfrsqGL+m1cV429AjgbRgpKS58hfAvpQCmpghUU0U8=)
+            client-secret: ENC(blQdxcKDWqX5j0FJJrPu5Yzembl2a8V/)
             redirect-uri: http://localhost:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: nickname , email , profile_image , gender, age  # 동의 항목
             client-name: Naver
           kakao:
-            client-id: 6ea3ac3c0fe9c2a77b274dec288988c6
-            client-secret: xaPcMd2TpDJFbPBqEc2aeWxJCAe6eUyS
+            client-id: ENC(bb1Z5Wuzoqe1sRJ2nn0ZnoDhmpscFMbNMuCq9PzIrHC7ZVkQY8DjX7AEai8rUE99)
+            client-secret: ENC(H5USQr6stCBwIkATiF3ayahY+FekfPOJ+maS1FUVT0bYIE02uLUXu+e+gOInqmjv)
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
@@ -57,4 +57,4 @@ spring:
     url: jdbc:h2:tcp://localhost/~/yeogi
 
 jwt:
-  secret-key : 6ae381eece6e5be0fcb4559dc952e1b95aa80d33d00d6078bb348c1fa9820498
+  secret-key : ENC(wGgdLBkK61mA5r3SUj2IWlhvG1rI26zxlWD7hWxZwoUB3vnfXyyCs61514S3BcvukaP15pswg9M0k3hJ5JXMd44DgtwPjjUK4IvnL/UYb84=)

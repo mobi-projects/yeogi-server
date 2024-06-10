@@ -3,8 +3,6 @@ package com.example.yeogiserver.member.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
 @NoArgsConstructor
 @Getter
@@ -25,18 +23,21 @@ public class Member {
 
     private String ageRange;
 
+    private String profile;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static Member of (String email , String password , String nickName , String ageRange , Gender gender) {
+    public static Member of (String email , String password , String nickName , String ageRange , String profile , Gender gender) {
         return Member.builder()
                 .email(email)
                 .password(password)
                 .nickname(nickName)
                 .ageRange(ageRange)
+                .profile(profile)
                 .gender(gender)
                 .role(Role.USER)
                 .build();
