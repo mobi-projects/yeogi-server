@@ -9,12 +9,14 @@ import com.example.yeogiserver.member.domain.Gender;
 import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -36,8 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@WebMvcTest(MemberController.class)
 @Import(SecurityConfig.class)
+@SpringBootTest
 public class MemberControllerTest {
 
     @Autowired
@@ -46,17 +48,14 @@ public class MemberControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @Autowired
     private MemberService memberService;
 
-    @MockBean
-    private MemberQueryService memberQueryService;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
-    @MockBean
-    private RedisService redisService;
+    @BeforeEach
+    void init() {
+        SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29" , "mobi.jpg");
+        memberService.signup(request);
+    }
 
     @DisplayName("회원 가입")
     @Test
@@ -64,8 +63,6 @@ public class MemberControllerTest {
 
         SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29" , "mobi.jpg");
         SignupMember.Response response = new SignupMember.Response("mobi@gmail.com", "mobi");
-
-        given(memberService.signup(any(SignupMember.Request.class))).willReturn(response);
 
         mocMvc.perform(post("/member/signup")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +80,8 @@ public class MemberControllerTest {
                                         fieldWithPath("password").type(STRING).description("유저 비밀번호"),
                                         fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
                                         fieldWithPath("gender").type(STRING).description("유저 성별"),
-                                        fieldWithPath("birthday").type(STRING).description("유저 생년월일")
+                                        fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
+                                        fieldWithPath("profile").type(STRING).description("유저 프로필")
                                 ).responseFields(
                                         fieldWithPath("email").type(STRING).description("유저 이메일"),
                                         fieldWithPath("nickname").type(STRING).description("유저 닉네임")
