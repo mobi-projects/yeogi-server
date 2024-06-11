@@ -21,8 +21,8 @@ spring:
       client:
         registration:
           google:
-            client-id: ENC(HLZZV31YwDzgaTYlipIrfHXxvMlXp8Zf/A24xwqyqh+UMCm+xSUdLEMONCRyPKbr8m+SZiX5FoO+jUVzTOdrvHqHvA/AXZXQ55YJk35TvEGclbUKIr7Now==)
-            client-secret: ENC(JUlt8kn7Pmz79FKF+RJch+ittYoIgZhthBUgDhSRVmcGassL5ZhPe0h89X9Bp3l9)
+            client-id: 912490925744-2gcpt7mh59qtcfaophtlskbvkevsp6fd.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
