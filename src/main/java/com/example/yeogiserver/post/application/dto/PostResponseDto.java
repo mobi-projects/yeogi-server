@@ -20,7 +20,7 @@ public record PostResponseDto(
         ) {
     public static PostResponseDto ofPost(Post post, Long likeCount) {
         return new PostResponseDto(
-                post.getAuthor().getNickName(),
+                post.getAuthor().getNickname(),
                 post.getTitle(),
                 post.getContent(),
                 post.getShortPostList().stream().map(ShortPost::getContent).toList(),
