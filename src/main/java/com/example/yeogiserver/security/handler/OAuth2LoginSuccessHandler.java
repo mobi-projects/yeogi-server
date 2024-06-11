@@ -30,8 +30,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        System.out.println("onAuthenticationSuccess");
-
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         Member member = oAuth2User.getMember();
@@ -44,6 +42,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         redisService.setValue(member.getEmail() , token.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));
 
         loginSuccessResponse(token , response);
+
+        log.info("# Authenticated successfully !");
+        log.info("# Email: {}", member.getEmail());
+        log.info("# roles: {}", member.getRole());
+
     }
 
     private void loginSuccessResponse(Token token , HttpServletResponse response) throws IOException {
