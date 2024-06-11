@@ -27,6 +27,7 @@ spring:
               - profile
               - email
             redirect-uri: http://ec2-43-203-193-158.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/google
+
           naver:
             client-id: ENC(NxfrsqGL+m1cV429AjgbRgpKS58hfAvpQCmpghUU0U8=)
             client-secret: ENC(blQdxcKDWqX5j0FJJrPu5Yzembl2a8V/)

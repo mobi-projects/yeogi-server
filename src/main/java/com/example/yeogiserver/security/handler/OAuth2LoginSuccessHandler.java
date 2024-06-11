@@ -30,6 +30,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
+        System.out.println("onAuthenticationSuccess");
+
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         Member member = oAuth2User.getMember();
