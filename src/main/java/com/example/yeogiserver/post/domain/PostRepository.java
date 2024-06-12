@@ -12,4 +12,6 @@ public interface PostRepository {
     boolean isLikeExist(Long postId, Long memberId);
 
     Optional<PostLike> findPostLikeByPostIdAndMemberId(Long postId, Long memberId);
+
+    void addViewCount(Long postId);
 }

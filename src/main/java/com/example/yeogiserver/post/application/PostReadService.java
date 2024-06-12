@@ -1,12 +1,18 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.member.application.MemberQueryService;
+import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.dto.LikedMembersInfo;
 import com.example.yeogiserver.post.application.dto.PostResponseDto;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostReadRepository;
-import com.example.yeogiserver.post.repository.JpaPostLikeRepository;
+import com.example.yeogiserver.post.presentation.SearchType;
+import com.example.yeogiserver.post.presentation.SortCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,20 +21,36 @@ public class PostReadService {
 
     private final PostReadRepository postReadRepository;
 
-    private final JpaPostLikeRepository jpaPostLikeRepository;
+    private final MemberQueryService memberQueryService;
 
     private Post getPost(Long id) {
         return postReadRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("post not found"));
     }
 
-    public PostResponseDto getPostById(Long postId) {
+    public PostResponseDto getPostDetail(Long postId) {
         Post post = getPost(postId);
         Long likeCount = getLikeCount(postId);
+        List<LikedMembersInfo> likedMemberInfoList = getLikedMemberInfoList(postId);
 
-        return PostResponseDto.ofPost(post, likeCount);
+        return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList);
+    }
+
+    public List<LikedMembersInfo> getLikedMemberInfoList(Long postId){
+        List<Long> likedMemberIds = postReadRepository.findLikedMemberByPostId(postId);
+        List<Member> memberList = memberQueryService.findAllByIds(likedMemberIds);
+
+        return memberList.stream().map(LikedMembersInfo::of).toList();
     }
 
     public Long getLikeCount(Long postId){
-        return jpaPostLikeRepository.countByPostId(postId);
+        return postReadRepository.getLikeCount(postId);
+    }
+
+    // TODO : 성능 개선
+    public List<PostResponseDto> getPostListBySearchTypeAndSortCondition(SearchType searchType, String searchString, SortCondition sortCondition){
+        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(searchType, searchString, sortCondition);
+        return postList.stream()
+                .map(each -> getPostDetail(each.getId()))
+                .toList();
     }
 }

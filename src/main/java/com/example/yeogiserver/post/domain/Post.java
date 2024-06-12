@@ -30,7 +30,9 @@ public class Post extends TimeStamp {
     private Long id;
 
     @Column(nullable = false)
-    private String region;
+    private String continent;
+
+    private String country;
 
     private LocalDateTime tripStarDate;
 
@@ -43,6 +45,8 @@ public class Post extends TimeStamp {
     @Column
     private String content;
 
+    private Long viewCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member author;
@@ -54,23 +58,24 @@ public class Post extends TimeStamp {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PostLike> postLikeList = new ArrayList<>();
 
-    public Post(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author) {
-        this.region = region;
+    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country) {
+        this.continent = continent;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
         this.title = title;
         this.content = content;
         this.author = author;
+        this.country = country;
+        this.viewCount = 0L;
     }
 
     public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content) {
-        this.region = region;
+        this.continent = region;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
         this.title = title;
         this.content = content;
     }
-
 
     public void addShortPost(ShortPost shortPost) {
         shortPostList.add(shortPost);

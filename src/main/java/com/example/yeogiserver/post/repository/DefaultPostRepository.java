@@ -40,4 +40,9 @@ public class DefaultPostRepository implements PostRepository {
     public Optional<PostLike> findPostLikeByPostIdAndMemberId(Long postId, Long memberId){
         return jpaPostLikeRepository.findByPostIdAndMemberId(postId, memberId);
     }
+
+    @Override
+    public void addViewCount(Long postId){
+        jpaPostRepository.addViewCount(postId);
+    }
 }

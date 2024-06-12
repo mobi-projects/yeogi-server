@@ -24,6 +24,11 @@ public class PostController {
         postService.createPost(userDetails.getId(), postRequestDto);
     }
 
+    @PostMapping("/posts/{postId}/views")
+    public void addViewCount(@PathVariable Long postId){
+        postService.addViewCount(postId);
+    }
+
     @PutMapping("/posts/{postId}")
     public void updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {
         postService.updatePost(postId, postRequestDto);

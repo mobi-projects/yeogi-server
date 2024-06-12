@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record PostRequestDto(
-        String region,
+        String continent,
+        String country,
         LocalDateTime tripStarDate,
         LocalDateTime tripEndDate,
         String title,
@@ -15,6 +16,6 @@ public record PostRequestDto(
         List<String> shortPosts
 ) {
     public Post toEntity(Member member) {
-        return new Post(region, tripStarDate, tripEndDate, title, content, member);
+        return new Post(continent, tripStarDate, tripEndDate, title, content, member, country);
     }
 }

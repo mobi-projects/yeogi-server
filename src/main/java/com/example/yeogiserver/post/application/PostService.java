@@ -1,7 +1,7 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.repository.MemberJpaRepository;
 import com.example.yeogiserver.post.application.dto.PostRequestDto;
 import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
@@ -24,15 +24,18 @@ public class PostService {
 
     private final ShortPostRepository shortPostRepository;
 
-    // TODO : 멤버서비스 완료 시 제거하고, 서비스로 바꿀 것.
-    private final MemberJpaRepository memberJpaRepository;
+    private final MemberQueryService memberQueryService;
 
     private Post getPost(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
     }
 
+    public void addViewCount(Long postId){
+        postRepository.addViewCount(postId);
+    }
+
     public void createPost(Long authorMemberId, PostRequestDto postRequestDto) {
-        Member author = memberJpaRepository.findById(authorMemberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Member author = memberQueryService.findById(authorMemberId);
         Post post = postRequestDto.toEntity(author);
 
         List<String> shortPosts = postRequestDto.shortPosts();
@@ -48,7 +51,7 @@ public class PostService {
     public void updatePost(Long id, PostRequestDto postRequestDto) {
         Post post = getPost(id);
 
-        post.updateFields(postRequestDto.region(), postRequestDto.tripStarDate(), postRequestDto.tripEndDate(), postRequestDto.title(), postRequestDto.title());
+        post.updateFields(postRequestDto.continent(), postRequestDto.tripStarDate(), postRequestDto.tripEndDate(), postRequestDto.title(), postRequestDto.title());
     }
 
     public void delete(Long id) {

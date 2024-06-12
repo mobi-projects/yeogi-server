@@ -2,10 +2,10 @@ package com.example.yeogiserver.member.repository;
 
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.domain.MemberRepository;
-import com.example.yeogiserver.security.domain.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,4 +31,8 @@ public class DefaultMemberRepository implements MemberRepository {
         memberJpaRepository.deleteByEmail(email);
     }
 
+    @Override
+    public List<Member> findAllByIds(List<Long> memberIds) {
+        return memberJpaRepository.findAllById(memberIds);
+    }
 }

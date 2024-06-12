@@ -3,6 +3,7 @@ package com.example.yeogiserver.post.repository;
 import com.example.yeogiserver.post.domain.PostLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface JpaPostLikeRepository extends JpaRepository<PostLike, Long> {
@@ -12,5 +13,9 @@ public interface JpaPostLikeRepository extends JpaRepository<PostLike, Long> {
     Optional<PostLike> findByPostIdAndMemberId(Long postId, Long memberId);
 
     long countByPostId(Long postId);
+
+    List<PostLike> findAllByPostId(Long postId);
+
+
 
 }
