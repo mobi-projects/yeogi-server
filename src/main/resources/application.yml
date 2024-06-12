@@ -21,23 +21,24 @@ spring:
       client:
         registration:
           google:
-            client-id: ENC(HLZZV31YwDzgaTYlipIrfHXxvMlXp8Zf/A24xwqyqh+UMCm+xSUdLEMONCRyPKbr8m+SZiX5FoO+jUVzTOdrvHqHvA/AXZXQ55YJk35TvEGclbUKIr7Now==)
-            client-secret: ENC(JUlt8kn7Pmz79FKF+RJch+ittYoIgZhthBUgDhSRVmcGassL5ZhPe0h89X9Bp3l9)
+            client-id: ENC(XqRXtOnWuZkl4fn//CtdDnAKxh07We7rCL33y2N9QFE/YmabNX867dFshyNsq+aOqtOpiDpWQgSsP2eW87QnsP/ypkXEFfBQSCplvgLorPonqv+Engd9Ug==)
+            client-secret: ENC(Ru12AJ5Sz0o0IfcJ+OI6k3eze9IzKLnYb4abPToeS25CdDk11AOuajLJ4Znki/TO)
             scope:
               - profile
               - email
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: http://ec2-43-203-193-158.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/google
+
           naver:
             client-id: ENC(NxfrsqGL+m1cV429AjgbRgpKS58hfAvpQCmpghUU0U8=)
             client-secret: ENC(blQdxcKDWqX5j0FJJrPu5Yzembl2a8V/)
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: http://ec2-43-203-193-158.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: nickname , email , profile_image , gender, age  # 동의 항목
             client-name: Naver
           kakao:
             client-id: ENC(bb1Z5Wuzoqe1sRJ2nn0ZnoDhmpscFMbNMuCq9PzIrHC7ZVkQY8DjX7AEai8rUE99)
             client-secret: ENC(H5USQr6stCBwIkATiF3ayahY+FekfPOJ+maS1FUVT0bYIE02uLUXu+e+gOInqmjv)
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: http://ec2-43-203-193-158.ap-northeast-2.compute.amazonaws.com:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope: profile_nickname, profile_image, account_email
