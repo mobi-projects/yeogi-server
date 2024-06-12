@@ -14,7 +14,6 @@ import java.util.Optional;
 public class DefaultCommentRepository implements CommentRepository {
 
     private final JpaCommentRepository jpaCommentRepository;
-    private final JpaLikeRepository jpaLikeRepository;
     @Override
     public Comment saveComment(Comment comment) {
         return jpaCommentRepository.save(comment);
@@ -27,7 +26,7 @@ public class DefaultCommentRepository implements CommentRepository {
 
     @Override
     public Optional<Comment> findById(Long id) {
-        return Optional.empty();
+        return jpaCommentRepository.findById(id);
     }
 
     @Override
@@ -40,9 +39,5 @@ public class DefaultCommentRepository implements CommentRepository {
         jpaCommentRepository.deleteById(id);
     }
 
-    @Override
-    public Like saveLike(Like like) {
-        return jpaLikeRepository.save(like);
-    }
 
 }

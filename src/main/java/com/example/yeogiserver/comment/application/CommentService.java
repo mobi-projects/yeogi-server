@@ -1,16 +1,18 @@
 package com.example.yeogiserver.comment.application;
 
+import com.example.yeogiserver.comment.application.dto.CommentResponseDto;
+import com.example.yeogiserver.comment.domain.LikeRepository;
 import com.example.yeogiserver.member.domain.Member;
 
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.comment.application.dto.CommentRequestDto;
-import com.example.yeogiserver.comment.application.dto.LikeRequestDto;
 import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.comment.domain.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,20 +20,22 @@ import java.util.List;
 @Transactional
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     private final DefaultMemberRepository memberRepository;
 
-    public List<Comment> getComments(Long postId) {
-        return commentRepository.findByPostId(postId);
+    public List<CommentResponseDto> getComments(Long postId) {
+
+        return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId),likeRepository.countById(postId));
     }
 
-    public void saveComment(CommentRequestDto commentRequestDto) {
+    public Comment saveComment(CommentRequestDto commentRequestDto) {
         //TODO. Session and Request Validate
 
         Comment comment = commentRequestDto.toEntity();
 
-        Member author = memberRepository.findByEmail(comment.getAuthor().getEmail()).orElseThrow(() -> new IllegalArgumentException("Member not found"));
-        commentRepository.saveComment(comment);
+//        Member author = memberRepository.findByEmail(comment.getAuthor()).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        return commentRepository.saveComment(comment);
     }
     public void updateComment(Long id, CommentRequestDto commentRequestDto) {
         //TODO. Session and Request Validate
@@ -54,15 +58,6 @@ public class CommentService {
         //TODO. Session and Request Validate
 
         commentRepository.deleteByPostId(postId);
-    }
-
-
-    public void saveLike(Long commentId,LikeRequestDto likeRequestDto) {
-        commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
-
-
-        commentRepository.saveLike(likeRequestDto.toEntity());
-
     }
 
 }

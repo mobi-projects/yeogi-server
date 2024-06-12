@@ -1,5 +1,6 @@
 package com.example.yeogiserver.comment.domain;
 
+import com.example.yeogiserver.base.TimeStamp;
 import com.example.yeogiserver.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Comment {
+@Table(name = "comments")
+public class Comment extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +24,13 @@ public class Comment {
     @Column
     private String content;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member author;
+    @Column
+    private String author;
 
     //TODO. POST_ID
+    @Column
     private Long postId;
-    public static Comment of (Member author, String content, Long postId) {
+    public static Comment of (String author, String content, Long postId) {
         return Comment.builder()
                 .author(author)
                 .content(content)

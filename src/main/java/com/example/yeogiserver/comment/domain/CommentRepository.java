@@ -13,7 +13,7 @@ public interface CommentRepository {
     void deleteByPostId(Long postId);
     void deleteByCommentId(Long id);
 
-    Like saveLike(Like Like);
+
 
 
 }
