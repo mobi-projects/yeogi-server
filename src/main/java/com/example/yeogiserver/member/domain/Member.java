@@ -1,5 +1,6 @@
 package com.example.yeogiserver.member.domain;
 
+import com.example.yeogiserver.member.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,6 +42,12 @@ public class Member {
                 .gender(gender)
                 .role(Role.USER)
                 .build();
+    }
+
+    public void update(MemberDto updateMember) {
+        this.nickname = updateMember.getNickname();
+        this.ageRange = updateMember.getAgeRange();
+        this.gender = updateMember.getGender();
     }
 
     public void setEncodePassword(String password) {

@@ -3,7 +3,7 @@ spring:
     redis:
       port: 6379
       password:
-      host: localhost
+      host: ec2-43-203-193-158.ap-northeast-2.compute.amazonaws.com
 
   h2:
     console:

@@ -27,4 +27,8 @@ public class DefaultMemberRepository implements MemberRepository {
         return memberJpaRepository.findByEmail(email);
     }
 
+    public void delete(String email) {
+        memberJpaRepository.deleteByEmail(email);
+    }
+
 }
