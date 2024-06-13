@@ -97,9 +97,9 @@ public class AuthControllerTest {
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("유저 이메일"),
                                         fieldWithPath("password").type(STRING).description("유저 비밀번호")
-                                ).responseHeaders(
-                                        headerWithName("Authorization").description("JWT 토큰 ( Bearer )"),
-                                        headerWithName("Refresh").description("JWT Refresh 토큰")
+                                ).responseFields(
+                                        fieldWithPath("accessToken").type(STRING).description("JWT 토큰 ( Bearer )"),
+                                        fieldWithPath("refreshToken").type(STRING).description("JWT Refresh 토큰")
                                 )
                                 .build()
                         )
