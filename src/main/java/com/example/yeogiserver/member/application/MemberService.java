@@ -21,7 +21,7 @@ public class MemberService {
     private final DefaultMemberRepository memberRepository;
 
     public SignupMember.Response signup(SignupMember.Request member) {
-        Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getAgeRange() , member.getProfile() , member.getGender());
+        Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getAgeRange() , member.getProfile() , null , null , member.getGender());
         Member saveMember = memberRepository.save(signmember);
         return new SignupMember.Response(saveMember.getEmail() , saveMember.getNickname());
     }

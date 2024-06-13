@@ -26,19 +26,25 @@ public class Member {
 
     private String profile;
 
+    private String motto;
+
+    private String banner;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static Member of (String email , String password , String nickName , String ageRange , String profile , Gender gender) {
+    public static Member of (String email , String password , String nickName , String ageRange , String profile , String motto , String banner , Gender gender) {
         return Member.builder()
                 .email(email)
                 .password(password)
                 .nickname(nickName)
                 .ageRange(ageRange)
                 .profile(profile)
+                .motto(motto)
+                .banner(banner)
                 .gender(gender)
                 .role(Role.USER)
                 .build();
@@ -48,6 +54,7 @@ public class Member {
         this.nickname = updateMember.getNickname();
         this.ageRange = updateMember.getAgeRange();
         this.gender = updateMember.getGender();
+        this.motto = updateMember.getMotto();
     }
 
     public void setEncodePassword(String password) {
