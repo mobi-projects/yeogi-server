@@ -77,10 +77,13 @@ public class MemberControllerTest {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private MemberJpaRepository memberJpaRepository;
+
     @BeforeEach
     void init() {
-        SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29" , "mobi.jpg");
-        memberService.signup(request);
+        Member member = Member.of("mobi@gmail.com", "mobi123", "mobi", "20-29", "mobi.jpg", "mobi-project", "mobi-banner.jpg", Gender.M);
+        memberRepository.save(member);
     }
 
     @AfterEach
@@ -161,7 +164,9 @@ public class MemberControllerTest {
                                         fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
                                         fieldWithPath("gender").type(STRING).description("유저 성별"),
                                         fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
-                                        fieldWithPath("profile").type(STRING).description("유저 프로필")
+                                        fieldWithPath("profile").type(STRING).description("유저 프로필"),
+                                        fieldWithPath("motto").type(STRING).description("유저 좌우명"),
+                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필")
                                 ).build()
                         )
                         ));
@@ -172,7 +177,7 @@ public class MemberControllerTest {
     @WithMockUser
     void updateMember() throws Exception{
 
-        MemberDto request = new MemberDto(1L, "mobi@gmail.com", "mobi", "20-29", Gender.M, "mobi.jpg");
+        MemberDto request = new MemberDto(1L, "mobi@gmail.com", "mobi", "20-29", Gender.M, "mobi.jpg" , "MOBI-PROJECT" , "mobi-banner.jpg");
 
         mocMvc.perform(put("/member")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -191,7 +196,9 @@ public class MemberControllerTest {
                                         fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
                                         fieldWithPath("gender").type(STRING).description("유저 성별"),
                                         fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
-                                        fieldWithPath("profile").type(STRING).description("유저 프로필")
+                                        fieldWithPath("profile").type(STRING).description("유저 프로필"),
+                                        fieldWithPath("motto").type(STRING).description("유저 좌우명"),
+                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필")
                                 )
                                 .responseFields(
                                         fieldWithPath("id").type(NUMBER).description("유저 ID"),
@@ -199,7 +206,9 @@ public class MemberControllerTest {
                                         fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
                                         fieldWithPath("gender").type(STRING).description("유저 성별"),
                                         fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
-                                        fieldWithPath("profile").type(STRING).description("유저 프로필")
+                                        fieldWithPath("profile").type(STRING).description("유저 프로필"),
+                                        fieldWithPath("motto").type(STRING).description("유저 좌우명"),
+                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필")
                                 ).build()
                         )
                 ));

@@ -49,15 +49,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     }
 
-    private void loginSuccessResponse(Token token , HttpServletResponse response) throws IOException {
-
-        Gson gson = new Gson();
-
-        Auth.LoginResponse loginResponse = Auth.LoginResponse.builder()
-                        .accessToken("Bearer " + token.getAccessToken())
-                                .refreshToken(token.getRefreshToken())
-                                        .build();
-
-        response.getWriter().write(gson.toJson(loginResponse));
+    private void loginSuccessResponse(Token token , HttpServletResponse response){
+        response.setHeader("Authorization" , "Bearer " + token.getAccessToken());
+        response.setHeader("Refresh" , token.getRefreshToken());
     }
 }

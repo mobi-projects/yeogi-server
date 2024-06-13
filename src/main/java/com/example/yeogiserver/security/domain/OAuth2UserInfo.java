@@ -64,7 +64,7 @@ public class OAuth2UserInfo {
     }
 
     public Member toEntity() {
-        return new Member(null , email , null , name , ageRange , profile , gender , Role.USER);
+        return new Member(null , email , null , name , ageRange , profile , null , null , gender , Role.USER);
     }
 
 }
