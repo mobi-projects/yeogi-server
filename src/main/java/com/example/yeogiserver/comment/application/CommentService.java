@@ -8,6 +8,8 @@ import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.comment.application.dto.CommentRequestDto;
 import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.comment.domain.CommentRepository;
+import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,7 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
-
+    private final PostRepository postRepository;
     private final DefaultMemberRepository memberRepository;
 
     public List<CommentResponseDto> getComments(Long postId) {
@@ -32,10 +34,11 @@ public class CommentService {
     public Comment saveComment(CommentRequestDto commentRequestDto) {
         //TODO. Session and Request Validate
 
-        Comment comment = commentRequestDto.toEntity();
 
-//        Member author = memberRepository.findByEmail(comment.getAuthor()).orElseThrow(() -> new IllegalArgumentException("Member not found"));
-        return commentRepository.saveComment(comment);
+        Member member = memberRepository.findByEmail(commentRequestDto.email()).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Post post = postRepository.findById(commentRequestDto.postId()).orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        return commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post));
     }
     public void updateComment(Long id, CommentRequestDto commentRequestDto) {
         //TODO. Session and Request Validate

@@ -2,6 +2,7 @@ package com.example.yeogiserver.comment.domain;
 
 import com.example.yeogiserver.base.TimeStamp;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.post.domain.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,17 +25,19 @@ public class Comment extends TimeStamp {
     @Column
     private String content;
 
-    @Column
-    private String author;
 
-    //TODO. POST_ID
-    @Column
-    private Long postId;
-    public static Comment of (String author, String content, Long postId) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
+    public static Comment of (Member member, String content, Post post) {
         return Comment.builder()
-                .author(author)
+                .member(member)
                 .content(content)
-                .postId(postId)
+                .post(post)
                 .build();
     }
     public static Comment of (String content) {

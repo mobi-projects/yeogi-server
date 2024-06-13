@@ -118,26 +118,26 @@ public class CommentControllerTest {
                 ));
 
     }
-//    @Order(4)
-//    @DisplayName("댓글 삭제")
-//    @Test
-//    void deleteComment() throws Exception {
-//        mockMvc.perform(RestDocumentationRequestBuilders.delete("/comment/{commentId}",1))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andDo(document("댓글" ,
-//                        preprocessRequest(prettyPrint()) ,
-//                        resource(ResourceSnippetParameters.builder()
-//                                .tag("댓글 API")
-//                                .summary("댓글 삭제")
-//                                .pathParameters(
-//                                        parameterWithName("commentId").description("댓글 번호")
-//                                )
-//                                .build()
-//                        )
-//                ));
-//
-//    }
+    @Order(4)
+    @DisplayName("댓글 삭제")
+    @Test
+    void deleteComment() throws Exception {
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/comment/{commentId}",1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("댓글" ,
+                        preprocessRequest(prettyPrint()) ,
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("댓글 API")
+                                .summary("댓글 삭제")
+                                .pathParameters(
+                                        parameterWithName("commentId").description("댓글 번호")
+                                )
+                                .build()
+                        )
+                ));
+
+    }
 
 
 //    @Order(2)

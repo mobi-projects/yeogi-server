@@ -15,13 +15,10 @@ public class LikeController {
 
     @PostMapping("/comment/like/{commentId}")
     public void addCommentLike(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId) {
-        System.out.printf("YEJUN4911"+userDetails.getId()+commentId);
-
         likeService.saveLike(userDetails.getId(), commentId);
     }
     @DeleteMapping("/comment/like/{commentId}")
     public void deleteCommentLike(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId) {
-        System.out.printf("YEJUN4911"+userDetails.getId()+commentId);
         likeService.deleteLike(userDetails.getId(), commentId);
     }
 }
