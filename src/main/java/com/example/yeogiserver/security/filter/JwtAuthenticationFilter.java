@@ -62,8 +62,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         getSuccessHandler().onAuthenticationSuccess(request , response , authResult);
     }
 
-    public void loginSuccessResponse(HttpServletResponse response , String accessToken , String refreshToken){
-        response.setHeader("Authorization" , "Bearer " + accessToken);
-        response.setHeader("Refresh" , refreshToken);
+    public void loginSuccessResponse(HttpServletResponse response , String accessToken , String refreshToken) throws IOException {
+        Gson gson = new Gson();
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        Auth.LoginResponse loginResponse = Auth.LoginResponse.builder()
+                .accessToken("Bearer " + accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        response.getWriter().write(gson.toJson(loginResponse));
     }
 }
