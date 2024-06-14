@@ -33,14 +33,14 @@ public class CommentService {
         return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId),likeRepository.countById(postId));
     }
 
-    public Comment saveComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
+    public void saveComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
         //TODO. Session and Request Validate
 
 
         Member member = memberRepository.findMember(userDetails.getEmail());
         Post post = postRepository.findById(commentRequestDto.postId()).orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
-        return commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post));
+        commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post));
     }
     public void updateComment(Long id, CommentRequestDto commentRequestDto) {
         //TODO. Session and Request Validate
