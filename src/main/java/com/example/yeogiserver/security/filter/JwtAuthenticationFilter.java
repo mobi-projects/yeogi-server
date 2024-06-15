@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Gson gson = new Gson();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         Auth.LoginResponse loginResponse = Auth.LoginResponse.builder()
-                .accessToken("Bearer " + accessToken)
+                .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
 

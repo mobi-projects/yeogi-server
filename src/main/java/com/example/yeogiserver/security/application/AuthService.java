@@ -9,10 +9,12 @@ import com.example.yeogiserver.security.config.JwtTokenProvider;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import com.example.yeogiserver.security.domain.Token;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.Duration;
 
 @Slf4j
@@ -24,8 +26,8 @@ public class AuthService {
     private final RedisService redisService;
     private final DefaultMemberRepository memberRepository;
 
-    public void logout(String refreshToken, String accessToken) {
-        verifiedRefreshToken(refreshToken);
+    public void logout(String refreshToken, String accessToken , HttpServletResponse response) throws IOException {
+        verifiedRefreshToken(refreshToken , response);
         Claims claims = jwtTokenProvider.parseClaims(refreshToken);
         String email = claims.getSubject();
         String redisRefreshToken = redisService.getValue(email);
@@ -37,8 +39,8 @@ public class AuthService {
         }
     }
 
-    public String reissue(String refreshToken) {
-        verifiedRefreshToken(refreshToken);
+    public String reissue(String refreshToken , HttpServletResponse response) throws IOException {
+        verifiedRefreshToken(refreshToken , response);
         Claims claims = jwtTokenProvider.parseClaims(refreshToken);
         String email = claims.getSubject();
         String redisRefreshToken = redisService.getValue(email);
@@ -56,9 +58,10 @@ public class AuthService {
         throw new CustomException(ErrorCode.TOKEN_ILLEGAL_ARGUMENT);
     }
 
-    private void verifiedRefreshToken(String refreshToken) {
+    private void verifiedRefreshToken(String refreshToken , HttpServletResponse response) throws IOException {
         if(refreshToken == null) {
-            throw new CustomException(ErrorCode.HEADER_REFRESH_TOKEN_NOT_EXISTS);
+            log.warn(ErrorCode.HEADER_REFRESH_TOKEN_NOT_EXISTS.getMessage());
+            response.sendError(ErrorCode.HEADER_REFRESH_TOKEN_NOT_EXISTS.getStatus() , ErrorCode.HEADER_REFRESH_TOKEN_NOT_EXISTS.getMessage());
         }
     }
 

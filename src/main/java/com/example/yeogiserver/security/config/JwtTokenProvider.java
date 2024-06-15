@@ -14,12 +14,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -40,7 +42,7 @@ public class JwtTokenProvider {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    private long accessTokenExpirationMillis = 30 * 60 * 1000L;
+    private long accessTokenExpirationMillis = 60 * 60 * 1000L;
 
     private long refreshTokenExpirationMillis = 7 * 24 * 60 * 60 * 1000L;
 
@@ -134,11 +136,12 @@ public class JwtTokenProvider {
         response.setHeader("Refresh" , refreshToken);
     }
 
-    public boolean validateToken(String token, HttpServletResponse response) {
+    public boolean validateToken(String token){
         try {
             parseClaims(token);
         } catch (io.jsonwebtoken.security.SecurityException e) {
             log.warn("잘못된 JWT 서명입니다.");
+            throw new CustomException(ErrorCode.TOKEN_ILLEGAL_ARGUMENT);
         } catch (ExpiredJwtException e) {
             log.warn("만료된 JWT 토큰입니다.");
             throw new CustomException(ErrorCode.TOKEN_EXPIRED);
