@@ -53,7 +53,7 @@ class PostServiceTest {
         // when
         when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
         PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", memoStrings);
-        postService.createPost(1L, postRequestDto);
+        postService.createPost("test", postRequestDto);
         em.clear();
 
         // then

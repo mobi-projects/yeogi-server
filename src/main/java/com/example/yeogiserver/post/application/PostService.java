@@ -2,6 +2,7 @@ package com.example.yeogiserver.post.application;
 
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.post.application.dto.PostRequestDto;
 import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
@@ -34,8 +35,8 @@ public class PostService {
         postRepository.addViewCount(postId);
     }
 
-    public void createPost(Long authorMemberId, PostRequestDto postRequestDto) {
-        Member author = memberQueryService.findById(authorMemberId);
+    public void createPost(String email, PostRequestDto postRequestDto) {
+        Member author = memberQueryService.findMember(email);
         Post post = postRequestDto.toEntity(author);
 
         List<String> shortPosts = postRequestDto.shortPosts();

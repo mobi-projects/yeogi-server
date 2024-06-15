@@ -20,6 +20,7 @@ public record PostResponseDto(
         LocalDateTime modifiedAt,
         LocalDateTime tripStarDate,
         LocalDateTime tripEndDate,
+        String continent,
         String region
         ) {
     public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos) {
@@ -36,7 +37,8 @@ public record PostResponseDto(
                 post.getModifiedAt(),
                 post.getTripStarDate(),
                 post.getTripEndDate(),
-                post.getContinent()
+                post.getContinent(),
+                post.getCountry()
         );
     }
 }

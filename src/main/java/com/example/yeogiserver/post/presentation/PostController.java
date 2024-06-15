@@ -21,7 +21,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public void createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        postService.createPost(userDetails.getId(), postRequestDto);
+        postService.createPost(userDetails.getEmail(), postRequestDto);
     }
 
     @PostMapping("/posts/{postId}/views")
