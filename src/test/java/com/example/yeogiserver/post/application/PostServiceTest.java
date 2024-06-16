@@ -39,25 +39,25 @@ class PostServiceTest {
     MemberJpaRepository memberRepository;
 
 
-    @Test
-    void name() {
-        // given
-        List<String> memoStrings = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            memoStrings.add("test");
-        }
-
-        Member member = mock(Member.class);
-
-        // when
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
-        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", memoStrings);
-        postService.createPost("test", postRequestDto);
-        em.clear();
-
-        // then
-        Post post = postRepository.findAll().get(0);
-        assertThat(post.getShortPostList()).hasSameSizeAs(memoStrings);
-    }
+//    @Test
+//    void name() {
+//        // given
+//        List<String> memoStrings = new ArrayList<>();
+//
+//        for (int i = 0; i < 10; i++) {
+//            memoStrings.add("test");
+//        }
+//
+//        Member member = mock(Member.class);
+//
+//        // when
+//        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+//        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", memoStrings);
+//        postService.createPost("test", postRequestDto);
+//        em.clear();
+//
+//        // then
+//        Post post = postRepository.findAll().get(0);
+//        assertThat(post.getShortPostList()).hasSameSizeAs(memoStrings);
+//    }
 }

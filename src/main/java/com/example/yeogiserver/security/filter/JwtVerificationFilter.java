@@ -1,6 +1,7 @@
 package com.example.yeogiserver.security.filter;
 
 import com.example.yeogiserver.common.application.RedisService;
+import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,18 +34,24 @@ public class JwtVerificationFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String accessToken = jwtTokenProvider.resolveAccessToken(request);
+
         try {
-            String accessToken = jwtTokenProvider.resolveAccessToken(request);
-            if(StringUtils.hasText(accessToken) && doNotLogout(accessToken) && jwtTokenProvider.validateToken(accessToken , response)) {
+
+            if(StringUtils.hasText(accessToken) && doNotLogout(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.info("# Token verification success!");
             }
-        }catch (RuntimeException e) {
-            throw e;
-        }
 
-        filterChain.doFilter(request , response);
+            filterChain.doFilter(request , response);
+        }catch (RuntimeException e) {
+            if(e instanceof CustomException) {
+                handlerException((CustomException) e, response);
+            }else {
+                throw e;
+            }
+        }
     }
 
     private boolean doNotLogout(String accessToken) {
@@ -55,6 +62,12 @@ public class JwtVerificationFilter extends OncePerRequestFilter{
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
+    }
+
+    private void handlerException(CustomException exception , HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(exception.getErrorCode().getStatus());
+        response.getWriter().print(exception.getErrorCode().getMessage());
     }
 
 }

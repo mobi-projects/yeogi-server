@@ -25,8 +25,8 @@ public class CommentController {
         return commentService.getComments(postId);
     }
     @PostMapping("/comment")
-    public Comment saveComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return commentService.saveComment(commentRequestDto,userDetails);
+    public void saveComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        commentService.saveComment(commentRequestDto,userDetails);
     }
     @PutMapping("/comment/{commentId}")
     public void updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails){
