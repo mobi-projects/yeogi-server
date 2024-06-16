@@ -1,7 +1,8 @@
 package com.example.yeogiserver.post.presentation;
 
 import com.example.yeogiserver.post.application.PostReadService;
-import com.example.yeogiserver.post.application.dto.PostResponseDto;
+import com.example.yeogiserver.post.application.dto.response.PostListResponseDto;
+import com.example.yeogiserver.post.application.dto.response.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,11 +23,11 @@ public class PostReadController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponseDto> getAllPosts(
+    public List<PostListResponseDto> getAllPosts(
             @RequestParam SearchType searchType,
             @RequestParam(required = false) String searchString,
             @RequestParam SortCondition sortCondition
     ) {
-        return postReadService.getPostListBySearchTypeAndSortCondition(searchType, searchString, sortCondition);
+        return postReadService.getPostList(searchType, searchString, sortCondition);
     }
 }

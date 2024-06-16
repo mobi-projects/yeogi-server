@@ -19,6 +19,7 @@ public class QueryDslPostRepository {
     // TODO : 페이징 처리
     public List<Post> findPostListBySearchTypeAndSortCondition(SearchType searchType, String searchString, SortCondition sortCondition){
         return jpaQueryFactory.selectFrom(post)
+                .leftJoin(post.author)
                 .where(searchType.getBooleanExpression(searchString, post))
                 .orderBy(sortCondition.getSpecifier(post))
                 .fetch();

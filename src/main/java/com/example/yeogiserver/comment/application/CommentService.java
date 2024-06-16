@@ -1,14 +1,12 @@
 package com.example.yeogiserver.comment.application;
 
+import com.example.yeogiserver.comment.application.dto.CommentRequestDto;
 import com.example.yeogiserver.comment.application.dto.CommentResponseDto;
+import com.example.yeogiserver.comment.domain.Comment;
+import com.example.yeogiserver.comment.domain.CommentRepository;
 import com.example.yeogiserver.comment.domain.LikeRepository;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
-
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
-import com.example.yeogiserver.comment.application.dto.CommentRequestDto;
-import com.example.yeogiserver.comment.domain.Comment;
-import com.example.yeogiserver.comment.domain.CommentRepository;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostRepository;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -65,4 +62,7 @@ public class CommentService {
         commentRepository.deleteByPostId(postId);
     }
 
+    public Long getCommentCount(Long postId) {
+        return commentRepository.countByPostId(postId);
+    }
 }

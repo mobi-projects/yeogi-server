@@ -1,9 +1,11 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.comment.application.CommentService;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.LikedMembersInfo;
-import com.example.yeogiserver.post.application.dto.PostResponseDto;
+import com.example.yeogiserver.post.application.dto.response.PostListResponseDto;
+import com.example.yeogiserver.post.application.dto.response.PostResponseDto;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostReadRepository;
 import com.example.yeogiserver.post.presentation.SearchType;
@@ -23,6 +25,8 @@ public class PostReadService {
 
     private final MemberQueryService memberQueryService;
 
+    private final CommentService commentService;
+
     private Post getPost(Long id) {
         return postReadRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("post not found"));
     }
@@ -30,6 +34,7 @@ public class PostReadService {
     public PostResponseDto getPostDetail(Long postId) {
         Post post = getPost(postId);
         Long likeCount = getLikeCount(postId);
+        // commentCount
         List<LikedMembersInfo> likedMemberInfoList = getLikedMemberInfoList(postId);
 
         return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList);
@@ -46,7 +51,15 @@ public class PostReadService {
         return postReadRepository.getLikeCount(postId);
     }
 
-    // TODO : 성능 개선
+    public List<PostListResponseDto> getPostList(SearchType searchType, String searchString, SortCondition sortCondition){
+        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(searchType, searchString, sortCondition);
+        return postList.stream().map(
+                each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId()))
+        ).toList();
+    }
+
+    // TODO : 삭제
+    @Deprecated
     public List<PostResponseDto> getPostListBySearchTypeAndSortCondition(SearchType searchType, String searchString, SortCondition sortCondition){
         List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(searchType, searchString, sortCondition);
         return postList.stream()

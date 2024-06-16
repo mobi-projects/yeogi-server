@@ -1,8 +1,7 @@
-package com.example.yeogiserver.post.application.dto;
+package com.example.yeogiserver.post.application.dto.response;
 
 import com.example.yeogiserver.member.dto.LikedMembersInfo;
 import com.example.yeogiserver.post.domain.Post;
-import com.example.yeogiserver.post.domain.ShortPost;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +11,7 @@ public record PostResponseDto(
         String author,
         String title,
         String content,
-        List<String> shortPostList,
+        List<ShortPostResponseDto> shortPostList,
         Long likeCount,
         List<LikedMembersInfo> likedMembersInfos,
         Long viewCount,
@@ -29,7 +28,7 @@ public record PostResponseDto(
                 post.getAuthor().getNickname(),
                 post.getTitle(),
                 post.getContent(),
-                post.getShortPostList().stream().map(ShortPost::getContent).toList(),
+                post.getShortPostList().stream().map(ShortPostResponseDto::of).toList(),
                 likeCount,
                 likedMembersInfos,
                 post.getViewCount(),

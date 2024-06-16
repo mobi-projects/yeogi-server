@@ -2,7 +2,6 @@ package com.example.yeogiserver.comment.repository;
 
 import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.comment.domain.CommentRepository;
-import com.example.yeogiserver.comment.domain.Like;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +38,8 @@ public class DefaultCommentRepository implements CommentRepository {
         jpaCommentRepository.deleteById(id);
     }
 
-
+    @Override
+    public Long countByPostId(Long postId) {
+        return jpaCommentRepository.countByPostId(postId);
+    }
 }

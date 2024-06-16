@@ -2,9 +2,8 @@ package com.example.yeogiserver.post.application;
 
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
-import com.example.yeogiserver.post.application.dto.PostRequestDto;
-import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
+import com.example.yeogiserver.post.application.dto.request.PostRequestDto;
+import com.example.yeogiserver.post.application.dto.request.ShortPostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostLike;
 import com.example.yeogiserver.post.domain.PostRepository;
@@ -35,7 +34,7 @@ public class PostService {
         postRepository.addViewCount(postId);
     }
 
-    public void createPost(String email, PostRequestDto postRequestDto) {
+    public Long createPost(String email, PostRequestDto postRequestDto) {
         Member author = memberQueryService.findMember(email);
         Post post = postRequestDto.toEntity(author);
 
@@ -47,12 +46,14 @@ public class PostService {
         }
 
         postRepository.savePost(post);
+
+        return post.getId();
     }
 
     public void updatePost(Long id, PostRequestDto postRequestDto) {
         Post post = getPost(id);
 
-        post.updateFields(postRequestDto.continent(), postRequestDto.tripStarDate(), postRequestDto.tripEndDate(), postRequestDto.title(), postRequestDto.title());
+        post.updateFields(postRequestDto.continent(), postRequestDto.tripStartDate(), postRequestDto.tripEndDate(), postRequestDto.title(), postRequestDto.title());
     }
 
     public void delete(Long id) {

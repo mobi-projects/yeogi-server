@@ -1,6 +1,7 @@
 package com.example.yeogiserver.post.domain;
 
 import com.example.yeogiserver.base.TimeStamp;
+import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.member.domain.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -57,6 +58,10 @@ public class Post extends TimeStamp {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PostLike> postLikeList = new ArrayList<>();
+
+    // TODO : 할까말까~
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country) {
         this.continent = continent;

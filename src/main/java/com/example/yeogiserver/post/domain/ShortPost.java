@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class ShortPost {
 
     @Id

@@ -1,4 +1,4 @@
-package com.example.yeogiserver.post.application.dto;
+package com.example.yeogiserver.post.application.dto.request;
 
 import com.example.yeogiserver.post.domain.ShortPost;
 

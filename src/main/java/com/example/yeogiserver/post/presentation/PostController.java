@@ -1,10 +1,11 @@
 package com.example.yeogiserver.post.presentation;
 
 import com.example.yeogiserver.post.application.PostService;
-import com.example.yeogiserver.post.application.dto.PostRequestDto;
-import com.example.yeogiserver.post.application.dto.ShortPostRequestDto;
+import com.example.yeogiserver.post.application.dto.request.PostRequestDto;
+import com.example.yeogiserver.post.application.dto.request.ShortPostRequestDto;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +24,17 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public void createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        postService.createPost(userDetails.getEmail(), postRequestDto);
+    public ResponseEntity<Void> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long postId = postService.createPost(userDetails.getEmail(), postRequestDto);
+
+        // 방금 생성된 리소스의 URL 설정
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(postId)
+                .toUri();
+
+        // 201 Created 응답과 Location 헤더를 반환
+        return ResponseEntity.created(location).build();
     }
 
     @PostMapping("/posts/{postId}/views")
