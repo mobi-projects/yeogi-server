@@ -22,8 +22,8 @@ public class DefautLikeRepository  implements LikeRepository {
     }
 
     @Override
-    public Optional<Like> existsByMemberIdAndCommentId(Long memberId, Long commentId) {
-        return jpaLikeRepository.existsByMemberIdAndCommentId(memberId,commentId);
+    public Optional<Like> existsByMemberEmailAndCommentId(String email, Long commentId) {
+        return jpaLikeRepository.existsByMemberEmailAndCommentId(email,commentId);
     }
 
     @Override

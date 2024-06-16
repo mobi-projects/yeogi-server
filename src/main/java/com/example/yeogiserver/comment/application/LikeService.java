@@ -20,23 +20,23 @@ public class LikeService {
     private final CommentRepository commentRepository;
     private final DefaultMemberRepository memberRepository;
 
-    public void saveLike(Long memberId, Long commentId) {
-        likeRepository.existsByMemberIdAndCommentId(memberId,commentId)
+    public void saveLike(String email, Long commentId) {
+        likeRepository.existsByMemberEmailAndCommentId(email,commentId)
                 .ifPresent((value)-> new IllegalArgumentException("Already Like : " + value));
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + memberId));
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found comment id : " + commentId));
 
         likeRepository.save(Like.of(member,comment));
 
     }
-    public void deleteLike(Long memberId, Long commentId) {
-        Like like = likeRepository.existsByMemberIdAndCommentId(memberId,commentId)
-                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + memberId));
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + memberId));
+    public void deleteLike(String email, Long commentId) {
+        Like like = likeRepository.existsByMemberEmailAndCommentId(email,commentId)
+                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found comment id : " + commentId));
         likeRepository.delete(Like.of(member,comment));
