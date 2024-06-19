@@ -1,5 +1,8 @@
 package com.example.yeogiserver.member.presentation;
 
+import com.example.yeogiserver.common.exception.CustomException;
+import com.example.yeogiserver.common.exception.ErrorCode;
+import com.example.yeogiserver.common.resolver.LoginMember;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.application.MemberService;
 import com.example.yeogiserver.member.domain.Member;
@@ -25,13 +28,15 @@ public class MemberController {
 
     @PostMapping()
     public SignupMember.Response signup(@RequestBody SignupMember.Request member) {
+        if(memberQueryService.existsMemberEmail(member)){
+            throw new CustomException(ErrorCode.MEMBER_EMAIL_ALREADY_EXISTS);
+        }
         return memberService.signup(member);
     }
 
     @GetMapping()
-    public MemberDto getMember(@AuthenticationPrincipal CustomUserDetails member) {
-        Member findMember = memberQueryService.findMember(member.getEmail());
-        return MemberDto.of(findMember);
+    public MemberDto getMember(@LoginMember Member member) {
+        return MemberDto.of(member);
     }
 
     @PutMapping()
@@ -41,9 +46,8 @@ public class MemberController {
     }
 
     @DeleteMapping()
-    public ResponseEntity deleteMember(@AuthenticationPrincipal CustomUserDetails member) {
+    public ResponseEntity deleteMember(@LoginMember Member member) {
         memberService.delete(member.getEmail());
-
         return new ResponseEntity("탈퇴 되었습니다." , HttpStatus.OK);
     }
 
