@@ -40,10 +40,8 @@ public class Comment extends TimeStamp {
                 .post(post)
                 .build();
     }
-    public static Comment of (String content) {
-        return Comment.builder()
-                .content(content)
-                .build();
+    public void update(String content) {
+        this.content = content;
     }
 
 }

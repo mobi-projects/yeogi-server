@@ -45,9 +45,8 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        comment.of(commentRequestDto.content());
+        comment.update(commentRequestDto.content());
 
-        commentRepository.saveComment(comment);
     }
     public void deleteComment(Long id) {
         //TODO. Session and Request Validate
