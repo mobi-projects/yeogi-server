@@ -5,7 +5,7 @@ import java.util.Optional;
 public interface LikeRepository {
     void save(Like like);
     void delete(Like like);
-    Optional<Like> existsByMemberEmailAndCommentId(String email, Long commentId);
+    Boolean existsByMemberEmailAndCommentId(String email, Long commentId);
 
     Long countById(Long postId);
 }

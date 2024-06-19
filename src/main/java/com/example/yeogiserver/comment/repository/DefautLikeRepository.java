@@ -22,7 +22,7 @@ public class DefautLikeRepository  implements LikeRepository {
     }
 
     @Override
-    public Optional<Like> existsByMemberEmailAndCommentId(String email, Long commentId) {
+    public Boolean existsByMemberEmailAndCommentId(String email, Long commentId) {
         return jpaLikeRepository.existsByMemberEmailAndCommentId(email,commentId);
     }
 

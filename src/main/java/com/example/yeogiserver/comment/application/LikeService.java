@@ -21,8 +21,8 @@ public class LikeService {
     private final DefaultMemberRepository memberRepository;
 
     public void saveLike(String email, Long commentId) {
-        likeRepository.existsByMemberEmailAndCommentId(email,commentId)
-                .ifPresent((value)-> new IllegalArgumentException("Already Like : " + value));
+
+        if(likeRepository.existsByMemberEmailAndCommentId(email,commentId)) new IllegalArgumentException("Already Like : " + email);
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
@@ -33,8 +33,8 @@ public class LikeService {
 
     }
     public void deleteLike(String email, Long commentId) {
-        Like like = likeRepository.existsByMemberEmailAndCommentId(email,commentId)
-                .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
+        if(!likeRepository.existsByMemberEmailAndCommentId(email,commentId)) new IllegalArgumentException("Could not found like : " + email);
+
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
         Comment comment = commentRepository.findById(commentId)
