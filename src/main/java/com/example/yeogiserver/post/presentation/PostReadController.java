@@ -3,6 +3,8 @@ package com.example.yeogiserver.post.presentation;
 import com.example.yeogiserver.post.application.PostReadService;
 import com.example.yeogiserver.post.application.dto.response.PostListResponseDto;
 import com.example.yeogiserver.post.application.dto.response.PostResponseDto;
+import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
+import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +24,14 @@ public class PostReadController {
         return postReadService.getPostDetail(postId);
     }
 
+    // TODO : 페이지네이션 추가
+
     @GetMapping("/posts")
     public List<PostListResponseDto> getAllPosts(
-            @RequestParam SearchType searchType,
+            @RequestParam PostSearchType postSearchType,
             @RequestParam(required = false) String searchString,
-            @RequestParam SortCondition sortCondition
+            @RequestParam PostSortCondition postSortCondition
     ) {
-        return postReadService.getPostList(searchType, searchString, sortCondition);
+        return postReadService.getPostList(postSearchType, searchString, postSortCondition);
     }
 }

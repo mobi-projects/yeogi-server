@@ -1,7 +1,7 @@
 package com.example.yeogiserver.post.domain;
 
-import com.example.yeogiserver.post.presentation.SearchType;
-import com.example.yeogiserver.post.presentation.SortCondition;
+import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
+import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,12 +16,13 @@ public class QueryDslPostRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    // TODO : 페이징 처리
-    public List<Post> findPostListBySearchTypeAndSortCondition(SearchType searchType, String searchString, SortCondition sortCondition){
+    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition){
         return jpaQueryFactory.selectFrom(post)
                 .leftJoin(post.author)
-                .where(searchType.getBooleanExpression(searchString, post))
-                .orderBy(sortCondition.getSpecifier(post))
+                .where(postSearchType.getBooleanExpression(searchString, post))
+                .orderBy(postSortCondition.getSpecifier(post))
                 .fetch();
     }
+
+    // TODO : 페이징 처리
 }

@@ -1,4 +1,4 @@
-package com.example.yeogiserver.global;
+package com.example.yeogiserver.base.presentation.advice;
 
 import org.springframework.http.HttpStatus;
 
