@@ -35,4 +35,9 @@ public class DefaultMemberRepository implements MemberRepository {
     public List<Member> findAllByIds(List<Long> memberIds) {
         return memberJpaRepository.findAllById(memberIds);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return memberJpaRepository.existsByEmail(email);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.yeogiserver.member.domain;
 
+import com.example.yeogiserver.base.TimeStamp;
 import com.example.yeogiserver.member.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @ToString
-public class Member {
+public class Member extends TimeStamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
