@@ -8,10 +8,11 @@ import lombok.Getter;
 public enum ErrorCode {
 
     //MEMBER
-    MEMBER_NOT_FOUND(404 , "회원을 찾을 수 없습니다."),
-    MEMBER_ROLE_DOES_NOT_EXISTS(404 , "회원 권한이 존재하지 않습니다."),
-    MEMBER_ROLE_INVALID(404 , "회원 권한이 유효하지 않습니다."),
-    MEMBER_IS_LOGOUT(404 , "로그아웃한 회원 입니다."),
+    MEMBER_NOT_FOUND(300 , "회원을 찾을 수 없습니다."),
+    MEMBER_EMAIL_ALREADY_EXISTS(301 , "이미 가입한 이메일이 있습니다."),
+    MEMBER_IS_LOGOUT(302 , "로그아웃한 회원 입니다."),
+    MEMBER_ROLE_DOES_NOT_EXISTS(303 , "회원 권한이 존재하지 않습니다."),
+    MEMBER_ROLE_INVALID(303 , "회원 권한이 유효하지 않습니다."),
 
     //TOKEN
     TOKEN_EXPIRED(400 , "토큰이 만료되었습니다."),

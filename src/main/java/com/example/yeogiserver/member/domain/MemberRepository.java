@@ -8,4 +8,6 @@ public interface MemberRepository {
     Member save(Member member);
 
     List<Member> findAllByIds(List<Long> memberIds);
+
+    boolean existsByEmail(String email);
 }

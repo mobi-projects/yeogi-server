@@ -1,6 +1,7 @@
 package com.example.yeogiserver.member.application;
 
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
@@ -27,5 +28,9 @@ public class MemberQueryService {
 
     public List<Member> findAllByIds(List<Long> memberIds) {
         return memberRepository.findAllByIds(memberIds);
+    }
+
+    public boolean existsMemberEmail(SignupMember.Request member) {
+        return memberRepository.existsByEmail(member.getEmail());
     }
 }
