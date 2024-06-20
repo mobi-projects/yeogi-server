@@ -2,6 +2,7 @@ package com.example.yeogiserver.comment.application;
 
 import com.example.yeogiserver.comment.application.dto.CommentRequestDto;
 import com.example.yeogiserver.comment.application.dto.CommentResponseDto;
+import com.example.yeogiserver.comment.application.dto.CommentSaveResponse;
 import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.comment.domain.CommentRepository;
 import com.example.yeogiserver.comment.domain.LikeRepository;
@@ -30,17 +31,24 @@ public class CommentService {
         return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId),likeRepository.countById(postId));
     }
 
-    public void saveComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
-        //TODO. Session and Request Validate
-
+    public CommentSaveResponse addComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
 
         Member member = memberRepository.findMember(userDetails.getEmail());
         Post post = postRepository.findById(commentRequestDto.postId()).orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
-        commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post));
+        return CommentSaveResponse.of(commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post)));
+    }
+    public void addReply(CommentRequestDto commentRequestDto,CustomUserDetails userDetails, Long commentId) {
+        Member member = memberRepository.findMember(userDetails.getEmail());
+        Post post = postRepository.findById(commentRequestDto.postId()).orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("Comment Not Found"));
+        Comment child = Comment.of(member,commentRequestDto.content(),post);
+
+        child.updateParent(comment);
+        commentRepository.saveComment(child);
     }
     public void updateComment(Long id, CommentRequestDto commentRequestDto) {
-        //TODO. Session and Request Validate
 
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
