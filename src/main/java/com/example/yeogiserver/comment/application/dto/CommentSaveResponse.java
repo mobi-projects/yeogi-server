@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record CommentSaveResponse(Long id, String content, String nickname, LocalDateTime createdAt, LocalDateTime modifiedAt,Long postId) {
+public record CommentSaveResponse(Long id, String content, String nickname, LocalDateTime createdAt, LocalDateTime modifiedAt,Long likeCount,Long postId) {
     public static CommentSaveResponse of(Comment comment) {
         return new CommentSaveResponse(
                         comment.getId(),
@@ -14,6 +14,7 @@ public record CommentSaveResponse(Long id, String content, String nickname, Loca
                         comment.getMember().getNickname(),
                         comment.getCreatedAt(),
                         comment.getModifiedAt(),
+                        0L,
                         comment.getPost().getId()
                 );
     }
