@@ -49,13 +49,13 @@ public class CommentService {
         commentRepository.saveComment(child);
         return CommentSaveResponse.of(child);
     }
-    public void updateComment(Long id, CommentRequestDto commentRequestDto) {
+    public CommentSaveResponse updateComment(Long id, CommentRequestDto commentRequestDto) {
 
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
         comment.update(commentRequestDto.content());
-
+        return CommentSaveResponse.of(comment);
     }
     public void deleteComment(Long id) {
         //TODO. Session and Request Validate
