@@ -15,7 +15,7 @@ public record CommentResponseDto(Long id,
                                  LocalDateTime modifiedAt,
                                  Long likeCount,
                                  List<ReplyResponseDto> child) {
-    public static List<CommentResponseDto> toEntityList(List<Comment> comments, Long likeCount) {
+    public static List<CommentResponseDto> toEntityList(List<Comment> comments) {
         return comments.stream()
                 .filter(comment -> comment.getParent() == null)
                 .map(comment -> new CommentResponseDto(
@@ -25,7 +25,7 @@ public record CommentResponseDto(Long id,
                         comment.getPost().getId(),
                         comment.getCreatedAt(),
                         comment.getModifiedAt(),
-                        likeCount,
+                        (long) comment.getLikeList().size(),
                         ReplyResponseDto.of(comment.getChildren())))
                 .collect(Collectors.toList());
     }

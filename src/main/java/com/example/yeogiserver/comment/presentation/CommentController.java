@@ -28,8 +28,8 @@ public class CommentController {
         return commentService.addComment(commentRequestDto,userDetails);
     }
     @PostMapping("/reply/{commentId}")
-    public void addReply(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        commentService.addReply(commentRequestDto,userDetails,commentId);
+    public CommentSaveResponse addReply(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return commentService.addReply(commentRequestDto,userDetails,commentId);
     }
     @PutMapping("/comment/{commentId}")
     public void updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails){

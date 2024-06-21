@@ -28,7 +28,7 @@ public class CommentService {
 
     public List<CommentResponseDto> getComments(Long postId) {
 
-        return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId),likeRepository.countById(postId));
+        return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId));
     }
 
     public CommentSaveResponse addComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
@@ -38,7 +38,7 @@ public class CommentService {
 
         return CommentSaveResponse.of(commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post)));
     }
-    public void addReply(CommentRequestDto commentRequestDto,CustomUserDetails userDetails, Long commentId) {
+    public CommentSaveResponse addReply(CommentRequestDto commentRequestDto,CustomUserDetails userDetails, Long commentId) {
         Member member = memberRepository.findMember(userDetails.getEmail());
         Post post = postRepository.findById(commentRequestDto.postId()).orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
@@ -47,6 +47,7 @@ public class CommentService {
 
         child.updateParent(comment);
         commentRepository.saveComment(child);
+        return CommentSaveResponse.of(child);
     }
     public void updateComment(Long id, CommentRequestDto commentRequestDto) {
 
