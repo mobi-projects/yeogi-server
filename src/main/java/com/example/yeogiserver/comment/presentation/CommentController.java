@@ -32,8 +32,8 @@ public class CommentController {
         return commentService.addReply(commentRequestDto,userDetails,commentId);
     }
     @PutMapping("/comment/{commentId}")
-    public void updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails){
-        commentService.updateComment(commentId, commentRequestDto);
+    public CommentSaveResponse updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return commentService.updateComment(commentId, commentRequestDto);
     }
     @DeleteMapping("/comment/{commentId}")
     public void deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal CustomUserDetails userDetails){
