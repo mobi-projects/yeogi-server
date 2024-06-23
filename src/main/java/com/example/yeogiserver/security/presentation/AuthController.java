@@ -7,12 +7,8 @@ import com.example.yeogiserver.security.dto.Auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -23,15 +19,14 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
+    @GetMapping("callback")
+    public String callback(String code) {
+        return code;
+    }
 
     @RequestMapping("generateToken/{registrationId}")
-    public Token generateToken(@PathVariable(name = "registrationId") String registrationId , @RequestParam(name = "code") String code) {
-        System.out.println("registrationId = " + registrationId);
-        System.out.println("code = " + code);
-        return Token.builder()
-                .accessToken("1234")
-                .refreshToken("1234")
-                .build();
+    public Token generateToken(@PathVariable(name = "registrationId") String registrationId , @RequestParam(name = "code") String code , @RequestParam(name = "redirect_uri")String redirectUri , @RequestParam(name="state" , required = false) String state) {
+        return authService.generateToken(registrationId , code , redirectUri , state);
     }
 
     @RequestMapping("logout")

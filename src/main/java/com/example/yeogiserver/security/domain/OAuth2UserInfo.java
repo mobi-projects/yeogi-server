@@ -6,12 +6,12 @@ import com.example.yeogiserver.member.domain.Gender;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.domain.Role;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.Map;
 
 @Builder
-@Getter
+@Data
 public class OAuth2UserInfo {
 
     private String name;
