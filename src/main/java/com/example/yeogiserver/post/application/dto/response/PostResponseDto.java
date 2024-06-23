@@ -17,7 +17,7 @@ public record PostResponseDto(
         Long viewCount,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
-        LocalDateTime tripStarDate,
+        LocalDateTime tripStartDate,
         LocalDateTime tripEndDate,
         String continent,
         String region
