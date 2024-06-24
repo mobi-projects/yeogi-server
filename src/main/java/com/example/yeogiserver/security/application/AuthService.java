@@ -170,7 +170,7 @@ public class AuthService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id" , kakaoClientId);
-        params.add("redirect_uri", "http://localhost:3000");
+        params.add("redirect_uri", redirectUri);
         params.add("code", code);
         params.add("client_secret" , kakaoClientSecret);
         return params;
@@ -180,7 +180,7 @@ public class AuthService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id" , googleClientId);
-        params.add("redirect_uri", "http://localhost:3000");
+        params.add("redirect_uri", redirectUri);
         params.add("code", code);
         params.add("client_secret" , googleClientSecret);
         return params;
@@ -190,7 +190,7 @@ public class AuthService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id" , naverClientId);
-        params.add("redirect_uri", "http://localhost:3000");
+        params.add("redirect_uri", redirectUri);
         params.add("code", code);
         params.add("client_secret" , naverClientSecret);
         params.add("state" , state);
