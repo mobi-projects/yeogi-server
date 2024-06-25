@@ -57,6 +57,8 @@ public class Post extends TimeStamp {
     @JoinColumn(name = "member_id")
     private Member author;
 
+    private String address;
+
     // TODO : eager 해도 될수도
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ShortPost> shortPostList = new ArrayList<>();
@@ -68,7 +70,7 @@ public class Post extends TimeStamp {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country, Theme theme) {
+    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country, Theme theme, String address) {
         this.continent = continent;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
@@ -78,6 +80,7 @@ public class Post extends TimeStamp {
         this.country = country;
         this.viewCount = 0L;
         this.theme = theme;
+        this.address = address;
     }
 
     public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content) {

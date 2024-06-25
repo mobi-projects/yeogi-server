@@ -15,9 +15,10 @@ public record PostRequestDto(
         String title,
         String content,
         Theme theme,
-        List<String> shortPosts
+        List<String> shortPosts,
+        String address
 ) {
     public Post toEntity(Member member) {
-        return new Post(continent, tripStartDate, tripEndDate, title, content, member, region, theme);
+        return new Post(continent, tripStartDate, tripEndDate, title, content, member, region, theme, address);
     }
 }

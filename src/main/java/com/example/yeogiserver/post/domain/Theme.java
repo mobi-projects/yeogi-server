@@ -6,5 +6,6 @@ public enum Theme {
     REST,
     SHOPPING,
     ACTIVITY,
-
+    SIGHTSEEING,
+    PACKAGE
 }

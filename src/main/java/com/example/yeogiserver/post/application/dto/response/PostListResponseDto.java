@@ -1,6 +1,7 @@
 package com.example.yeogiserver.post.application.dto.response;
 
 import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.Theme;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +15,9 @@ public record PostListResponseDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String continent,
-        String region
+        String region,
+        String address,
+        Theme theme
         // thumbnail
 ) {
     public static PostListResponseDto of(Post post, Long commentCount, Long likeCount) {
@@ -28,7 +31,9 @@ public record PostListResponseDto(
                 post.getCreatedAt(),
                 post.getModifiedAt(),
                 post.getContinent(),
-                post.getCountry()
+                post.getCountry(),
+                post.getAddress(),
+                post.getTheme()
         );
     }
 }
