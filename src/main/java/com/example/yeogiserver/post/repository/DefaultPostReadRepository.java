@@ -4,6 +4,7 @@ import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostLike;
 import com.example.yeogiserver.post.domain.QueryDslPostRepository;
 import com.example.yeogiserver.post.domain.PostReadRepository;
+import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class DefaultPostReadRepository implements PostReadRepository {
     }
 
     @Override
-    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition){
-        return queryDslPostRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition);
+    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
+        return queryDslPostRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, theme);
     }
 }

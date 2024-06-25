@@ -3,6 +3,7 @@ package com.example.yeogiserver.post.presentation;
 import com.example.yeogiserver.post.application.PostReadService;
 import com.example.yeogiserver.post.application.dto.response.PostListResponseDto;
 import com.example.yeogiserver.post.application.dto.response.PostResponseDto;
+import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class PostReadController {
     public List<PostListResponseDto> getAllPosts(
             @RequestParam PostSearchType postSearchType,
             @RequestParam(required = false) String searchString,
-            @RequestParam PostSortCondition postSortCondition
-    ) {
-        return postReadService.getPostList(postSearchType, searchString, postSortCondition);
+            @RequestParam PostSortCondition postSortCondition,
+            @RequestParam Theme theme) {
+        return postReadService.getPostList(postSearchType, searchString, postSortCondition, theme);
     }
 }

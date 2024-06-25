@@ -8,6 +8,7 @@ import com.example.yeogiserver.post.application.dto.response.PostListResponseDto
 import com.example.yeogiserver.post.application.dto.response.PostResponseDto;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostReadRepository;
+import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import lombok.RequiredArgsConstructor;
@@ -51,19 +52,10 @@ public class PostReadService {
         return postReadRepository.getLikeCount(postId);
     }
 
-    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition){
-        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition);
+    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
+        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, theme);
         return postList.stream().map(
                 each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId()))
         ).toList();
-    }
-
-    // TODO : 삭제
-    @Deprecated
-    public List<PostResponseDto> getPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition){
-        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition);
-        return postList.stream()
-                .map(each -> getPostDetail(each.getId()))
-                .toList();
     }
 }

@@ -16,13 +16,11 @@ public class QueryDslPostRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition){
+    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
         return jpaQueryFactory.selectFrom(post)
                 .leftJoin(post.author)
-                .where(postSearchType.getBooleanExpression(searchString, post))
+                .where(postSearchType.getBooleanExpression(searchString, post).and(post.theme.eq(theme)))
                 .orderBy(postSortCondition.getSpecifier(post))
                 .fetch();
     }
-
-    // TODO : 페이징 처리
 }

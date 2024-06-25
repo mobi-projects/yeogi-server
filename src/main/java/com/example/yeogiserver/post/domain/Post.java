@@ -6,6 +6,8 @@ import com.example.yeogiserver.member.domain.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,6 +48,9 @@ public class Post extends TimeStamp {
     @Column
     private String content;
 
+    @Enumerated(EnumType.STRING)
+    private Theme theme;
+
     private Long viewCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -63,7 +68,7 @@ public class Post extends TimeStamp {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country) {
+    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country, Theme theme) {
         this.continent = continent;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
@@ -72,6 +77,7 @@ public class Post extends TimeStamp {
         this.author = author;
         this.country = country;
         this.viewCount = 0L;
+        this.theme = theme;
     }
 
     public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content) {
