@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface JpaPinRepository extends JpaRepository<Pin,Long> {
 
-    Boolean existsByPostIdAndMember_Email(Long postId, String email);
-    List<Pin> findByMember_Email(String email);
+    Boolean existsByPostIdAndMemberEmail(Long postId, String email);
+    List<Pin> findByMemberEmail(String email);
 }
