@@ -4,6 +4,7 @@ import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.post.application.dto.request.PostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.repository.JpaPostRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class PostServiceTest {
 
         // when
         when(memberQueryService.findById(anyLong())).thenReturn(member);
-        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", memoStrings);
+        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", Theme.ACTIVITY, memoStrings);
         postService.createPost("test", postRequestDto);
         em.clear();
 
