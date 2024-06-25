@@ -15,7 +15,14 @@ public record PinResponseDto(String x, String y, Long pinId, String nickname, Lo
                         pin.getMember().getNickname(),
                         pin.getPost().getId()
                 )).collect(Collectors.toList());
-
-
+    }
+    public static PinResponseDto of(Pin pin) {
+        return new PinResponseDto(
+                        pin.getX(),
+                        pin.getY(),
+                        pin.getId(),
+                        pin.getMember().getNickname(),
+                        pin.getPost().getId()
+                );
     }
 }

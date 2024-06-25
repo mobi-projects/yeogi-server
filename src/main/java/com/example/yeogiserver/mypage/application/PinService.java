@@ -25,7 +25,7 @@ public class PinService {
     private final DefaultMemberRepository memberRepository;
     private final PostRepository postRepository;
 
-    public void addPin(PinRequestDto pinRequestDto, CustomUserDetails userDetails) {
+    public PinResponseDto addPin(PinRequestDto pinRequestDto, CustomUserDetails userDetails) {
         Member member = memberRepository.findByEmail(userDetails.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid member email"));
         Post post = postRepository.findById(pinRequestDto.postId())
@@ -35,7 +35,7 @@ public class PinService {
 
 
 
-        pinRepository.save(Pin.of(pinRequestDto.x(), pinRequestDto.y(), member,post));
+        return PinResponseDto.of(pinRepository.save(Pin.of(pinRequestDto.x(), pinRequestDto.y(), member,post)));
     }
     public void deletePin(Long id){
         pinRepository.delete(id);

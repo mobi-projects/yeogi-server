@@ -1,6 +1,8 @@
 package com.example.yeogiserver.comment.application.dto;
 
 import com.example.yeogiserver.comment.domain.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public record CommentResponseDto(Long id,
                         (long) comment.getLikeList().size(),
                         ReplyResponseDto.of(comment.getChildren())))
                 .collect(Collectors.toList());
+
     }
 }
 

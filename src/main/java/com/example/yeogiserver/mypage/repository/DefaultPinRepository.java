@@ -13,8 +13,8 @@ public class DefaultPinRepository implements PinRepository {
 
     private final JpaPinRepository jpaPinRepository;
     @Override
-    public void save(Pin pin) {
-        jpaPinRepository.save(pin);
+    public Pin save(Pin pin) {
+        return jpaPinRepository.save(pin);
     }
 
     @Override

@@ -18,8 +18,8 @@ public class PinController {
     private final PinService pinService;
 
     @PostMapping("/pin")
-    public void addPin(@RequestBody PinRequestDto pin,@AuthenticationPrincipal CustomUserDetails userDetails) {
-        pinService.addPin(pin,userDetails);
+    public PinResponseDto addPin(@RequestBody PinRequestDto pin,@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return pinService.addPin(pin,userDetails);
     }
 
     @DeleteMapping("/pin/{pinId}")
