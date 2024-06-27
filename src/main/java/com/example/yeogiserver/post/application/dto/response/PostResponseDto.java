@@ -2,6 +2,7 @@ package com.example.yeogiserver.post.application.dto.response;
 
 import com.example.yeogiserver.member.dto.LikedMembersInfo;
 import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.Theme;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +22,8 @@ public record PostResponseDto(
         LocalDateTime tripEndDate,
         String continent,
         String region,
-        String address
+        String address,
+        Theme theme
         ) {
     public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos) {
         return new PostResponseDto(
@@ -39,7 +41,8 @@ public record PostResponseDto(
                 post.getTripEndDate(),
                 post.getContinent(),
                 post.getCountry(),
-                post.getAddress()
+                post.getAddress(),
+                post.getTheme()
         );
     }
 }
