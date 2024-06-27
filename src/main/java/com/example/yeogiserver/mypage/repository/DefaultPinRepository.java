@@ -13,8 +13,8 @@ public class DefaultPinRepository implements PinRepository {
 
     private final JpaPinRepository jpaPinRepository;
     @Override
-    public void save(Pin pin) {
-        jpaPinRepository.save(pin);
+    public Pin save(Pin pin) {
+        return jpaPinRepository.save(pin);
     }
 
     @Override
@@ -24,11 +24,11 @@ public class DefaultPinRepository implements PinRepository {
 
     @Override
     public Boolean isExistPin(Long postId, String email) {
-        return jpaPinRepository.existsByPostIdAndMember_Email(postId, email);
+        return jpaPinRepository.existsByPostIdAndMemberEmail(postId, email);
     }
 
     @Override
     public List<Pin> getPins(String email) {
-        return jpaPinRepository.findByMember_Email(email);
+        return jpaPinRepository.findByMemberEmail(email);
     }
 }

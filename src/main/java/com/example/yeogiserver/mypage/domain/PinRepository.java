@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PinRepository {
 
-    void save(Pin pin);
+    Pin save(Pin pin);
     void delete(Long id);
 
     Boolean isExistPin(Long postId, String email);

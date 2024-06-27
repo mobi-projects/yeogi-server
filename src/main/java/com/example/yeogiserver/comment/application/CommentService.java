@@ -12,6 +12,8 @@ import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostRepository;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +28,9 @@ public class CommentService {
     private final PostRepository postRepository;
     private final MemberQueryService memberRepository;
 
-    public List<CommentResponseDto> getComments(Long postId) {
+    public List<CommentResponseDto> getComments(Long postId, Pageable pageable) {
 
-        return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId));
+        return CommentResponseDto.toEntityList(commentRepository.findByPostId(postId,pageable));
     }
 
     public CommentSaveResponse addComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
