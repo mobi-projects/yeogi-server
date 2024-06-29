@@ -32,7 +32,7 @@ public class PostReadController {
             @RequestParam PostSearchType postSearchType,
             @RequestParam(required = false) String searchString,
             @RequestParam PostSortCondition postSortCondition,
-            @RequestParam Theme theme) {
+            @RequestParam(required = false) Theme theme) {
         return postReadService.getPostList(postSearchType, searchString, postSortCondition, theme);
     }
 }
