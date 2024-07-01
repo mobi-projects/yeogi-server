@@ -2,6 +2,7 @@ package com.example.yeogiserver.post.application.dto.response;
 
 import com.example.yeogiserver.member.dto.LikedMembersInfo;
 import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.PostTheme;
 import com.example.yeogiserver.post.domain.Theme;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public record PostResponseDto(
         String author,
         String title,
         String content,
-        List<ShortPostResponseDto> shortPostList,
+        List<MemoResponseDto> shortPostList,
         Long likeCount,
         List<LikedMembersInfo> likedMembersInfos,
         Long viewCount,
@@ -23,7 +24,7 @@ public record PostResponseDto(
         String continent,
         String region,
         String address,
-        Theme theme
+        List<Theme> themeList
         ) {
     public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos) {
         return new PostResponseDto(
@@ -31,7 +32,7 @@ public record PostResponseDto(
                 post.getAuthor().getNickname(),
                 post.getTitle(),
                 post.getContent(),
-                post.getShortPostList().stream().map(ShortPostResponseDto::of).toList(),
+                post.getMemoList().stream().map(MemoResponseDto::of).toList(),
                 likeCount,
                 likedMembersInfos,
                 post.getViewCount(),
@@ -42,7 +43,7 @@ public record PostResponseDto(
                 post.getContinent(),
                 post.getCountry(),
                 post.getAddress(),
-                post.getTheme()
+                post.getPostThemeList().stream().map(PostTheme::getTheme).toList()
         );
     }
 }

@@ -1,7 +1,7 @@
 package com.example.yeogiserver.post.repository;
 
-import com.example.yeogiserver.post.domain.ShortPost;
+import com.example.yeogiserver.post.domain.Memo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaMemoRepository extends JpaRepository<ShortPost, Long> {
+public interface JpaMemoRepository extends JpaRepository<Memo, Long> {
 }

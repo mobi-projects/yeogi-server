@@ -1,9 +1,11 @@
 package com.example.yeogiserver.post.application.dto.response;
 
 import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.PostTheme;
 import com.example.yeogiserver.post.domain.Theme;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record PostListResponseDto(
         Long postId,
@@ -17,7 +19,7 @@ public record PostListResponseDto(
         String continent,
         String region,
         String address,
-        Theme theme
+        List<Theme> themeList
         // thumbnail
 ) {
     public static PostListResponseDto of(Post post, Long commentCount, Long likeCount) {
@@ -33,7 +35,7 @@ public record PostListResponseDto(
                 post.getContinent(),
                 post.getCountry(),
                 post.getAddress(),
-                post.getTheme()
+                post.getPostThemeList().stream().map(PostTheme::getTheme).toList()
         );
     }
 }

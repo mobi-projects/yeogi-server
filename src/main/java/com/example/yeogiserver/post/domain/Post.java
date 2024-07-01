@@ -1,13 +1,10 @@
 package com.example.yeogiserver.post.domain;
 
 import com.example.yeogiserver.base.TimeStamp;
-import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.member.domain.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -48,9 +45,6 @@ public class Post extends TimeStamp {
     @Column
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private Theme theme;
-
     private Long viewCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -59,18 +53,16 @@ public class Post extends TimeStamp {
 
     private String address;
 
-    // TODO : eager 해도 될수도
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<ShortPost> shortPostList = new ArrayList<>();
+    private List<Memo> memoList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<PostLike> postLikeList = new ArrayList<>();
 
-    // TODO : 할까말까~
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<PostTheme> postThemeList = new ArrayList<>();
 
-    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country, Theme theme, String address) {
+    public Post(String continent, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, Member author, String country, String address) {
         this.continent = continent;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
@@ -79,26 +71,31 @@ public class Post extends TimeStamp {
         this.author = author;
         this.country = country;
         this.viewCount = 0L;
-        this.theme = theme;
         this.address = address;
     }
 
-    public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content) {
+    public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, String address) {
         this.continent = region;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
         this.title = title;
         this.content = content;
+        this.address = address;
     }
 
-    public void addShortPost(ShortPost shortPost) {
-        shortPostList.add(shortPost);
-        shortPost.assignPost(this);
+    public void replaceThemeList(List<PostTheme> themeList) {
+        this.postThemeList = themeList;
+        themeList.forEach(each -> each.assignPost(this));
     }
 
-    public void removeShortPost(ShortPost shortPost) {
-        shortPostList.remove(shortPost);
-        shortPost.assignPost(null);
+    public void addMemo(Memo memo) {
+        memoList.add(memo);
+        memo.assignPost(this);
+    }
+
+    public void removeMemo(Memo memo) {
+        memoList.remove(memo);
+        memo.assignPost(null);
     }
 
     public void addPostLike(PostLike postLike) {

@@ -2,6 +2,7 @@ package com.example.yeogiserver.post.application;
 
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.post.application.dto.request.MemoRequestDto;
 import com.example.yeogiserver.post.application.dto.request.PostRequestDto;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.Theme;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -43,22 +43,23 @@ class PostServiceTest {
     @Test
     void name() {
         // given
-        List<String> memoStrings = new ArrayList<>();
+        List<MemoRequestDto> memoStrings = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            memoStrings.add("test");
+            MemoRequestDto memoRequestDto = new MemoRequestDto("test", "testAddress");
+            memoStrings.add(memoRequestDto);
         }
 
         Member member = mock(Member.class);
 
         // when
         when(memberQueryService.findById(anyLong())).thenReturn(member);
-        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", Theme.ACTIVITY, memoStrings, "address");
+        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", List.of(Theme.ACTIVITY), memoStrings, "address");
         postService.createPost("test", postRequestDto);
         em.clear();
 
         // then
         Post post = postRepository.findAll().get(0);
-        assertThat(post.getShortPostList()).hasSameSizeAs(memoStrings);
+        assertThat(post.getMemoList()).hasSameSizeAs(memoStrings);
     }
 }

@@ -1,5 +1,7 @@
-package com.example.yeogiserver.post.domain;
+package com.example.yeogiserver.post.repository;
 
+import com.example.yeogiserver.post.domain.Post;
+import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,7 +25,7 @@ public class QueryDslPostRepository {
             return null;
         }
 
-        return post.theme.eq(theme);
+        return post.postThemeList.any().theme.eq(theme);
     }
 
     public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){

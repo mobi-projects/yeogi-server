@@ -2,7 +2,6 @@ package com.example.yeogiserver.post.repository;
 
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostLike;
-import com.example.yeogiserver.post.domain.QueryDslPostRepository;
 import com.example.yeogiserver.post.domain.PostReadRepository;
 import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;

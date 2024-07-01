@@ -7,5 +7,7 @@ public enum Theme {
     SHOPPING,
     ACTIVITY,
     SIGHTSEEING,
-    PACKAGE
+    PACKAGE,
+    LUXURY,
+    COST_SAVING
 }
