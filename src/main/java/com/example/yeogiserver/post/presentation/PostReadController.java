@@ -37,4 +37,9 @@ public class PostReadController {
             @RequestParam(required = false) Theme theme) {
         return postReadService.getPostList(postSearchType, searchString, postSortCondition, theme);
     }
+
+    @GetMapping("/posts/popular") // popular 말고 더 좋은 것은 없나?
+    public List<PostListResponseDto> getPopularPostListByTheme(@RequestParam List<Theme> themeList){
+        return postReadService.getPopularPostListByTheme(themeList);
+    }
 }

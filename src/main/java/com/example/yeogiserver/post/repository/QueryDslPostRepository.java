@@ -35,4 +35,21 @@ public class QueryDslPostRepository {
                 .orderBy(postSortCondition.getSpecifier(post))
                 .fetch();
     }
+
+    public List<Post> findPopularPostListByTheme(List<Theme> themes){
+        return themes.stream()
+                .map(this::findPostByThemeOrderByLikesDesc)
+                .toList();
+
+    }
+
+    private Post findPostByThemeOrderByLikesDesc(Theme each) {
+        return jpaQueryFactory.selectFrom(post)
+                .leftJoin(post.postThemeList).fetchJoin()
+//                .leftJoin(post.postLikeList) // FetchJoin 불가능 (~ToMany 2개 이상 불가능)
+                .where(post.postThemeList.any().theme.eq(each))
+//                .orderBy(post.postLikeList.size().desc())
+                .orderBy(post.viewCount.desc())
+                .fetchFirst();
+    }
 }

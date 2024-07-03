@@ -42,4 +42,13 @@ public class DefaultPostReadRepository implements PostReadRepository {
     public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
         return queryDslPostRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, theme);
     }
+
+    @Override
+    public List<Post> findPopularPostListByTheme(List<Theme> themeList){
+        return themeList.stream()
+                .map(jpaPostRepository::findByPostThemeListThemeOrderByViewCountDesc)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+    }
 }
