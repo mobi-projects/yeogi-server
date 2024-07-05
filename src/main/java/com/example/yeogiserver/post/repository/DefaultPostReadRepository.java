@@ -7,10 +7,10 @@ import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,11 +44,35 @@ public class DefaultPostReadRepository implements PostReadRepository {
     }
 
     @Override
-    public List<Post> findPopularPostListByTheme(List<Theme> themeList){
-        return themeList.stream()
-                .map(jpaPostRepository::findByPostThemeListThemeOrderByViewCountDesc)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
+    public List<Post> findPopularPostListByTheme(List<Theme> themeList) {
+        Post dummy = new Post();
+
+        List<Post> resultList = new ArrayList<>();
+        for (Theme theme : themeList) {
+            List<Post> list = jpaPostRepository.findAllByPostThemeListThemeOrderByViewCountDescCreatedAtDesc(PageRequest.of(0, 10), theme).stream().toList();
+            addPostToResultListIfNotExists(list, resultList, dummy);
+        }
+
+        return resultList;
+    }
+
+    private void addPostToResultListIfNotExists(List<Post> list, List<Post> resultList, Post dummy) {
+        if (list.isEmpty()){
+            resultList.add(dummy); // 더미 포스트 추가
+            return;
+        }
+
+        boolean found = false;
+        for (Post each : list) {
+            if (!resultList.contains(each)) {
+                resultList.add(each);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            resultList.add(dummy); // 더미 포스트 추가
+        }
     }
 }
