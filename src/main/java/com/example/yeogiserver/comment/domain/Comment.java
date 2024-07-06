@@ -25,7 +25,7 @@ public class Comment extends TimeStamp {
     private Long id;
 
     @Lob
-    @Column
+    @Column(columnDefinition = "text")
     private String content;
 
 

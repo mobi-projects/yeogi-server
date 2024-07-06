@@ -22,7 +22,7 @@ public class Memo {
     private Long id;
 
     @Getter
-    @Column(nullable = false)
+    @Column(nullable = false , columnDefinition = "text")
     @Lob
     private String content;
 

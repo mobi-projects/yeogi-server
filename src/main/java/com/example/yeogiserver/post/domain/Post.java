@@ -44,7 +44,7 @@ public class Post extends TimeStamp {
     private String title;
 
     @Lob
-    @Column
+    @Column(columnDefinition = "text")
     private String content;
 
     private Long viewCount;
