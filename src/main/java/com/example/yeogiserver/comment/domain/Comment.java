@@ -24,7 +24,6 @@ public class Comment extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
     @Column(columnDefinition = "text")
     private String content;
 

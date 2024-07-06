@@ -23,7 +23,6 @@ public class Memo {
 
     @Getter
     @Column(nullable = false , columnDefinition = "text")
-    @Lob
     private String content;
 
     private String address;
