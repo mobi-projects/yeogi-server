@@ -1,5 +1,10 @@
 package com.example.yeogiserver.member.application;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Member;
@@ -9,8 +14,13 @@ import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -19,6 +29,10 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final DefaultMemberRepository memberRepository;
+    private final AmazonS3 amazonS3;
+
+    @Value("${cloud.aws.s3.bucketName}")
+    private String bucketName;
 
     public SignupMember.Response signup(SignupMember.Request member) {
         Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getAgeRange() , member.getProfile() , null , null , member.getGender());
@@ -35,4 +49,48 @@ public class MemberService {
     public void delete(String email) {
         memberRepository.delete(email);
     }
+
+    public String updateProfileImage(Member member, MultipartFile image) {
+        String uploadImageUrl = uploadImage(image);
+        deleteImage(member.getProfile());
+        member.setProfile(uploadImageUrl);
+        return uploadImageUrl;
+    }
+
+    public String updateBanner(Member member, MultipartFile image) {
+        String uploadImageUrl = uploadImage(image);
+        deleteImage(member.getBanner());
+        member.setBanner(uploadImageUrl);
+        return uploadImageUrl;
+    }
+
+    private String uploadImage(MultipartFile image){
+        String originalFilename = image.getOriginalFilename();
+        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String newFilename = UUID.randomUUID() + originalFilename;
+
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType("image/" + ext);
+        metadata.setContentLength(image.getSize());
+        try {
+            amazonS3.putObject(bucketName , newFilename , image.getInputStream() , metadata);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return amazonS3.getUrl(bucketName , newFilename).toString();
+    }
+
+    private void deleteImage(String imagePath) {
+        if(imagePath == null || imagePath.isEmpty()) return;
+        try {
+            String[] urlParts = imagePath.split("/");
+
+            amazonS3.deleteObject(bucketName , urlParts[3]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

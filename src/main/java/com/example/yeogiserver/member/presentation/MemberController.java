@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,6 +44,16 @@ public class MemberController {
     public MemberDto updateMember(@RequestBody MemberDto member) {
         Member updateMember = memberService.update(member);
         return MemberDto.of(updateMember);
+    }
+
+    @PutMapping("profileImage")
+    public String updateProfileImage(@LoginMember Member member , @RequestPart(name = "image") MultipartFile image){
+        return memberService.updateProfileImage(member, image);
+    }
+
+    @PutMapping("banner")
+    public String updateBanner(@LoginMember Member member , @RequestPart(name = "image") MultipartFile image){
+        return memberService.updateBanner(member , image);
     }
 
     @DeleteMapping()
