@@ -62,4 +62,12 @@ public class Member extends TimeStamp {
         this.password = password;
     }
 
+    public void setProfile(String profile){
+        this.profile = profile;
+    }
+
+    public void setBanner(String banner){
+        this.banner = banner;
+    }
+
 }

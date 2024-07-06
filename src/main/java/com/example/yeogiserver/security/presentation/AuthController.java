@@ -26,10 +26,6 @@ public class AuthController {
 
     @RequestMapping("generateToken/{registrationId}")
     public Token generateToken(@PathVariable(name = "registrationId") String registrationId , @RequestParam(name = "code") String code , @RequestParam(name = "redirect_uri") String redirectUri , @RequestParam(name="state" , required = false) String state) {
-        System.out.println("registrationId = " + registrationId);
-        System.out.println("code = " + code);
-        System.out.println("redirectUri = " + redirectUri);
-        System.out.println("state = " + state);
         return authService.generateToken(registrationId , code , redirectUri , state);
     }
 

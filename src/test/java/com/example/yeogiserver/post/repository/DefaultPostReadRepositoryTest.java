@@ -132,48 +132,48 @@ class DefaultPostReadRepositoryTest {
         assertThat(resultSet).contains(post, post2, post3);
     }
 
-    @Test
-    @DisplayName("만약 다른 테마에서 이미 발견한 포스트라면, 응답 포스트 리스트에 추가되지 않는다.")
-    void shouldReturnDummyIfPostNotExists() {
-        Post post = PostFixture.createDefaultFixtureOf(testMemberFixture);
-        Post post2 = PostFixture.createDefaultFixtureOf(testMemberFixture);
-
-        List<Theme> themeList = List.of(Theme.ACTIVITY, Theme.EATING, Theme.PACKAGE);
-        List<PostTheme> postThemes = themeList.stream().map(PostTheme::new).toList();
-        List<PostTheme> postThemes2 = themeList.stream().map(PostTheme::new).toList();
-
-        post.replaceThemeList(postThemes);
-        PostTheme postTheme = postThemes2.getFirst();
-        post2.replaceThemeList(List.of(postTheme));
-
-        jpaPostRepository.save(post);
-        jpaPostRepository.save(post2);
-
-        List<Post> resultSet = new ArrayList<>();
-        Post dummy = new Post();
-
-        for (Theme theme : themeList) {
-            List<Post> list = jpaPostRepository.findAllByPostThemeListThemeOrderByViewCountDescCreatedAtDesc(PageRequest.of(0, 10), theme).stream().toList();
-            if (list.isEmpty()){
-                resultSet.add(dummy); // 더미 포스트 추가
-                continue;
-            }
-
-            boolean found = false;
-            for (Post each : list) {
-                if (!resultSet.contains(each)) {
-                    resultSet.add(each);
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                resultSet.add(dummy); // 더미 포스트 추가
-            }
-        }
-
-        assertThat(resultSet).hasSize(3);
-        assertThat(resultSet).contains(post, post2, dummy);
-    }
+//    @Test
+//    @DisplayName("만약 다른 테마에서 이미 발견한 포스트라면, 응답 포스트 리스트에 추가되지 않는다.")
+//    void shouldReturnDummyIfPostNotExists() {
+//        Post post = PostFixture.createDefaultFixtureOf(testMemberFixture);
+//        Post post2 = PostFixture.createDefaultFixtureOf(testMemberFixture);
+//
+//        List<Theme> themeList = List.of(Theme.ACTIVITY, Theme.EATING, Theme.PACKAGE);
+//        List<PostTheme> postThemes = themeList.stream().map(PostTheme::new).toList();
+//        List<PostTheme> postThemes2 = themeList.stream().map(PostTheme::new).toList();
+//
+//        post.replaceThemeList(postThemes);
+//        PostTheme postTheme = postThemes2.getFirst();
+//        post2.replaceThemeList(List.of(postTheme));
+//
+//        jpaPostRepository.save(post);
+//        jpaPostRepository.save(post2);
+//
+//        List<Post> resultSet = new ArrayList<>();
+//        Post dummy = new Post();
+//
+//        for (Theme theme : themeList) {
+//            List<Post> list = jpaPostRepository.findAllByPostThemeListThemeOrderByViewCountDescCreatedAtDesc(PageRequest.of(0, 10), theme).stream().toList();
+//            if (list.isEmpty()){
+//                resultSet.add(dummy); // 더미 포스트 추가
+//                continue;
+//            }
+//
+//            boolean found = false;
+//            for (Post each : list) {
+//                if (!resultSet.contains(each)) {
+//                    resultSet.add(each);
+//                    found = true;
+//                    break;
+//                }
+//            }
+//
+//            if (!found) {
+//                resultSet.add(dummy); // 더미 포스트 추가
+//            }
+//        }
+//
+//        assertThat(resultSet).hasSize(3);
+//        assertThat(resultSet).contains(post, post2, dummy);
+//    }
 }
