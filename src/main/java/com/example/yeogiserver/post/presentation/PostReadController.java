@@ -6,7 +6,6 @@ import com.example.yeogiserver.post.application.dto.response.PostResponseDto;
 import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 public class PostReadController {
 
@@ -36,5 +34,10 @@ public class PostReadController {
             @RequestParam PostSortCondition postSortCondition,
             @RequestParam(required = false) Theme theme) {
         return postReadService.getPostList(postSearchType, searchString, postSortCondition, theme);
+    }
+
+    @GetMapping("/posts/popular") // popular 말고 더 좋은 것은 없나?
+    public List<PostListResponseDto> getPopularPostListByTheme(@RequestParam List<Theme> themeList){
+        return postReadService.getPopularPostListByTheme(themeList);
     }
 }

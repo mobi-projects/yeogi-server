@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@ToString
 public class Post extends TimeStamp {
 
     @Id
@@ -70,7 +72,7 @@ public class Post extends TimeStamp {
         this.content = content;
         this.author = author;
         this.country = country;
-        this.viewCount = 0L;
+        this.viewCount = 1L;
         this.address = address;
     }
 
@@ -106,5 +108,9 @@ public class Post extends TimeStamp {
     public void removePostLike(PostLike postLike) {
         postLikeList.remove(postLike);
         postLike.assignPost(null);
+    }
+
+    public void addViewCount(){
+        this.viewCount++;
     }
 }

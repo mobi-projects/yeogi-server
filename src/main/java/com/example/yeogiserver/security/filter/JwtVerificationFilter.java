@@ -29,7 +29,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter{
                     "/h2",
                     "/member/signup",
                     "/auth/login",
-                    "/auth/reissue");
+                    "/auth/reissue",
+                    "/posts/**");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -60,7 +61,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter{
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
     }
 

@@ -9,5 +9,7 @@ public enum Theme {
     SIGHTSEEING,
     PACKAGE,
     LUXURY,
-    COST_SAVING
+    COST_SAVING,
+    HISTORY,
+    CULTURE
 }

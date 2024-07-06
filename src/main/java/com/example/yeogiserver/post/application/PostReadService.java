@@ -54,8 +54,15 @@ public class PostReadService {
 
     public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
         List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, theme);
-        return postList.stream().map(
-                each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId()))
-        ).toList();
+        return postList.stream()
+                .map(each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId())))
+                .toList();
+    }
+
+    public List<PostListResponseDto> getPopularPostListByTheme(List<Theme> themeList){
+        List<Post> popularPostList = postReadRepository.findPopularPostListByTheme(themeList);
+        return popularPostList.stream()
+                .map(each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId())))
+                .toList();
     }
 }

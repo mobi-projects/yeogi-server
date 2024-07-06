@@ -1,6 +1,7 @@
 package com.example.yeogiserver.post.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class PostTheme {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Theme theme;
 
     public PostTheme(Theme theme) {

@@ -5,6 +5,7 @@ import com.example.yeogiserver.post.domain.PostTheme;
 import com.example.yeogiserver.post.domain.Theme;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public record PostListResponseDto(
@@ -23,6 +24,11 @@ public record PostListResponseDto(
         // thumbnail
 ) {
     public static PostListResponseDto of(Post post, Long commentCount, Long likeCount) {
+        List<Theme> themes = new ArrayList<>();
+        if (post.getPostThemeList() != null && !post.getPostThemeList().isEmpty()){
+            themes = post.getPostThemeList().stream().map(PostTheme::getTheme).toList();
+        } // TODO : 삭제
+
         return new PostListResponseDto(
                 post.getId(),
                 post.getAuthor().getNickname(),
@@ -35,7 +41,7 @@ public record PostListResponseDto(
                 post.getContinent(),
                 post.getCountry(),
                 post.getAddress(),
-                post.getPostThemeList().stream().map(PostTheme::getTheme).toList()
+                themes
         );
     }
 }
