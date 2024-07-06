@@ -81,8 +81,8 @@ cloud:
     s3:
       bucketName: yeogi-bucket
     credentials:
-      accessKey: AKIA3FLDXS3LYKHOEUL4
-      secretKey: 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
+      accessKey: ENC(8702buqgW3IeG9OTn0wDKkVv3i+hxtYZnOZYwuq2S8M=)
+      secretKey: ENC(p8LRPTpsp8NqtiWg8cWOutsDQNvZ9OKoqhwOC2ei9wsipa2LmbeapW4Tmbd9HJwONBOOnuCmp4Y=)
     region:
       static: ap-northeast-2
     stack:
