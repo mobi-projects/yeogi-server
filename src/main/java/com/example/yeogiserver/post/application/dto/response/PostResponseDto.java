@@ -13,7 +13,7 @@ public record PostResponseDto(
         String author,
         String title,
         String content,
-        List<MemoResponseDto> shortPostList,
+        List<MemoResponseDto> memos,
         Long likeCount,
         List<LikedMembersInfo> likedMembersInfos,
         Long viewCount,

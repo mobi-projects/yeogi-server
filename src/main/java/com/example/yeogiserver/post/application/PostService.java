@@ -40,7 +40,7 @@ public class PostService {
         Member author = memberQueryService.findMember(email);
         Post post = postRequestDto.toEntity(author);
 
-        List<MemoRequestDto> memoRequestDtoList = postRequestDto.shortPosts();
+        List<MemoRequestDto> memoRequestDtoList = postRequestDto.memos();
 
         if (!memoRequestDtoList.isEmpty()){
             List<Memo> memoList = memoRequestDtoList.stream().map(MemoRequestDto::toEntity).toList();
