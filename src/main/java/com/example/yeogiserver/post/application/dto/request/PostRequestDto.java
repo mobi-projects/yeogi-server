@@ -15,25 +15,10 @@ public record PostRequestDto(
         String title,
         String content,
         List<Theme> themeList,
-        List<MemoRequestDto> shortPosts,
+        List<MemoRequestDto> memos,
         String address
 ) {
     public Post toEntity(Member member) {
         return new Post(continent, tripStartDate, tripEndDate, title, content, member, region, address);
     }
 }
-
-// 이하 겟
-
-//        Long postId,
-//        String author,
-//        String title,
-//        Long commentCount,
-//        Long likeCount, // fetch join ?
-//        Long viewCount,
-//        LocalDateTime createdAt,
-//        LocalDateTime modifiedAt,
-//        String continent,
-//        String region,
-//        String address,
-//        Theme theme
