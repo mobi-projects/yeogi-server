@@ -72,3 +72,15 @@ jwt:
 jasypt:
   encryptor:
     password: for-test
+
+cloud:
+  aws:
+    s3:
+      bucketName: yeogi-bucket
+    credentials:
+      accessKey: testlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA
+      secretKey: testlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
