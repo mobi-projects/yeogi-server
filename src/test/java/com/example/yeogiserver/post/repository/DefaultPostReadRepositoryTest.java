@@ -155,7 +155,7 @@ class DefaultPostReadRepositoryTest {
         List<PostTheme> postThemes2 = themeList.stream().map(PostTheme::new).toList();
 
         post.replaceThemeList(postThemes);
-        PostTheme postTheme = postThemes2.getFirst();
+        PostTheme postTheme = postThemes2.get(0);
         post2.replaceThemeList(List.of(postTheme));
 
         jpaPostRepository.save(post);
