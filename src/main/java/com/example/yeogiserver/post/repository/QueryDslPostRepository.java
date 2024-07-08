@@ -21,28 +21,29 @@ public class QueryDslPostRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public BooleanExpression filterByTheme(Theme theme){
-        if (Objects.isNull(theme)){
+    public BooleanExpression filterByTheme(List<Theme> themes){
+        if (Objects.isNull(themes) || themes.isEmpty()){
+            return null;
+        }
+        return post.postThemeList.any().theme.in(themes);
+    }
+
+    public BooleanExpression filterByCountry(String country){
+        if (Objects.isNull(country) || country.isEmpty()){
             return null;
         }
 
-        return post.postThemeList.any().theme.eq(theme);
+        return post.country.eq(country);
     }
 
-    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
+    // TODO : LIKE, COMMENT 의 카운트를 한방 쿼리로 변경한다.
+    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes){
         return jpaQueryFactory.selectFrom(post)
                 .leftJoin(post.author)
-                .where(postSearchType.getBooleanExpression(searchString, post), this.filterByTheme(theme))
+                .where(postSearchType.getBooleanExpression(searchString, post), this.filterByCountry(country), this.filterByTheme(themes))
                 .orderBy(postSortCondition.getSpecifier(post))
                 .fetch();
     }
-
-//    public List<Post> findPopularPostListByTheme(List<Theme> themes){
-//        return themes.stream()
-//                .map(this::findPostByThemeOrderByLikesDesc)
-//                .toList();
-//
-//    }
 
     public List<Post> findPostByThemeOrderByLikesDesc(Theme each) {
 

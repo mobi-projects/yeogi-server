@@ -31,9 +31,10 @@ public class PostReadController {
     public List<PostListResponseDto> getAllPosts(
             @RequestParam PostSearchType postSearchType,
             @RequestParam(required = false) String searchString,
+            @RequestParam(required = false) String country,
             @RequestParam PostSortCondition postSortCondition,
-            @RequestParam(required = false) Theme theme) {
-        return postReadService.getPostList(postSearchType, searchString, postSortCondition, theme);
+            @RequestParam(required = false) List<Theme> themes) {
+        return postReadService.getPostList(postSearchType, searchString, postSortCondition, country, themes);
     }
 
     @GetMapping("/posts/popular") // popular 말고 더 좋은 것은 없나?

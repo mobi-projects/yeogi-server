@@ -52,8 +52,8 @@ public class PostReadService {
         return postReadRepository.getLikeCount(postId);
     }
 
-    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme){
-        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, theme);
+    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes){
+        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, country, themes);
         return postList.stream()
                 .map(each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId())))
                 .toList();
