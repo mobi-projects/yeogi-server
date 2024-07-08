@@ -23,7 +23,11 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.7.0
+      with:
+        redis-version: 7
+        redis-port: 6379
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
     - name: Build with Gradle Wrapper
