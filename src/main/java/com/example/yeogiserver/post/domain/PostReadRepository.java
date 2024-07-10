@@ -13,7 +13,7 @@ public interface PostReadRepository {
 
     Long getLikeCount(Long postId);
 
-    List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, Theme theme);
+    List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes);
 
     List<Post> findPopularPostListByTheme(List<Theme> themeList);
 }
