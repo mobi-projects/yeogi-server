@@ -65,9 +65,8 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres-server:5432/postgres
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://postgres-server:5432/yeogi_db
+    username: yeogi
 #    driver-class-name: org.h2.Driver
 #    username: sa
 #    password:
