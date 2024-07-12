@@ -22,7 +22,7 @@ public class LikeService {
 
     public void saveLike(String email, Long commentId) {
 
-        if(likeRepository.existsByMemberEmailAndCommentId(email,commentId)) new IllegalArgumentException("Already Like : " + email);
+        if(likeRepository.existsByMemberEmailAndCommentId(email,commentId)) throw new IllegalArgumentException("Already Like : " + email);
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
@@ -33,7 +33,7 @@ public class LikeService {
 
     }
     public void deleteLike(String email, Long commentId) {
-        if(!likeRepository.existsByMemberEmailAndCommentId(email,commentId)) new IllegalArgumentException("Could not found like : " + email);
+        if(!likeRepository.existsByMemberEmailAndCommentId(email,commentId)) throw new IllegalArgumentException("Could not found like : " + email);
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
