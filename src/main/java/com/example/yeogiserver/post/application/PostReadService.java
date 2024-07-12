@@ -55,14 +55,14 @@ public class PostReadService {
     public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes){
         List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, country, themes);
         return postList.stream()
-                .map(each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId())))
+                .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();
     }
 
     public List<PostListResponseDto> getPopularPostListByTheme(List<Theme> themeList){
         List<Post> popularPostList = postReadRepository.findPopularPostListByTheme(themeList);
         return popularPostList.stream()
-                .map(each -> PostListResponseDto.of(each, getLikeCount(each.getId()), commentService.getCommentCount(each.getId())))
+                .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();
     }
 }

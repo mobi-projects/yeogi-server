@@ -3,6 +3,7 @@ package com.example.yeogiserver.security.config;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Role;
+import com.example.yeogiserver.security.application.CustomUserDetailService;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import com.example.yeogiserver.security.domain.Token;
 import io.jsonwebtoken.Claims;
@@ -17,6 +18,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,20 +28,20 @@ import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
 @Getter
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     public static final String BEARER_TYPE = "Bearer";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String REFRESH_HEADER = "Refresh";
     public static final String BEARER_PREFIX = "Bearer ";
+
+    private final CustomUserDetailService customUserDetailService;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -66,22 +68,22 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Token generateToken(CustomUserDetails customUserDetails) {
+    public Token generateToken(String email, Role role) {
         Date accessTokenExpiresIn = new Date(new Date().getTime() + accessTokenExpirationMillis);
         Date refreshTokenExpiresIn = new Date(new Date().getTime() + refreshTokenExpirationMillis);
         Map<String , Object> claims = new HashMap<>();
-        claims.put("role" , customUserDetails.getRole());
+        claims.put("role" , role);
 
         String accessToken = Jwts.builder()
                 .setClaims(claims)
-                .setSubject(customUserDetails.getEmail())
+                .setSubject(email)
                 .setExpiration(accessTokenExpiresIn)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         String refreshToken = Jwts.builder()
-                .setSubject(customUserDetails.getEmail())
+                .setSubject(email)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key)
@@ -118,15 +120,20 @@ public class JwtTokenProvider {
         if(claims.get("role") == null) {
             throw new CustomException(ErrorCode.NO_ACCESS_TOKEN);
         }
+        String email = claims.getSubject();
+        if (Objects.isNull(email) || email.isEmpty()){
+            throw new IllegalArgumentException("invalid claims");
+        }
 
         String authority = claims.get("role").toString();
 
-        CustomUserDetails customUserDetails = CustomUserDetails.of(claims.getSubject(), authority.equals("ADMIN") ? Role.ADMIN : Role.USER);
+        CustomUserDetails customUserDetails = customUserDetailService.loadUserByUsername(email);
 
         log.info("# AuthMember.getRoles 권한 체크 = {}", customUserDetails.getAuthorities().toString());
 
         return new UsernamePasswordAuthenticationToken(customUserDetails , null , customUserDetails.getAuthorities());
     }
+
 
 
     public void setAccessToken(HttpServletResponse response, String accessToken) {

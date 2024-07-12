@@ -85,8 +85,9 @@ public class Post extends TimeStamp {
     }
 
     public void replaceThemeList(List<PostTheme> themeList) {
-        this.postThemeList = themeList;
+        this.postThemeList.clear();
         themeList.forEach(each -> each.assignPost(this));
+        this.postThemeList.addAll(themeList);
     }
 
     public void addMemo(Memo memo) {

@@ -98,7 +98,7 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public void likePost(Long postId, Long memberId){
+    public void likePost(Long memberId, Long postId){
         boolean likeExist = postRepository.isLikeExist(postId, memberId);
         if (likeExist){
             throw new IllegalArgumentException("Member already like this post");

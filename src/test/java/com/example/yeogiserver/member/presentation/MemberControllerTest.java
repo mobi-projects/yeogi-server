@@ -82,7 +82,7 @@ public class MemberControllerTest {
 
     public HttpHeaders getHeader() {
         CustomUserDetails customUserDetails = CustomUserDetails.of("mobi@gmail.com", Role.USER);
-        Token token = jwtTokenProvider.generateToken(customUserDetails);
+        Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         redisService.setValue(customUserDetails.getEmail(), refreshToken , Duration.ofMillis(token.getAccessTokenExpiresIn()));
