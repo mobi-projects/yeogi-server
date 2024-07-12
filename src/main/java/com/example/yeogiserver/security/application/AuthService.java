@@ -83,7 +83,7 @@ public class AuthService {
         if(redisService.checkExistsValue(redisRefreshToken) && refreshToken.equals(redisRefreshToken)) {
             Member member = findMember(email);
             CustomUserDetails customUserDetails = CustomUserDetails.of(member);
-            Token token = jwtTokenProvider.generateToken(customUserDetails);
+            Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
             String accessToken = token.getAccessToken();
             long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
 
@@ -139,7 +139,7 @@ public class AuthService {
 
         CustomUserDetails customUserDetails = CustomUserDetails.of(member);
 
-        Token token = jwtTokenProvider.generateToken(customUserDetails);
+        Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
 
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
         redisService.setValue(member.getEmail() , token.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));

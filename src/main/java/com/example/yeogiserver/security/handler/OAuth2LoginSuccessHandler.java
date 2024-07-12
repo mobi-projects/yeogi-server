@@ -36,7 +36,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         CustomUserDetails customUserDetails = CustomUserDetails.of(member);
 
-        Token token = jwtTokenProvider.generateToken(customUserDetails);
+        Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
 
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
         redisService.setValue(member.getEmail() , token.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));

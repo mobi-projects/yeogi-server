@@ -110,7 +110,7 @@ public class AuthControllerTest {
     @Test
     void logout() throws Exception{
         CustomUserDetails customUserDetails = CustomUserDetails.of("mobi@gmail.com", Role.USER);
-        Token token = jwtTokenProvider.generateToken(customUserDetails);
+        Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         redisService.setValue(customUserDetails.getEmail(), refreshToken , Duration.ofMillis(token.getAccessTokenExpiresIn()));
@@ -141,7 +141,7 @@ public class AuthControllerTest {
     @Test
     void reissue() throws Exception{
         CustomUserDetails customUserDetails = CustomUserDetails.of("mobi@gmail.com", Role.USER);
-        Token token = jwtTokenProvider.generateToken(customUserDetails);
+        Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
         redisService.setValue(customUserDetails.getEmail(), refreshToken , Duration.ofMillis(token.getAccessTokenExpiresIn()));
