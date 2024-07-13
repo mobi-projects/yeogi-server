@@ -20,6 +20,7 @@ public class MemberDto {
     private String profile;
     private String motto;
     private String banner;
+    private boolean isFirst;
 
 
     public static MemberDto of(Member member) {
@@ -32,6 +33,7 @@ public class MemberDto {
                 .profile(member.getProfile())
                 .motto(member.getMotto())
                 .banner(member.getBanner())
+                .isFirst(member.isFirst())
                 .build();
     }
 }

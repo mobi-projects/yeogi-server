@@ -36,6 +36,7 @@ public class Member extends TimeStamp {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+    private boolean isFirst;
 
     public static Member of (String email , String password , String nickName , String ageRange , String profile , String motto , String banner , Gender gender) {
         return Member.builder()
@@ -48,6 +49,7 @@ public class Member extends TimeStamp {
                 .banner(banner)
                 .gender(gender)
                 .role(Role.USER)
+                .isFirst(true)
                 .build();
     }
 
@@ -56,6 +58,7 @@ public class Member extends TimeStamp {
         this.ageRange = updateMember.getAgeRange();
         this.gender = updateMember.getGender();
         this.motto = updateMember.getMotto();
+        this.isFirst = false;
     }
 
     public void setEncodePassword(String password) {
