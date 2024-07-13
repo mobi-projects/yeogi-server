@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,11 @@ public class PostReadController {
 
     @GetMapping("/posts/{postId}")
     public PostResponseDto getPostById(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return postReadService.getPostDetail(postId, customUserDetails.getId());
+        Long memberId = null;
+        if (!Objects.isNull(customUserDetails)){
+            memberId = customUserDetails.getId();
+        }
+        return postReadService.getPostDetail(postId, memberId);
     }
 
     // TODO : 페이지네이션 추가
