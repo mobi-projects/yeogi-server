@@ -64,6 +64,10 @@ public class MemberService {
         return uploadImageUrl;
     }
 
+    public boolean checkExists(MemberDto memberDto) {
+        return memberRepository.existsByNickname(memberDto.getNickname());
+    }
+
     private String uploadImage(MultipartFile image){
         String originalFilename = image.getOriginalFilename();
         String newFilename = UUID.randomUUID() + originalFilename;

@@ -56,6 +56,11 @@ public class MemberController {
         return memberService.updateBanner(member , image);
     }
 
+    @PostMapping("checkExists")
+    public boolean checkExists(@RequestBody MemberDto member) {
+        return memberService.checkExists(member);
+    }
+
     @DeleteMapping()
     public ResponseEntity deleteMember(@LoginMember Member member) {
         memberService.delete(member.getEmail());

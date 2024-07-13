@@ -10,4 +10,6 @@ public interface MemberRepository {
     List<Member> findAllByIds(List<Long> memberIds);
 
     boolean existsByEmail(String email);
+
+    boolean existsByNickname(String nickname);
 }
