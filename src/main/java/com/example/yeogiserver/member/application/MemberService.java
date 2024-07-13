@@ -66,11 +66,10 @@ public class MemberService {
 
     private String uploadImage(MultipartFile image){
         String originalFilename = image.getOriginalFilename();
-        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
         String newFilename = UUID.randomUUID() + originalFilename;
 
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType("image/" + ext);
+        metadata.setContentType(image.getContentType());
         metadata.setContentLength(image.getSize());
         try {
             amazonS3.putObject(bucketName , newFilename , image.getInputStream() , metadata);
