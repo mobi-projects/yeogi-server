@@ -40,4 +40,10 @@ public class DefaultMemberRepository implements MemberRepository {
     public boolean existsByEmail(String email) {
         return memberJpaRepository.existsByEmail(email);
     }
+
+
+    @Override
+    public boolean existsByNickname(String nickname) {
+        return memberJpaRepository.existsByNickname(nickname);
+    }
 }
