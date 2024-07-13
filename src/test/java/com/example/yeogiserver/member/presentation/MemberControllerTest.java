@@ -26,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Duration;
@@ -184,7 +185,8 @@ public class MemberControllerTest {
                                         fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
                                         fieldWithPath("profile").type(STRING).description("유저 프로필"),
                                         fieldWithPath("motto").type(STRING).description("유저 좌우명"),
-                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필")
+                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필"),
+                                        fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("최초 로그인 여부")
                                 ).build()
                         )
                         ));
@@ -195,7 +197,7 @@ public class MemberControllerTest {
     @WithMockUser
     void updateMember() throws Exception{
 
-        MemberDto request = new MemberDto(1L, "mobi@gmail.com", "mobi", "20-29", Gender.M, "mobi.jpg" , "MOBI-PROJECT" , "mobi-banner.jpg");
+        MemberDto request = new MemberDto(1L, "mobi@gmail.com", "mobi", "20-29", Gender.M, "mobi.jpg" , "MOBI-PROJECT" , "mobi-banner.jpg",false);
 
         mocMvc.perform(put("/member")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -216,7 +218,8 @@ public class MemberControllerTest {
                                         fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
                                         fieldWithPath("profile").type(STRING).description("유저 프로필"),
                                         fieldWithPath("motto").type(STRING).description("유저 좌우명"),
-                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필")
+                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필"),
+                                        fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("최초 로그인 여부")
                                 )
                                 .responseFields(
                                         fieldWithPath("id").type(NUMBER).description("유저 ID"),
@@ -226,7 +229,8 @@ public class MemberControllerTest {
                                         fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
                                         fieldWithPath("profile").type(STRING).description("유저 프로필"),
                                         fieldWithPath("motto").type(STRING).description("유저 좌우명"),
-                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필")
+                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필"),
+                                        fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("최초 로그인 여부")
                                 ).build()
                         )
                 ));
