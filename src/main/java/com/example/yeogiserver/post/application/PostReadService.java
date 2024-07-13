@@ -11,6 +11,7 @@ import com.example.yeogiserver.post.domain.PostReadRepository;
 import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
+import com.example.yeogiserver.post.repository.JpaPostLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,17 +29,19 @@ public class PostReadService {
 
     private final CommentService commentService;
 
+    private final JpaPostLikeRepository jpaPostLikeRepository;
+
     private Post getPost(Long id) {
         return postReadRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("post not found"));
     }
 
-    public PostResponseDto getPostDetail(Long postId) {
+    public PostResponseDto getPostDetail(Long postId, Long memberId) {
         Post post = getPost(postId);
         Long likeCount = getLikeCount(postId);
-        // commentCount
         List<LikedMembersInfo> likedMemberInfoList = getLikedMemberInfoList(postId);
+        boolean hasLiked = jpaPostLikeRepository.existsByPostIdAndMemberId(postId, memberId);
 
-        return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList);
+        return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList, hasLiked);
     }
 
     public List<LikedMembersInfo> getLikedMemberInfoList(Long postId){
@@ -52,8 +55,8 @@ public class PostReadService {
         return postReadRepository.getLikeCount(postId);
     }
 
-    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes){
-        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, country, themes);
+    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String continent, List<Theme> themes){
+        List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, continent, themes);
         return postList.stream()
                 .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();

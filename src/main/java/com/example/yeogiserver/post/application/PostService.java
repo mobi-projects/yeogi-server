@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -58,8 +59,13 @@ public class PostService {
         return post.getId();
     }
 
-    public void updatePost(Long id, PostUpdateRequest postUpdateRequest) {
+    public void updatePost(Long id, PostUpdateRequest postUpdateRequest, Long memberId) {
         Post post = getPost(id);
+
+        if (!Objects.equals(post.getAuthor().getId(), memberId)) {
+            throw new IllegalArgumentException("Not my Post");
+        }
+
         post.updateFields(postUpdateRequest.continent(), postUpdateRequest.tripStartDate(), postUpdateRequest.tripEndDate(), postUpdateRequest.title(), postUpdateRequest.title(), postUpdateRequest.address());
         updateMemoList(postUpdateRequest.memos(), post);
         updateProjectTheme(postUpdateRequest.themeList(), post);

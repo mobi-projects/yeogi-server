@@ -60,8 +60,8 @@ public class DefaultPostReadRepository implements PostReadRepository {
     }
 
     @Override
-    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes){
-        return queryDslPostRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, country, themes);
+    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String continent, List<Theme> themes){
+        return queryDslPostRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, continent, themes);
     }
 
     @Override
