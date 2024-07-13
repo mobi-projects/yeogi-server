@@ -7,7 +7,6 @@ import com.example.yeogiserver.comment.domain.LikeRepository;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,5 +39,9 @@ public class LikeService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found comment id : " + commentId));
         likeRepository.delete(Like.of(member,comment));
+    }
+
+    public boolean hasLiked(Long memberId, Long commentId) {
+        return likeRepository.existsByMemberIdAndCommentId(memberId, commentId);
     }
 }

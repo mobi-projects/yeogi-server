@@ -24,9 +24,10 @@ public record PostResponseDto(
         String continent,
         String region,
         String address,
-        List<Theme> themeList
+        List<Theme> themeList,
+        boolean hasLiked
         ) {
-    public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos) {
+    public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos, boolean hasLiked) {
         return new PostResponseDto(
                 post.getId(),
                 post.getAuthor().getNickname(),
@@ -43,7 +44,8 @@ public record PostResponseDto(
                 post.getContinent(),
                 post.getCountry(),
                 post.getAddress(),
-                post.getPostThemeList().stream().map(PostTheme::getTheme).toList()
+                post.getPostThemeList().stream().map(PostTheme::getTheme).toList(),
+                hasLiked
         );
     }
 }

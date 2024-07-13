@@ -5,8 +5,6 @@ import com.example.yeogiserver.comment.domain.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Repository
 public class DefautLikeRepository  implements LikeRepository {
@@ -24,6 +22,11 @@ public class DefautLikeRepository  implements LikeRepository {
     @Override
     public Boolean existsByMemberEmailAndCommentId(String email, Long commentId) {
         return jpaLikeRepository.existsByMemberEmailAndCommentId(email,commentId);
+    }
+
+    @Override
+    public boolean existsByMemberIdAndCommentId(Long memberId, Long commentId) {
+        return jpaLikeRepository.existsByMemberIdAndCommentId(memberId,commentId);
     }
 
     @Override

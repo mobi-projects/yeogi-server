@@ -28,19 +28,19 @@ public class QueryDslPostRepository {
         return post.postThemeList.any().theme.in(themes);
     }
 
-    public BooleanExpression filterByCountry(String country){
-        if (Objects.isNull(country) || country.isEmpty()){
+    public BooleanExpression filterByCountry(String continent){
+        if (Objects.isNull(continent) || continent.isEmpty()){
             return null;
         }
 
-        return post.country.eq(country);
+        return post.continent.like(continent);
     }
 
     // TODO : LIKE, COMMENT 의 카운트를 한방 쿼리로 변경한다.
-    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes){
+    public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String continent, List<Theme> themes){
         return jpaQueryFactory.selectFrom(post)
                 .leftJoin(post.author)
-                .where(postSearchType.getBooleanExpression(searchString, post), this.filterByCountry(country), this.filterByTheme(themes))
+                .where(postSearchType.getBooleanExpression(searchString, post), this.filterByCountry(continent), this.filterByTheme(themes))
                 .orderBy(postSortCondition.getSpecifier(post))
                 .fetch();
     }
