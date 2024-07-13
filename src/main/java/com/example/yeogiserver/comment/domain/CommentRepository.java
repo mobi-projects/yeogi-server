@@ -1,6 +1,5 @@
 package com.example.yeogiserver.comment.domain;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -18,4 +17,5 @@ public interface CommentRepository {
 
 
     Long countByPostId(Long postId);
+    void delete(Comment comment);
 }

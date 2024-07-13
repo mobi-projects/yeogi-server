@@ -7,10 +7,15 @@ import com.example.yeogiserver.comment.application.dto.CommentResponseDto;
 import com.example.yeogiserver.comment.application.dto.CommentSaveResponse;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,23 +27,27 @@ public class CommentController {
 
 
     @GetMapping("/comments/{postId}")
-    public List<CommentResponseDto> getComments(Pageable pageable, @PathVariable Long postId) {
-        return commentService.getComments(postId,pageable);
+    public List<CommentResponseDto> getComments(Pageable pageable, @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long postId) {
+        return commentService.getComments(postId, customUserDetails.getId(), pageable);
     }
+
     @PostMapping("/comment")
     public CommentSaveResponse addComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return commentService.addComment(commentRequestDto,userDetails);
+        return commentService.addComment(commentRequestDto, userDetails);
     }
+
     @PostMapping("/reply/{commentId}")
-    public CommentSaveResponse addReply(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return commentService.addReply(commentRequestDto,userDetails,commentId);
+    public CommentSaveResponse addReply(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return commentService.addReply(commentRequestDto, userDetails, commentId);
     }
+
     @PutMapping("/comment/{commentId}")
-    public CommentSaveResponse updateComment(@PathVariable Long commentId,@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public CommentSaveResponse updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
         return commentService.updateComment(commentId, commentRequestDto);
     }
+
     @DeleteMapping("/comment/{commentId}")
-    public void deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public void deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         commentService.deleteComment(commentId);
     }
 

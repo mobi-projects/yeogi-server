@@ -3,7 +3,6 @@ package com.example.yeogiserver.comment.repository;
 import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.comment.domain.CommentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +22,11 @@ public class DefaultCommentRepository implements CommentRepository {
     @Override
     public List<Comment> findByPostId(Long postId, Pageable pageable) {
         return jpaCommentRepository.findByPostId(postId,pageable);
+    }
+
+    @Override
+    public void delete(Comment comment) {
+        jpaCommentRepository.delete(comment);
     }
 
     @Override
