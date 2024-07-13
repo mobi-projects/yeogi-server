@@ -39,8 +39,11 @@ public class PostReadService {
         Post post = getPost(postId);
         Long likeCount = getLikeCount(postId);
         List<LikedMembersInfo> likedMemberInfoList = getLikedMemberInfoList(postId);
-        boolean hasLiked = jpaPostLikeRepository.existsByPostIdAndMemberId(postId, memberId);
 
+        boolean hasLiked = false;
+        if (memberId != null){
+            hasLiked = jpaPostLikeRepository.existsByPostIdAndMemberId(postId, memberId);
+        }
         return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList, hasLiked);
     }
 
