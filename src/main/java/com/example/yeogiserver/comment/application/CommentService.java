@@ -31,8 +31,17 @@ public class CommentService {
         List<Comment> commnetEntityList = commentRepository.findByPostId(postId, pageable);
         return commnetEntityList
                 .stream()
-                .map(each -> CommentResponseDto.of(each, likeService.hasLiked(memberId, each.getId())))
+                .map(each -> getCommentResponseDto(memberId, each))
                 .toList();
+    }
+
+    private CommentResponseDto getCommentResponseDto(Long memberId, Comment each) {
+        boolean hasLiked = false;
+
+        if (memberId != null){
+            hasLiked = likeService.hasLiked(memberId, each.getId());
+        }
+        return CommentResponseDto.of(each, hasLiked);
     }
 
     public CommentSaveResponse addComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {
