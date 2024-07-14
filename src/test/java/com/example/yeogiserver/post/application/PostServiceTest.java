@@ -54,7 +54,7 @@ class PostServiceTest {
 
         // when
         when(memberQueryService.findById(anyLong())).thenReturn(member);
-        PostRequestDto postRequestDto = new PostRequestDto("test", "test", LocalDateTime.now(), LocalDateTime.now(),  "test", "test", List.of(Theme.ACTIVITY), memoStrings, "address");
+        PostRequestDto postRequestDto = new PostRequestDto(LocalDateTime.now(), LocalDateTime.now(), "test", "test", "test", "test", List.of(Theme.ACTIVITY), memoStrings, "address");
         postService.createPost("test", postRequestDto);
         em.clear();
 
