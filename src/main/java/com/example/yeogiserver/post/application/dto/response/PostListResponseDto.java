@@ -18,7 +18,7 @@ public record PostListResponseDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String continent,
-        String region,
+        String country,
         String address,
         List<Theme> themeList
         // thumbnail

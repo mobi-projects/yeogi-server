@@ -8,17 +8,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record PostRequestDto(
-        String continent,
-        String region,
         LocalDateTime tripStartDate,
         LocalDateTime tripEndDate,
         String title,
         String content,
+        String continent,
+        String country,
         List<Theme> themeList,
         List<MemoRequestDto> memos,
         String address
 ) {
     public Post toEntity(Member member) {
-        return new Post(continent, tripStartDate, tripEndDate, title, content, member, region, address);
+        return new Post(continent, tripStartDate, tripEndDate, title, content, member, country, address);
     }
 }

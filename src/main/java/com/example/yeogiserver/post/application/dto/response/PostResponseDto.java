@@ -22,7 +22,7 @@ public record PostResponseDto(
         LocalDateTime tripStartDate,
         LocalDateTime tripEndDate,
         String continent,
-        String region,
+        String country,
         String address,
         List<Theme> themeList,
         boolean hasLiked
