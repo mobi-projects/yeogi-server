@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record PostUpdateRequest(
-        String continent,
-        String region,
         LocalDateTime tripStartDate,
         LocalDateTime tripEndDate,
         String title,
         String content,
+        String continent,
+        String country,
         List<Theme> themeList,
         List<MemoUpdateRequestDto> memos,
         String address

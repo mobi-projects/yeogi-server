@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -75,8 +74,9 @@ public class Post extends TimeStamp {
         this.address = address;
     }
 
-    public void updateFields(String region, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, String address) {
-        this.continent = region;
+    public void updateFields(String continent, String country, LocalDateTime tripStarDate, LocalDateTime tripEndDate, String title, String content, String address) {
+        this.continent = continent;
+        this.country = country;
         this.tripStarDate = tripStarDate;
         this.tripEndDate = tripEndDate;
         this.title = title;
