@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +29,13 @@ public class CommentController {
 
     @GetMapping("/comments/{postId}")
     public List<CommentResponseDto> getComments(Pageable pageable, @AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long postId) {
-        return commentService.getComments(postId, customUserDetails.getId(), pageable);
+        Long memberId = null;
+
+        if (!Objects.isNull(customUserDetails)){
+            memberId = customUserDetails.getId();
+        }
+
+        return commentService.getComments(postId, memberId, pageable);
     }
 
     @PostMapping("/comment")

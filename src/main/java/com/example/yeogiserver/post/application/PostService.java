@@ -66,7 +66,7 @@ public class PostService {
             throw new IllegalArgumentException("Not my Post");
         }
 
-        post.updateFields(postUpdateRequest.continent(), postUpdateRequest.tripStartDate(), postUpdateRequest.tripEndDate(), postUpdateRequest.title(), postUpdateRequest.title(), postUpdateRequest.address());
+        post.updateFields(postUpdateRequest.continent(), postUpdateRequest.tripStartDate(), postUpdateRequest.tripEndDate(), postUpdateRequest.title(), postUpdateRequest.content(), postUpdateRequest.address());
         updateMemoList(postUpdateRequest.memos(), post);
         updateProjectTheme(postUpdateRequest.themeList(), post);
     }
