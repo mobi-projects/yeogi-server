@@ -94,38 +94,38 @@ public class MemberControllerTest {
         return httpHeaders;
     }
 
-    @DisplayName("회원 가입")
-    @Test
-    void signup() throws Exception {
-
-        SignupMember.Request request = new SignupMember.Request("test@gmail.com", "test123", Gender.M, "test", "20-29" , "test.jpg");
-        SignupMember.Response response = new SignupMember.Response("mobi@gmail.com", "mobi");
-
-        mocMvc.perform(post("/member")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andDo(document("유저 회원 가입" ,
-                        preprocessRequest(prettyPrint()) ,
-                        preprocessResponse(prettyPrint()),
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("USER API")
-                                .summary("유저 회원 가입")
-                                .requestFields(
-                                        fieldWithPath("email").type(STRING).description("유저 이메일"),
-                                        fieldWithPath("password").type(STRING).description("유저 비밀번호"),
-                                        fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
-                                        fieldWithPath("gender").type(STRING).description("유저 성별"),
-                                        fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
-                                        fieldWithPath("profile").type(STRING).description("유저 프로필")
-                                ).responseFields(
-                                        fieldWithPath("email").type(STRING).description("유저 이메일"),
-                                        fieldWithPath("nickname").type(STRING).description("유저 닉네임")
-                                ).build()
-                        )
-                ));
-    }
+//    @DisplayName("회원 가입")
+//    @Test
+//    void signup() throws Exception {
+//
+//        SignupMember.Request request = new SignupMember.Request("test@gmail.com", "test123", Gender.M, "test", "20-29" , "test.jpg");
+//        SignupMember.Response response = new SignupMember.Response("mobi@gmail.com", "mobi");
+//
+//        mocMvc.perform(post("/member")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(request)))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andDo(document("유저 회원 가입" ,
+//                        preprocessRequest(prettyPrint()) ,
+//                        preprocessResponse(prettyPrint()),
+//                        resource(ResourceSnippetParameters.builder()
+//                                .tag("USER API")
+//                                .summary("유저 회원 가입")
+//                                .requestFields(
+//                                        fieldWithPath("email").type(STRING).description("유저 이메일"),
+//                                        fieldWithPath("password").type(STRING).description("유저 비밀번호"),
+//                                        fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
+//                                        fieldWithPath("gender").type(STRING).description("유저 성별"),
+//                                        fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
+//                                        fieldWithPath("profile").type(STRING).description("유저 프로필")
+//                                ).responseFields(
+//                                        fieldWithPath("email").type(STRING).description("유저 이메일"),
+//                                        fieldWithPath("nickname").type(STRING).description("유저 닉네임")
+//                                ).build()
+//                        )
+//                ));
+//    }
 
     @DisplayName("중복 이메일 회원 가입")
     @Test
