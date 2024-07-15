@@ -1,17 +1,15 @@
 package com.example.yeogiserver.member.application;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.MemberDto;
+import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
+import com.example.yeogiserver.member.dto.SignupRequestDto;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
-import com.example.yeogiserver.security.domain.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -34,10 +31,18 @@ public class MemberService {
     @Value("${cloud.aws.s3.bucketName}")
     private String bucketName;
 
-    public SignupMember.Response signup(SignupMember.Request member) {
+    public SignupMember.Response simpleSignup(SignupMember.Request member) {
         Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getAgeRange() , member.getProfile() , null , null , member.getGender());
         Member saveMember = memberRepository.save(signmember);
         return new SignupMember.Response(saveMember.getEmail() , saveMember.getNickname());
+    }
+
+    public MemberResponseDto signup(SignupRequestDto signupRequestDto){
+        Member member = memberRepository.findById(signupRequestDto.memberId()).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_REGISTRATION_FAIL)
+        );
+        member.completeSignup(signupRequestDto.nickname(), signupRequestDto.gender(), signupRequestDto.ageRange());
+        return MemberResponseDto.of(member);
     }
 
     public Member update(MemberDto member) {

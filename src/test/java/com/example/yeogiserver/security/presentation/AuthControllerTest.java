@@ -27,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Duration;
-import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
@@ -37,7 +36,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @Import(SecurityConfig.class)
 @SpringBootTest
-public class AuthControllerTest {
+class AuthControllerTest {
 
     @Autowired
     private MockMvc mocMvc;
@@ -68,7 +66,7 @@ public class AuthControllerTest {
     @BeforeEach
     void init() {
         SignupMember.Request request = new SignupMember.Request("mobi@gmail.com", "mobi123", Gender.M, "mobi", "20-29" , "mobi.jpg");
-        memberService.signup(request);
+        memberService.simpleSignup(request);
     }
 
     @AfterEach

@@ -73,4 +73,9 @@ public class Member extends TimeStamp {
         this.banner = banner;
     }
 
+    public void completeSignup(String nickname, Gender gender, String ageRange) {
+        this.nickname = nickname;
+        this.gender = gender;
+        this.ageRange = ageRange;
+    }
 }

@@ -7,12 +7,12 @@ import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.application.MemberService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.MemberDto;
+import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
-import com.example.yeogiserver.security.domain.CustomUserDetails;
+import com.example.yeogiserver.member.dto.SignupRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,12 +32,12 @@ public class MemberController {
         if(memberQueryService.existsMemberEmail(member)){
             throw new CustomException(ErrorCode.MEMBER_EMAIL_ALREADY_EXISTS);
         }
-        return memberService.signup(member);
+        return memberService.simpleSignup(member);
     }
 
-    @GetMapping()
-    public MemberDto getMember(@LoginMember Member member) {
-        return MemberDto.of(member);
+    @PostMapping("/signup")
+    public MemberResponseDto signup(@RequestBody SignupRequestDto signupRequestDto){
+        return memberService.signup(signupRequestDto);
     }
 
     @PutMapping()

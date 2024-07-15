@@ -8,6 +8,7 @@ import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import com.example.yeogiserver.security.domain.OAuth2UserInfo;
+import com.example.yeogiserver.security.domain.SignupResponseDto;
 import com.example.yeogiserver.security.domain.Token;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -100,7 +102,7 @@ public class AuthService {
         }
     }
 
-    public Token generateToken(String registrationId, String code , String redirectUri , String state) {
+    public SignupResponseDto generateToken(String registrationId, String code , String redirectUri , String state) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -144,7 +146,7 @@ public class AuthService {
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
         redisService.setValue(member.getEmail() , token.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));
 
-        return token;
+        return new SignupResponseDto(member.getId(), member.getEmail(), token);
     }
 
     private LinkedHashMap<String, Object> generateProperty(String registrationId , String accessToken) {
@@ -202,8 +204,12 @@ public class AuthService {
     }
 
     private Member saveOrUpdate(OAuth2UserInfo oAuth2UserInfo) {
-        Member member = memberRepository.findByEmail(oAuth2UserInfo.getEmail())
-                .orElse(oAuth2UserInfo.toEntity());
+        Optional<Member> memberOptional = memberRepository.findByEmail(oAuth2UserInfo.getEmail());
+        if (memberOptional.isPresent()) {
+            return memberOptional.get();
+        }
+
+        Member member = oAuth2UserInfo.toEntity();
         return memberRepository.save(member);
     }
 }

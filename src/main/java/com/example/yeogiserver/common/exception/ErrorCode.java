@@ -13,6 +13,7 @@ public enum ErrorCode {
     MEMBER_IS_LOGOUT(302 , "로그아웃한 회원 입니다."),
     MEMBER_ROLE_DOES_NOT_EXISTS(303 , "회원 권한이 존재하지 않습니다."),
     MEMBER_ROLE_INVALID(303 , "회원 권한이 유효하지 않습니다."),
+    MEMBER_REGISTRATION_FAIL(400, "회원 정보가 유효하지 않습니다."),
 
     //TOKEN
     TOKEN_EXPIRED(400 , "토큰이 만료되었습니다."),
