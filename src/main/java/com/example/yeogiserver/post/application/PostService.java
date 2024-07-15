@@ -72,25 +72,25 @@ public class PostService {
     }
 
     private void updateMemoList(List<MemoUpdateRequestDto> memoUpdateRequestDtoList, Post post) {
-        List<Long> idList = memoUpdateRequestDtoList.stream().map(MemoUpdateRequestDto::id).toList();
+        List<Long> idList = memoUpdateRequestDtoList.stream().map(MemoUpdateRequestDto::memoId).toList();
         List<Memo> memoList = post.getMemoList();
 
         // 딜리트
         memoList.stream().filter(each -> !idList.contains(each.getId())).forEach(post::removeMemo);
 
         // 업데이트
-        memoUpdateRequestDtoList.stream().filter(each -> each.id() != null && each.id() != 0).forEach(
+        memoUpdateRequestDtoList.stream().filter(each -> each.memoId() != null && each.memoId() != 0).forEach(
                 each -> {
-                    Optional<Memo> optionalMemo = memoList.stream().filter(memo -> memo.getId().equals(each.id())).findFirst();
-                    optionalMemo.ifPresent(memo -> memo.update(each.memo(), each.address()));
+                    Optional<Memo> optionalMemo = memoList.stream().filter(memo -> memo.getId().equals(each.memoId())).findFirst();
+                    optionalMemo.ifPresent(memo -> memo.update(each.content(), each.address()));
                 }
         );
 
         // 생성
         memoUpdateRequestDtoList
                 .stream()
-                .filter(each -> each.id() == null || each.id() == 0)
-                .map(each -> new Memo(each.memo(), each.address()))
+                .filter(each -> each.memoId() == null || each.memoId() == 0)
+                .map(each -> new Memo(each.content(), each.address()))
                 .toList()
                 .forEach(post::addMemo);
     }
