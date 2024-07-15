@@ -34,7 +34,7 @@ public class MemberService {
     public SignupMember.Response simpleSignup(SignupMember.Request member) {
         Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getAgeRange() , member.getProfile() , null , null , member.getGender());
         Member saveMember = memberRepository.save(signmember);
-        return new SignupMember.Response(saveMember.getEmail() , saveMember.getNickname());
+        return new SignupMember.Response(saveMember.getId(), saveMember.getEmail() , saveMember.getNickname());
     }
 
     public MemberResponseDto signup(SignupRequestDto signupRequestDto){

@@ -26,6 +26,7 @@ public class SignupMember {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Response{
+        private Long memberId;
         private String email;
         private String nickname;
     }

@@ -104,6 +104,8 @@ public class AuthService {
 
     public SignupResponseDto generateToken(String registrationId, String code , String redirectUri , String state) {
 
+        log.info("요청 시작");
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
