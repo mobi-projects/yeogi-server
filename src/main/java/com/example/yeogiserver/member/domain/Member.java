@@ -11,6 +11,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @ToString
+@Table(indexes = {
+        @Index(name = "member_email_index", columnList = "email"),
+        @Index(name = "nickname_index", columnList = "nickname")
+})
 public class Member extends TimeStamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
