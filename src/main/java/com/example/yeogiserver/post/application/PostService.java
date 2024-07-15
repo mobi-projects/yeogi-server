@@ -1,5 +1,6 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.event.recommand.RecommandEvent;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.post.application.dto.request.MemoRequestDto;
@@ -13,6 +14,7 @@ import com.example.yeogiserver.post.domain.PostRepository;
 import com.example.yeogiserver.post.domain.PostTheme;
 import com.example.yeogiserver.post.domain.Theme;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final MemberQueryService memberQueryService;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private Post getPost(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
@@ -55,6 +59,7 @@ public class PostService {
         }
 
         postRepository.savePost(post);
+        applicationEventPublisher.publishEvent(new RecommandEvent(this,post.getId(),author.getId()));
 
         return post.getId();
     }
@@ -113,6 +118,7 @@ public class PostService {
         Post post = getPost(postId);
         PostLike postLike = new PostLike(memberId);
         post.addPostLike(postLike);
+        applicationEventPublisher.publishEvent(new RecommandEvent(this,post.getId(),memberId));
     }
 
     public void dislikePost(Long memberId, Long postId){

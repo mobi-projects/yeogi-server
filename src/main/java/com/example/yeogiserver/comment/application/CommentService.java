@@ -5,12 +5,14 @@ import com.example.yeogiserver.comment.application.dto.CommentResponseDto;
 import com.example.yeogiserver.comment.application.dto.CommentSaveResponse;
 import com.example.yeogiserver.comment.domain.Comment;
 import com.example.yeogiserver.comment.domain.CommentRepository;
+import com.example.yeogiserver.event.recommand.RecommandEvent;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostRepository;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ public class CommentService {
     private final LikeService likeService;
     private final PostRepository postRepository;
     private final MemberQueryService memberRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public List<CommentResponseDto> getComments(Long postId, Long memberId, Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class CommentService {
 
         Member member = memberRepository.findMember(userDetails.getEmail());
         Post post = postRepository.findById(commentRequestDto.postId()).orElseThrow(() -> new IllegalArgumentException("Post not found"));
+        applicationEventPublisher.publishEvent(new RecommandEvent(this,post.getId(),member.getId()));
 
         return CommentSaveResponse.of(commentRepository.saveComment(Comment.of(member,commentRequestDto.content(),post)));
     }
