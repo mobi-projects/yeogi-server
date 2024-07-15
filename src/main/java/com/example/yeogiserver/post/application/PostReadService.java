@@ -12,7 +12,10 @@ import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import com.example.yeogiserver.post.repository.JpaPostLikeRepository;
+import com.example.yeogiserver.event.recommand.RecommandEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public class PostReadService {
 
     private final PostReadRepository postReadRepository;
@@ -31,6 +34,7 @@ public class PostReadService {
 
     private final JpaPostLikeRepository jpaPostLikeRepository;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private Post getPost(Long id) {
         return postReadRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("post not found"));
     }
@@ -44,6 +48,7 @@ public class PostReadService {
         if (memberId != null){
             hasLiked = jpaPostLikeRepository.existsByPostIdAndMemberId(postId, memberId);
         }
+        applicationEventPublisher.publishEvent(new RecommandEvent(this,postId,memberId));
         return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList, hasLiked);
     }
 
