@@ -101,4 +101,10 @@ public class MemberService {
     }
 
 
+    public MemberResponseDto getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+        return MemberResponseDto.of(member);
+    }
 }

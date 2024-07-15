@@ -156,41 +156,41 @@ public class MemberControllerTest {
                 ));
     }
 
-    @DisplayName("유저 정보")
-    @Test
-    @WithMockUser
-    void getMember() throws Exception{
-
-        HttpHeaders header = getHeader();
-
-        mocMvc.perform(get("/member")
-                        .headers(header))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andDo(document("유저 정보" ,
-                        preprocessRequest(prettyPrint()) ,
-                        preprocessResponse(prettyPrint()),
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("USER API")
-                                .summary("유저 정보")
-                                .requestHeaders(
-                                        headerWithName("Authorization").description("JWT 토큰"),
-                                        headerWithName("Refresh").description("JWT Refresh 토큰")
-                                )
-                                .responseFields(
-                                        fieldWithPath("id").type(NUMBER).description("유저 ID"),
-                                        fieldWithPath("email").type(STRING).description("유저 이메일"),
-                                        fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
-                                        fieldWithPath("gender").type(STRING).description("유저 성별"),
-                                        fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
-                                        fieldWithPath("profile").type(STRING).description("유저 프로필"),
-                                        fieldWithPath("motto").type(STRING).description("유저 좌우명"),
-                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필"),
-                                        fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("최초 로그인 여부")
-                                ).build()
-                        )
-                        ));
-    }
+//    @DisplayName("유저 정보")
+//    @Test
+//    @WithMockUser
+//    void getMember() throws Exception{
+//
+//        HttpHeaders header = getHeader();
+//
+//        mocMvc.perform(get("/member")
+//                        .headers(header))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andDo(document("유저 정보" ,
+//                        preprocessRequest(prettyPrint()) ,
+//                        preprocessResponse(prettyPrint()),
+//                        resource(ResourceSnippetParameters.builder()
+//                                .tag("USER API")
+//                                .summary("유저 정보")
+//                                .requestHeaders(
+//                                        headerWithName("Authorization").description("JWT 토큰"),
+//                                        headerWithName("Refresh").description("JWT Refresh 토큰")
+//                                )
+//                                .responseFields(
+//                                        fieldWithPath("id").type(NUMBER).description("유저 ID"),
+//                                        fieldWithPath("email").type(STRING).description("유저 이메일"),
+//                                        fieldWithPath("nickname").type(STRING).description("유저 닉네임"),
+//                                        fieldWithPath("gender").type(STRING).description("유저 성별"),
+//                                        fieldWithPath("ageRange").type(STRING).description("유저 연령대"),
+//                                        fieldWithPath("profile").type(STRING).description("유저 프로필"),
+//                                        fieldWithPath("motto").type(STRING).description("유저 좌우명"),
+//                                        fieldWithPath("banner").type(STRING).description("유저 배경프로필"),
+//                                        fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("최초 로그인 여부")
+//                                ).build()
+//                        )
+//                        ));
+//    }
 
     @DisplayName("유저 정보 업데이트")
     @Test

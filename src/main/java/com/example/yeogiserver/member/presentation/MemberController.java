@@ -10,18 +10,21 @@ import com.example.yeogiserver.member.dto.MemberDto;
 import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.member.dto.SignupRequestDto;
+import com.example.yeogiserver.security.domain.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@Tag(name = "회원 관련 컨트롤러")
 public class MemberController {
-
-    // TODO : 필요에 따라 컨트롤러도 분리한다.
 
     private final MemberService memberService;
 
@@ -36,8 +39,19 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
+    @Operation(description = "회원 간편가입 후, 일반 가입 API")
     public MemberResponseDto signup(@RequestBody SignupRequestDto signupRequestDto){
         return memberService.signup(signupRequestDto);
+    }
+
+    @GetMapping()
+    @Operation(description = "회원 정보 GET API, 토큰이 있을 시 내 정보를 가져오고, 아닐 시 memberId 에 해당하는 유저를 가져온다.")
+    public MemberResponseDto getMember(@RequestParam Long memberId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        if (customUserDetails != null){
+            memberId = customUserDetails.getId();
+        }
+
+        return memberService.getMember(memberId);
     }
 
     @PutMapping()
