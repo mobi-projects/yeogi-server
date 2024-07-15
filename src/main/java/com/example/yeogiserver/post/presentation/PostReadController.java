@@ -48,4 +48,9 @@ public class PostReadController {
     public List<PostListResponseDto> getPopularPostListByTheme(@RequestParam List<Theme> themeList){
         return postReadService.getPopularPostListByTheme(themeList);
     }
+
+    @GetMapping("/posts/mine")
+    public List<PostListResponseDto> getMinePostListByTheme(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return postReadService.getMyPostList(customUserDetails.getId());
+    }
 }

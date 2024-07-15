@@ -2,6 +2,7 @@ package com.example.yeogiserver.post.repository;
 
 import com.example.yeogiserver.member.domain.Gender;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.post.application.dto.response.PostListResponseDto;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostLike;
 import com.example.yeogiserver.post.domain.PostReadRepository;
@@ -74,6 +75,11 @@ public class DefaultPostReadRepository implements PostReadRepository {
         }
 
         return resultList;
+    }
+
+    @Override
+    public List<Post> getMyPostList(Long memberId) {
+        return jpaPostRepository.findAllByAuthorId(memberId);
     }
 
     private void addPostToResultListIfNotExists(List<Post> list, List<Post> resultList, Post dummy) {

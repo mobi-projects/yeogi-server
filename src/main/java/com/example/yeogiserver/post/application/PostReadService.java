@@ -71,4 +71,11 @@ public class PostReadService {
                 .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();
     }
+
+    public List<PostListResponseDto> getMyPostList(Long memberId) {
+        List<Post> myPostList = postReadRepository.getMyPostList(memberId);
+        return myPostList.stream()
+                .map(each ->  PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
+                .toList();
+    }
 }
