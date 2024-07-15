@@ -46,12 +46,14 @@ public class MemberController {
 
     @GetMapping()
     @Operation(description = "회원 정보 GET API, 토큰이 있을 시 내 정보를 가져오고, 아닐 시 memberId 에 해당하는 유저를 가져온다.")
-    public MemberResponseDto getMember(@RequestParam Long memberId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public MemberResponseDto getMember(@RequestParam(required = false) String email, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        Long memberId = null;
+
         if (customUserDetails != null){
             memberId = customUserDetails.getId();
         }
 
-        return memberService.getMember(memberId);
+        return memberService.getMember(email, memberId);
     }
 
     @PutMapping()

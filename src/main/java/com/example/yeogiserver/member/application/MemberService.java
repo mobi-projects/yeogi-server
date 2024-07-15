@@ -101,10 +101,13 @@ public class MemberService {
     }
 
 
-    public MemberResponseDto getMember(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
-        );
+    public MemberResponseDto getMember(String email, Long memberId) {
+        if (memberId == null){
+            Member member = memberRepository.findByEmail(email).orElseThrow();
+            return MemberResponseDto.of(member);
+        }
+
+        Member member= memberRepository.findById(memberId).orElseThrow();
         return MemberResponseDto.of(member);
     }
 }

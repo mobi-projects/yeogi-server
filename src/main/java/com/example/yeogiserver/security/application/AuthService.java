@@ -137,7 +137,11 @@ public class AuthService {
 
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(registrationId, property);
 
+        log.info("oauth2UserInfo : {}", oAuth2UserInfo);
+
         Member member = saveOrUpdate(oAuth2UserInfo);
+
+        log.info("member : {}", member);
 
         CustomUserDetails customUserDetails = CustomUserDetails.of(member);
 

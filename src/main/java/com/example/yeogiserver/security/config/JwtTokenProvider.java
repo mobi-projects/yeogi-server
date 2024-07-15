@@ -69,6 +69,9 @@ public class JwtTokenProvider {
     }
 
     public Token generateToken(String email, Role role) {
+        log.info("Generate token for email: {}", email);
+        log.info("Role: {}", role);
+
         Date accessTokenExpiresIn = new Date(new Date().getTime() + accessTokenExpirationMillis);
         Date refreshTokenExpiresIn = new Date(new Date().getTime() + refreshTokenExpirationMillis);
         Map<String , Object> claims = new HashMap<>();
