@@ -100,14 +100,17 @@ public class MemberService {
         }
     }
 
-
     public MemberResponseDto getMember(String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow();
+        Member member = memberRepository.findByEmail(email).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
         return MemberResponseDto.of(member);
     }
 
     public MemberResponseDto getMyInfo(Long memberId) {
-        Member member= memberRepository.findById(memberId).orElseThrow();
+        Member member= memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
         return MemberResponseDto.of(member);
     }
 }

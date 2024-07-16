@@ -45,8 +45,8 @@ public class MemberController {
     }
 
     @GetMapping()
-    @Operation(description = "회원 정보 GET API, memberId 에 해당하는 유저를 가져온다.")
-    public MemberResponseDto getMember(@RequestParam(required = false) String email){
+    @Operation(description = "회원 정보 GET API, email 에 해당하는 유저를 가져온다.")
+    public MemberResponseDto getMember(@RequestParam String email){
         return memberService.getMember(email);
     }
 
