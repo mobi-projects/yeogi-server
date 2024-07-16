@@ -11,6 +11,7 @@ import com.example.yeogiserver.member.dto.MemberDto;
 import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.member.dto.SignupRequestDto;
+import com.example.yeogiserver.member.dto.TestRequestDto;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,6 +58,11 @@ public class MemberController {
     @Operation(description = "회원 정보 GET API, 토큰 정보에 해당하는 유저를 가져온다.")
     public MemberResponseDto getMyInfo(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         return memberService.getMyInfo(customUserDetails.getId());
+    }
+
+    @PutMapping("/isFirst/test")
+    public void updateIsFirst(@RequestBody TestRequestDto testRequestDto){
+        memberService.updateIsFirst(testRequestDto);
     }
 
     @PutMapping()

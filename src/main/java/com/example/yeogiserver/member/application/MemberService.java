@@ -6,8 +6,16 @@ import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
+<<<<<<< HEAD
 import com.example.yeogiserver.member.dto.*;
 import com.example.yeogiserver.member.repository.DefaultKeywordRepository;
+=======
+import com.example.yeogiserver.member.dto.MemberDto;
+import com.example.yeogiserver.member.dto.MemberResponseDto;
+import com.example.yeogiserver.member.dto.SignupMember;
+import com.example.yeogiserver.member.dto.SignupRequestDto;
+import com.example.yeogiserver.member.dto.TestRequestDto;
+>>>>>>> develop
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -116,11 +124,11 @@ public class MemberService {
     }
 
     public MemberResponseDto updateKeyword(Long memberId , List<Keyword> keywordList) {
-        if(keywordRepository.existsByMember(memberId)) {
+        if (keywordRepository.existsByMember(memberId)) {
             keywordRepository.deleteByMember(memberId);
         }
 
-        Member member= memberRepository.findById(memberId).orElseThrow(
+        Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
         );
 
@@ -132,5 +140,13 @@ public class MemberService {
         member.setKeywordList(keywordList);
 
         return MemberResponseDto.of(member);
+    }
+
+    public void updateIsFirst(TestRequestDto testRequestDto) {
+        Member member= memberRepository.findById(testRequestDto.memberId()).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+
+        member.setIsFirstForTest(testRequestDto.isFirst());
     }
 }
