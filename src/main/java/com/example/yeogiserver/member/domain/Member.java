@@ -40,6 +40,7 @@ public class Member extends TimeStamp {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     private boolean isFirst;
 
     public static Member of (String email , String password , String nickName , String ageRange , String profile , String motto , String banner , Gender gender) {
@@ -81,5 +82,6 @@ public class Member extends TimeStamp {
         this.nickname = nickname;
         this.gender = gender;
         this.ageRange = ageRange;
+        this.isFirst = false;
     }
 }
