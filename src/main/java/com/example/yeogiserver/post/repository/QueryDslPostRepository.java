@@ -4,6 +4,7 @@ import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.Theme;
 import com.example.yeogiserver.post.presentation.search_condition.PostSearchType;
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,13 @@ public class QueryDslPostRepository {
 
         return post.continent.like(continent);
     }
+    public BooleanExpression filterByCountryList(List<String> countryList ) {
+        if (Objects.isNull(countryList) || countryList.isEmpty()){
+            return null;
+        }
+
+        return post.country.in(countryList);
+    }
 
     // TODO : LIKE, COMMENT 의 카운트를 한방 쿼리로 변경한다.
     public List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String continent, List<Theme> themes){
@@ -60,5 +68,19 @@ public class QueryDslPostRepository {
                 .offset(0)
                 .limit(10)
                 .fetch();
+    }
+    public List<Post> findByRecommandThemeOrCountry(List<Theme> themeList,List<String> countryList ) {
+
+        BooleanBuilder booleanBuilder  = new BooleanBuilder();
+
+        booleanBuilder.or(this.filterByTheme(themeList));
+        booleanBuilder.or(this.filterByCountryList(countryList));
+
+        return jpaQueryFactory.selectFrom(post)
+                .where(booleanBuilder)
+                .offset(0)
+                .limit(12)
+                .fetch();
+
     }
 }

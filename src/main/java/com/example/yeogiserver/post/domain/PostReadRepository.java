@@ -16,4 +16,6 @@ public interface PostReadRepository {
     List<Post> findPostListBySearchTypeAndSortCondition(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String country, List<Theme> themes);
 
     List<Post> findPopularPostListByTheme(List<Theme> themeList);
+
+    List<Post> findByRecommandThemeOrCountry(List<Theme> themeList, List<String> countryList);
 }

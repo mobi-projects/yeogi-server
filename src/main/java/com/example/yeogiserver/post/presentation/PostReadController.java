@@ -48,4 +48,13 @@ public class PostReadController {
     public List<PostListResponseDto> getPopularPostListByTheme(@RequestParam List<Theme> themeList){
         return postReadService.getPopularPostListByTheme(themeList);
     }
+
+    @GetMapping("/posts/recommand")
+    public List<PostListResponseDto> getRecommandPostListByTheme( @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        Long memberId = null;
+        if (!Objects.isNull(customUserDetails)){
+            memberId = customUserDetails.getId();
+        }
+        return postReadService.getRecommandPost(memberId);
+    }
 }

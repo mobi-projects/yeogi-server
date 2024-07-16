@@ -76,6 +76,11 @@ public class DefaultPostReadRepository implements PostReadRepository {
         return resultList;
     }
 
+    @Override
+    public List<Post> findByRecommandThemeOrCountry(List<Theme> themeList, List<String> countryList) {
+        return queryDslPostRepository.findByRecommandThemeOrCountry(themeList,countryList);
+    }
+
     private void addPostToResultListIfNotExists(List<Post> list, List<Post> resultList, Post dummy) {
         if (list.isEmpty()){
             resultList.add(dummy); // 더미 포스트 추가

@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
 @Component
@@ -14,10 +16,19 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class RecommandEventListener {
 
     private final RecommandService recommandService;
+    private final TransactionTemplate transactionTemplate;
 
     @EventListener
+    @Transactional
     @Async
     public void handleRecommandEvent(RecommandEvent recommandEvent) {
         recommandService.saveRecommand(recommandEvent);
+
+//        transactionTemplate.executeWithoutResult(status -> {
+//            try {
+//            } catch (Exception e) {
+////                status.setRollbackOnly();
+//            }
+//        });
     }
 }

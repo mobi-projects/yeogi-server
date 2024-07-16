@@ -1,6 +1,8 @@
 package com.example.yeogiserver.post.application;
 
 import com.example.yeogiserver.comment.application.CommentService;
+import com.example.yeogiserver.event.recommand.domain.Recommand;
+import com.example.yeogiserver.event.recommand.domain.RecommandRepository;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.LikedMembersInfo;
@@ -19,11 +21,14 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class PostReadService {
 
     private final PostReadRepository postReadRepository;
@@ -33,6 +38,8 @@ public class PostReadService {
     private final CommentService commentService;
 
     private final JpaPostLikeRepository jpaPostLikeRepository;
+
+    private final RecommandRepository recommandRepository;
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private Post getPost(Long id) {
@@ -75,5 +82,40 @@ public class PostReadService {
         return popularPostList.stream()
                 .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();
+    }
+
+
+
+
+    public List<PostListResponseDto> getRecommandPost(Long memberId) {
+        Recommand recommand = recommandRepository.findByMemberId(memberId).orElseThrow(
+                () -> new IllegalArgumentException("Member has not recommend this post")
+        );
+
+        List<String> topThemes = recommand.getTheme().entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(2)
+                .map(Map.Entry::getKey)
+                .toList();
+
+        List<String> topCountry = recommand.getCountry().entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(2)
+                .map(Map.Entry::getKey)
+                .toList();
+
+        List<Theme> themeList = new ArrayList<>();
+
+        topThemes.forEach(themeStr -> {
+            Theme themeEnum = Theme.valueOf(themeStr.toUpperCase());
+            themeList.add(themeEnum);
+        });
+
+
+        List<Post> popularPostList = postReadRepository.findByRecommandThemeOrCountry(themeList,topCountry);
+        return popularPostList.stream()
+                .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
+                .toList();
+
     }
 }

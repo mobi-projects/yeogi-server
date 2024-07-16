@@ -6,7 +6,8 @@ import com.example.yeogiserver.event.recommand.domain.RecommandRepository;
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.PostReadRepository;
 import com.example.yeogiserver.post.domain.PostTheme;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,6 @@ public class RecommandService {
 
     private final RecommandRepository recommandRepository;
     private final PostReadRepository postReadRepository;
-
-    @Transactional
     public void saveRecommand(RecommandEvent recommandEvent) {
         Optional<Recommand> recommandOptional = recommandRepository.findByMemberId(recommandEvent.getMemberId());
         Post post = postReadRepository.findById(recommandEvent.getPostId())
@@ -41,8 +40,11 @@ public class RecommandService {
             jsonCountry.put(post.getCountry(), jsonCountry.getOrDefault(post.getCountry(),0)+1);
             recommand.setTheme(jsonTheme);
             recommand.setCountry(jsonCountry);
-
-            recommandRepository.save(recommand);
+            try {
+                recommandRepository.save(recommand);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } else {
 
