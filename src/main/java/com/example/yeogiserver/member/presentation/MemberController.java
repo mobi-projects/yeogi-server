@@ -5,6 +5,7 @@ import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.common.resolver.LoginMember;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.application.MemberService;
+import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.MemberDto;
 import com.example.yeogiserver.member.dto.MemberResponseDto;
@@ -19,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,6 +73,11 @@ public class MemberController {
     @PutMapping("banner")
     public String updateBanner(@LoginMember Member member , @RequestPart(name = "image") MultipartFile image){
         return memberService.updateBanner(member , image);
+    }
+
+    @PutMapping("keyword")
+    public MemberResponseDto updateKeyword(@LoginMember Member member , @RequestBody List<Keyword> keywordList) {
+        return memberService.updateKeyword(member.getId() , keywordList);
     }
 
     @PostMapping("checkExists")
