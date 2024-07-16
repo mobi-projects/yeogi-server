@@ -8,6 +8,7 @@ import com.example.yeogiserver.member.domain.Role;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Builder
@@ -64,7 +65,7 @@ public class OAuth2UserInfo {
     }
 
     public Member toEntity() {
-        return new Member(null , email , null , name , ageRange , profile , null , null , gender , Role.USER , true);
+        return new Member(null , email , null , name , ageRange , profile , null , null , gender , Role.USER , true , new ArrayList<>());
     }
 
 }

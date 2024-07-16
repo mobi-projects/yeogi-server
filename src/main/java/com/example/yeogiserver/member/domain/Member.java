@@ -5,6 +5,9 @@ import com.example.yeogiserver.member.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -43,6 +46,9 @@ public class Member extends TimeStamp {
 
     private boolean isFirst;
 
+    @OneToMany(mappedBy = "member")
+    private List<Keyword> keywordList = new ArrayList<>();
+
     public static Member of (String email , String password , String nickName , String ageRange , String profile , String motto , String banner , Gender gender) {
         return Member.builder()
                 .email(email)
@@ -80,6 +86,10 @@ public class Member extends TimeStamp {
 
     public void setBanner(String banner){
         this.banner = banner;
+    }
+
+    public void setKeywordList(List<Keyword> keywordList) {
+        this.keywordList = keywordList;
     }
 
     public void completeSignup(String nickname, Gender gender, String ageRange) {

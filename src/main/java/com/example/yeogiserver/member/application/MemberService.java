@@ -4,7 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
+import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.repository.DefaultKeywordRepository;
 import com.example.yeogiserver.member.dto.MemberDto;
 import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,6 +30,7 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final DefaultMemberRepository memberRepository;
+    private final DefaultKeywordRepository keywordRepository;
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucketName}")
@@ -112,6 +116,25 @@ public class MemberService {
         Member member= memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
         );
+        return MemberResponseDto.of(member);
+    }
+
+    public MemberResponseDto updateKeyword(Long memberId , List<Keyword> keywordList) {
+        if (keywordRepository.existsByMember(memberId)) {
+            keywordRepository.deleteByMember(memberId);
+        }
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+
+        keywordList.forEach(keyword -> {
+            keyword.setMember(member);
+            keywordRepository.save(keyword);
+        });
+
+        member.setKeywordList(keywordList);
+
         return MemberResponseDto.of(member);
     }
 

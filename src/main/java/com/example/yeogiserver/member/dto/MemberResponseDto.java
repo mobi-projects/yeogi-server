@@ -1,16 +1,22 @@
 package com.example.yeogiserver.member.dto;
 
 import com.example.yeogiserver.member.domain.Gender;
+import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
 
-public record MemberResponseDto(Long memberId,
+import java.util.ArrayList;
+import java.util.List;
+
+public record MemberResponseDto(Long id,
                                 String email,
                                 String nickname,
                                 String ageRange,
                                 String profile,
                                 String motto,
                                 String banner,
-                                Gender gender
+                                Gender gender,
+
+                                List<KeywordDto> keywordList
 ) {
     public static MemberResponseDto of(Member member) {
         return new MemberResponseDto(
@@ -21,7 +27,8 @@ public record MemberResponseDto(Long memberId,
                 member.getProfile(),
                 member.getMotto(),
                 member.getBanner(),
-                member.getGender()
+                member.getGender(),
+                member.getKeywordList().stream().map((keyword) -> new KeywordDto(keyword.getTitle())).toList()
         );
     }
 }
