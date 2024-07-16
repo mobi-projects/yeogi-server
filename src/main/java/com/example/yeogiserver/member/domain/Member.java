@@ -66,6 +66,10 @@ public class Member extends TimeStamp {
         this.isFirst = false;
     }
 
+    public void setIsFirstForTest(boolean isFirst) {
+        this.isFirst = isFirst;
+    }
+
     public void setEncodePassword(String password) {
         this.password = password;
     }

@@ -9,6 +9,7 @@ import com.example.yeogiserver.member.dto.MemberDto;
 import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.member.dto.SignupRequestDto;
+import com.example.yeogiserver.member.dto.TestRequestDto;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -112,5 +113,13 @@ public class MemberService {
                 () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
         );
         return MemberResponseDto.of(member);
+    }
+
+    public void updateIsFirst(TestRequestDto testRequestDto) {
+        Member member= memberRepository.findById(testRequestDto.memberId()).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+
+        member.setIsFirstForTest(testRequestDto.isFirst());
     }
 }
