@@ -141,18 +141,22 @@ public class AuthService {
 
         log.info("oauth2UserInfo : {}", oAuth2UserInfo);
 
+        // 회원가입, 로그인 모두 해야하는 시퀀스
         Member member = saveOrUpdate(oAuth2UserInfo);
 
         log.info("member : {}", member);
 
-        CustomUserDetails customUserDetails = CustomUserDetails.of(member);
+        if (member.isFirst()){
+            return new SignupResponseDto(member.getId(), member.getEmail(), true,null);
+        }
 
-        Token token = jwtTokenProvider.generateToken(customUserDetails.getEmail(), customUserDetails.getRole());
+        // 로그인이라면 해야하는 시퀀스
+        Token token = jwtTokenProvider.generateToken(member.getEmail(), member.getRole());
 
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
         redisService.setValue(member.getEmail() , token.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));
 
-        return new SignupResponseDto(member.getId(), member.getEmail(), token);
+        return new SignupResponseDto(member.getId(), member.getEmail(), false, token);
     }
 
     private LinkedHashMap<String, Object> generateProperty(String registrationId , String accessToken) {

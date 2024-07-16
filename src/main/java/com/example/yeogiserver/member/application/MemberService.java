@@ -101,12 +101,12 @@ public class MemberService {
     }
 
 
-    public MemberResponseDto getMember(String email, Long memberId) {
-        if (memberId == null){
-            Member member = memberRepository.findByEmail(email).orElseThrow();
-            return MemberResponseDto.of(member);
-        }
+    public MemberResponseDto getMember(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow();
+        return MemberResponseDto.of(member);
+    }
 
+    public MemberResponseDto getMyInfo(Long memberId) {
         Member member= memberRepository.findById(memberId).orElseThrow();
         return MemberResponseDto.of(member);
     }
