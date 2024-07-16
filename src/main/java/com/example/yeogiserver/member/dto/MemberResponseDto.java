@@ -7,7 +7,7 @@ import com.example.yeogiserver.member.domain.Member;
 import java.util.ArrayList;
 import java.util.List;
 
-public record MemberResponseDto(Long memberId,
+public record MemberResponseDto(Long id,
                                 String email,
                                 String nickname,
                                 String ageRange,
