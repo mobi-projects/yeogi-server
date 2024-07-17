@@ -34,6 +34,7 @@ public class CommentService {
         List<Comment> commnetEntityList = commentRepository.findByPostId(postId, pageable);
         return commnetEntityList
                 .stream()
+                .filter(each -> each.getParent() == null)
                 .map(each -> getCommentResponseDto(memberId, each))
                 .toList();
     }
