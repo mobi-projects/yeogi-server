@@ -78,6 +78,9 @@ public class DefaultPostReadRepository implements PostReadRepository {
     }
 
     @Override
+    public List<Post> findByRecommandThemeOrCountry(List<Theme> themeList, List<String> countryList) {
+        return queryDslPostRepository.findByRecommandThemeOrCountry(themeList,countryList);
+    }
     public List<Post> getMyPostList(Long memberId) {
         return jpaPostRepository.findAllByAuthorId(memberId);
     }

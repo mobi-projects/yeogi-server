@@ -55,6 +55,14 @@ public class PostReadController {
         return postReadService.getPopularPostListByTheme(themeList);
     }
 
+    @GetMapping("/posts/recommand")
+    public List<PostListResponseDto> getRecommandPostListByTheme( @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        Long memberId = null;
+        if (!Objects.isNull(customUserDetails)){
+            memberId = customUserDetails.getId();
+        }
+        return postReadService.getRecommandPost(memberId);
+    }
     @GetMapping("/posts/mine")
     @Operation(description = "사용자의 토큰 정보 바탕으로, 내가 쓴 게시글 목록을 리턴한다.")
     public List<PostListResponseDto> getMinePostListByTheme(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
