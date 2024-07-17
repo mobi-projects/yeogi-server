@@ -41,8 +41,8 @@ public class PostService {
         postRepository.addViewCount(postId);
     }
 
-    public Long createPost(String email, PostRequestDto postRequestDto) {
-        Member author = memberQueryService.findMember(email);
+    public Long createPost(Long memberId, PostRequestDto postRequestDto) {
+        Member author = memberQueryService.findById(memberId);
         Post post = postRequestDto.toEntity(author);
 
         List<MemoRequestDto> memoRequestDtoList = postRequestDto.memos();

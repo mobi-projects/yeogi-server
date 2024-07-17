@@ -31,7 +31,7 @@ public class PostController {
     @PostMapping("/posts")
     @Operation(description = "게시글을 생성한다.")
     public ResponseEntity<Void> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long postId = postService.createPost(userDetails.getEmail(), postRequestDto);
+        Long postId = postService.createPost(userDetails.getId(), postRequestDto);
 
         // 방금 생성된 리소스의 URL 설정
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
