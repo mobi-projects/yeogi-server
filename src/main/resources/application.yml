@@ -16,7 +16,7 @@ spring:
       path: /h2-console  # rootPath:port/h2-console (ex : localhost:8080/h2-console)
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
