@@ -2,6 +2,7 @@ package com.example.yeogiserver.security.presentation;
 
 import com.example.yeogiserver.security.application.AuthService;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
+import com.example.yeogiserver.security.domain.SignupResponseDto;
 import com.example.yeogiserver.security.domain.Token;
 import com.example.yeogiserver.security.dto.Auth;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class AuthController {
     }
 
     @RequestMapping("generateToken/{registrationId}")
-    public Token generateToken(@PathVariable(name = "registrationId") String registrationId , @RequestParam(name = "code") String code , @RequestParam(name = "redirect_uri") String redirectUri , @RequestParam(name="state" , required = false) String state) {
+    public SignupResponseDto generateToken(@PathVariable(name = "registrationId") String registrationId , @RequestParam(name = "code") String code , @RequestParam(name = "redirect_uri") String redirectUri , @RequestParam(name="state" , required = false) String state) {
         return authService.generateToken(registrationId , code , redirectUri , state);
     }
 

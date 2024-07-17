@@ -5,10 +5,16 @@ import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.common.resolver.LoginMember;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.application.MemberService;
+import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.MemberDto;
+import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
+import com.example.yeogiserver.member.dto.SignupRequestDto;
+import com.example.yeogiserver.member.dto.TestRequestDto;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +22,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@Tag(name = "회원 관련 컨트롤러")
 public class MemberController {
-
-    // TODO : 필요에 따라 컨트롤러도 분리한다.
 
     private final MemberService memberService;
 
@@ -32,12 +39,30 @@ public class MemberController {
         if(memberQueryService.existsMemberEmail(member)){
             throw new CustomException(ErrorCode.MEMBER_EMAIL_ALREADY_EXISTS);
         }
-        return memberService.signup(member);
+        return memberService.simpleSignup(member);
+    }
+
+    @PostMapping("/signup")
+    @Operation(description = "회원 간편가입 후, 일반 가입 API")
+    public MemberResponseDto signup(@RequestBody SignupRequestDto signupRequestDto){
+        return memberService.signup(signupRequestDto);
     }
 
     @GetMapping()
-    public MemberDto getMember(@LoginMember Member member) {
-        return MemberDto.of(member);
+    @Operation(description = "회원 정보 GET API, email 에 해당하는 유저를 가져온다.")
+    public MemberResponseDto getMember(@RequestParam String email){
+        return memberService.getMember(email);
+    }
+
+    @GetMapping("/me")
+    @Operation(description = "회원 정보 GET API, 토큰 정보에 해당하는 유저를 가져온다.")
+    public MemberResponseDto getMyInfo(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        return memberService.getMyInfo(customUserDetails.getId());
+    }
+
+    @PutMapping("/isFirst/test")
+    public void updateIsFirst(@RequestBody TestRequestDto testRequestDto){
+        memberService.updateIsFirst(testRequestDto);
     }
 
     @PutMapping()
@@ -54,6 +79,11 @@ public class MemberController {
     @PutMapping("banner")
     public String updateBanner(@LoginMember Member member , @RequestPart(name = "image") MultipartFile image){
         return memberService.updateBanner(member , image);
+    }
+
+    @PutMapping("keyword")
+    public MemberResponseDto updateKeyword(@LoginMember Member member , @RequestBody List<Keyword> keywordList) {
+        return memberService.updateKeyword(member.getId() , keywordList);
     }
 
     @PostMapping("checkExists")

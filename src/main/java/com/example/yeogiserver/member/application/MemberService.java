@@ -1,17 +1,18 @@
 package com.example.yeogiserver.member.application;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
+import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.repository.DefaultKeywordRepository;
 import com.example.yeogiserver.member.dto.MemberDto;
+import com.example.yeogiserver.member.dto.MemberResponseDto;
 import com.example.yeogiserver.member.dto.SignupMember;
+import com.example.yeogiserver.member.dto.SignupRequestDto;
+import com.example.yeogiserver.member.dto.TestRequestDto;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
-import com.example.yeogiserver.security.domain.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,15 +30,24 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final DefaultMemberRepository memberRepository;
+    private final DefaultKeywordRepository keywordRepository;
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucketName}")
     private String bucketName;
 
-    public SignupMember.Response signup(SignupMember.Request member) {
+    public SignupMember.Response simpleSignup(SignupMember.Request member) {
         Member signmember = Member.of(member.getEmail(), passwordEncoder.encode(member.getPassword()), member.getNickname(), member.getAgeRange() , member.getProfile() , null , null , member.getGender());
         Member saveMember = memberRepository.save(signmember);
-        return new SignupMember.Response(saveMember.getEmail() , saveMember.getNickname());
+        return new SignupMember.Response(saveMember.getId(), saveMember.getEmail() , saveMember.getNickname());
+    }
+
+    public MemberResponseDto signup(SignupRequestDto signupRequestDto){
+        Member member = memberRepository.findById(signupRequestDto.memberId()).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_REGISTRATION_FAIL)
+        );
+        member.completeSignup(signupRequestDto.nickname(), signupRequestDto.gender(), signupRequestDto.ageRange());
+        return MemberResponseDto.of(member);
     }
 
     public Member update(MemberDto member) {
@@ -95,5 +105,44 @@ public class MemberService {
         }
     }
 
+    public MemberResponseDto getMember(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+        return MemberResponseDto.of(member);
+    }
 
+    public MemberResponseDto getMyInfo(Long memberId) {
+        Member member= memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+        return MemberResponseDto.of(member);
+    }
+
+    public MemberResponseDto updateKeyword(Long memberId , List<Keyword> keywordList) {
+        if (keywordRepository.existsByMember(memberId)) {
+            keywordRepository.deleteByMember(memberId);
+        }
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+
+        keywordList.forEach(keyword -> {
+            keyword.setMember(member);
+            keywordRepository.save(keyword);
+        });
+
+        member.setKeywordList(keywordList);
+
+        return MemberResponseDto.of(member);
+    }
+
+    public void updateIsFirst(TestRequestDto testRequestDto) {
+        Member member= memberRepository.findById(testRequestDto.memberId()).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+
+        member.setIsFirstForTest(testRequestDto.isFirst());
+    }
 }

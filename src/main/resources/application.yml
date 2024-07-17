@@ -22,6 +22,8 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000 # TODO : remove and fetchJoin || ~
+    open-in-view: false
+
   security:
     oauth2:
       client:

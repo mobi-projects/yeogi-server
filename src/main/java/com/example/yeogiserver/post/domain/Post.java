@@ -9,9 +9,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -24,6 +26,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @ToString
+@Table(indexes = {
+        @Index(name = "member_id_index", columnList = "member_id"),
+        @Index(name = "continent_index", columnList = "continent")
+})
 public class Post extends TimeStamp {
 
     @Id

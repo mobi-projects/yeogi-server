@@ -5,12 +5,19 @@ import com.example.yeogiserver.member.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @Getter
 @Builder
 @AllArgsConstructor
 @ToString
+@Table(indexes = {
+        @Index(name = "member_email_index", columnList = "email"),
+        @Index(name = "nickname_index", columnList = "nickname")
+})
 public class Member extends TimeStamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +43,11 @@ public class Member extends TimeStamp {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     private boolean isFirst;
+
+    @OneToMany(mappedBy = "member")
+    private List<Keyword> keywordList = new ArrayList<>();
 
     public static Member of (String email , String password , String nickName , String ageRange , String profile , String motto , String banner , Gender gender) {
         return Member.builder()
@@ -61,6 +72,10 @@ public class Member extends TimeStamp {
         this.isFirst = false;
     }
 
+    public void setIsFirstForTest(boolean isFirst) {
+        this.isFirst = isFirst;
+    }
+
     public void setEncodePassword(String password) {
         this.password = password;
     }
@@ -73,4 +88,14 @@ public class Member extends TimeStamp {
         this.banner = banner;
     }
 
+    public void setKeywordList(List<Keyword> keywordList) {
+        this.keywordList = keywordList;
+    }
+
+    public void completeSignup(String nickname, Gender gender, String ageRange) {
+        this.nickname = nickname;
+        this.gender = gender;
+        this.ageRange = ageRange;
+        this.isFirst = false;
+    }
 }

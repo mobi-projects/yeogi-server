@@ -18,4 +18,7 @@ public interface PostReadRepository {
     List<Post> findPopularPostListByTheme(List<Theme> themeList);
 
     List<Post> findByRecommandThemeOrCountry(List<Theme> themeList, List<String> countryList);
+
+    List<Post> getMyPostList(Long memberId);
+  
 }

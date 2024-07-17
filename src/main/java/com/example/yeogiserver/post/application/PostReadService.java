@@ -86,7 +86,6 @@ public class PostReadService {
 
 
 
-
     public List<PostListResponseDto> getRecommandPost(Long memberId) {
         Recommand recommand = recommandRepository.findByMemberId(memberId).orElseThrow(
                 () -> new IllegalArgumentException("Member has not recommend this post")
@@ -115,6 +114,13 @@ public class PostReadService {
         List<Post> popularPostList = postReadRepository.findByRecommandThemeOrCountry(themeList,topCountry);
         return popularPostList.stream()
                 .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
+                .toList();
+
+    }
+    public List<PostListResponseDto> getMyPostList(Long memberId) {
+        List<Post> myPostList = postReadRepository.getMyPostList(memberId);
+        return myPostList.stream()
+                .map(each ->  PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();
 
     }

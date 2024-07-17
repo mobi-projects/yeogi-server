@@ -69,6 +69,9 @@ public class JwtTokenProvider {
     }
 
     public Token generateToken(String email, Role role) {
+        log.info("Generate token for email: {}", email);
+        log.info("Role: {}", role);
+
         Date accessTokenExpiresIn = new Date(new Date().getTime() + accessTokenExpirationMillis);
         Date refreshTokenExpiresIn = new Date(new Date().getTime() + refreshTokenExpirationMillis);
         Map<String , Object> claims = new HashMap<>();
@@ -165,10 +168,16 @@ public class JwtTokenProvider {
     }
 
     public Claims parseClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            Claims body = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            return body;
+        } catch (Exception e){
+            log.error("invalid token : {}", token);
+            throw new IllegalArgumentException("invalid token : " + token);
+        }
     }
 }

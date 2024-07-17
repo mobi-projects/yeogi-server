@@ -2,8 +2,6 @@ package com.example.yeogiserver.post.repository;
 
 import com.example.yeogiserver.post.domain.Post;
 import com.example.yeogiserver.post.domain.Theme;
-import io.lettuce.core.dynamic.annotation.Param;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,4 +17,7 @@ public interface JpaPostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findFirstByPostThemeListThemeOrderByViewCountDescCreatedAtDesc(Theme theme);
 
     List<Post> findAllByPostThemeListThemeOrderByViewCountDescCreatedAtDesc(Pageable pageable, Theme theme);
+
+    List<Post> findAllByAuthorId(Long memberId);
+
 }
