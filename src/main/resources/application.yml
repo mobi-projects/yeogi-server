@@ -3,7 +3,7 @@ spring:
     redis:
       port: 6379
       password:
-      host: 127.0.0.1
+      host: redis-server
 
   servlet:
     multipart:
@@ -22,10 +22,8 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000 # TODO : remove and fetchJoin || ~
-  logging:
-    level:
-      org.hibernate.SQL: debug # logger에 출력하려면
-      org.hibernate.type.descriptor.sql: trace # 파라미터 값 출력
+    open-in-view: false
+
   security:
     oauth2:
       client:
@@ -69,9 +67,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/postgres
-    username: choeyejun
-    password: choeyejun
+    url: jdbc:postgresql://postgres-server:5432/postgres
+    username: postgres
+    password: postgres
 #    driver-class-name: org.h2.Driver
 #    username: sa
 #    password:
