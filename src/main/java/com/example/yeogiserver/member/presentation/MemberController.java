@@ -10,9 +10,11 @@ import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.dto.*;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@SecurityRequirement(name = "Bearer Authentication")
 @Tag(name = "회원 관련 컨트롤러")
 public class MemberController {
 
@@ -67,14 +70,14 @@ public class MemberController {
         return MemberDto.of(updateMember);
     }
 
-    @PutMapping("profileImage")
-    public String updateProfileImage(@LoginMember Member member , @RequestPart(name = "image") MultipartFile image){
-        return memberService.updateProfileImage(member, image);
+    @PutMapping(value = "profileImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String updateProfileImage(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestPart(name = "image") MultipartFile image){
+        return memberService.updateProfileImage(customUserDetails.getId(), image);
     }
 
-    @PutMapping("banner")
-    public String updateBanner(@LoginMember Member member , @RequestPart(name = "image") MultipartFile image){
-        return memberService.updateBanner(member , image);
+    @PutMapping(value = "banner", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String updateBanner(@AuthenticationPrincipal CustomUserDetails customUserDetails , @RequestPart(name = "image") MultipartFile image){
+        return memberService.updateBanner(customUserDetails.getId() , image);
     }
 
     @PutMapping("keyword")
