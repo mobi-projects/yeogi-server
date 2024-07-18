@@ -19,17 +19,10 @@ public class RecommandEventListener {
     private final RecommandService recommandService;
     private final TransactionTemplate transactionTemplate;
 
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
     public void handleRecommandEvent(RecommandEvent recommandEvent) {
         recommandService.saveRecommand(recommandEvent);
-
-//        transactionTemplate.executeWithoutResult(status -> {
-//            try {
-//            } catch (Exception e) {
-////                status.setRollbackOnly();
-//            }
-//        });
     }
 }
