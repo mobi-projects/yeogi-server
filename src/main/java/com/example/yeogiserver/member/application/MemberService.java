@@ -6,12 +6,8 @@ import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.dto.*;
 import com.example.yeogiserver.member.repository.DefaultKeywordRepository;
-import com.example.yeogiserver.member.dto.MemberDto;
-import com.example.yeogiserver.member.dto.MemberResponseDto;
-import com.example.yeogiserver.member.dto.SignupMember;
-import com.example.yeogiserver.member.dto.SignupRequestDto;
-import com.example.yeogiserver.member.dto.TestRequestDto;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -74,8 +70,8 @@ public class MemberService {
         return uploadImageUrl;
     }
 
-    public boolean checkExists(MemberDto memberDto) {
-        return memberRepository.existsByNickname(memberDto.getNickname());
+    public MemberEmailCheckResponseDto checkExists(String email) {
+        return new MemberEmailCheckResponseDto(memberRepository.existsByNickname(email));
     }
 
     private String uploadImage(MultipartFile image){

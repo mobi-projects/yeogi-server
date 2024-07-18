@@ -7,11 +7,7 @@ import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.application.MemberService;
 import com.example.yeogiserver.member.domain.Keyword;
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.dto.MemberDto;
-import com.example.yeogiserver.member.dto.MemberResponseDto;
-import com.example.yeogiserver.member.dto.SignupMember;
-import com.example.yeogiserver.member.dto.SignupRequestDto;
-import com.example.yeogiserver.member.dto.TestRequestDto;
+import com.example.yeogiserver.member.dto.*;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -86,9 +82,9 @@ public class MemberController {
         return memberService.updateKeyword(member.getId() , keywordList);
     }
 
-    @PostMapping("checkExists")
-    public boolean checkExists(@RequestBody MemberDto member) {
-        return memberService.checkExists(member);
+    @GetMapping("/emails")
+    public MemberEmailCheckResponseDto checkExists(@RequestParam String email) {
+        return memberService.checkExists(email);
     }
 
     @DeleteMapping()
