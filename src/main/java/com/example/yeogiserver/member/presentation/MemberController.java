@@ -82,9 +82,9 @@ public class MemberController {
         return memberService.updateKeyword(member.getId() , keywordList);
     }
 
-    @GetMapping("/emails")
-    public MemberEmailCheckResponseDto checkExists(@RequestParam String email) {
-        return memberService.checkExists(email);
+    @GetMapping("/nicknames")
+    public MemberEmailCheckResponseDto checkExists(@RequestParam String nickname) {
+        return memberService.checkExists(nickname);
     }
 
     @DeleteMapping()

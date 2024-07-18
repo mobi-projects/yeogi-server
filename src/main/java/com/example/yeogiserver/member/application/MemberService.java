@@ -70,8 +70,8 @@ public class MemberService {
         return uploadImageUrl;
     }
 
-    public MemberEmailCheckResponseDto checkExists(String email) {
-        return new MemberEmailCheckResponseDto(memberRepository.existsByNickname(email));
+    public MemberEmailCheckResponseDto checkExists(String nickname) {
+        return new MemberEmailCheckResponseDto(memberRepository.existsByNickname(nickname));
     }
 
     private String uploadImage(MultipartFile image){
