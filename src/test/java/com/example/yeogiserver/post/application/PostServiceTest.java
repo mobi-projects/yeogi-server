@@ -39,27 +39,27 @@ class PostServiceTest {
     @MockBean
     MemberQueryService memberQueryService;
 
-//
-//    @Test
-//    void name() {
-//        // given
-//        List<MemoRequestDto> memoStrings = new ArrayList<>();
-//
-//        for (int i = 0; i < 10; i++) {
-//            MemoRequestDto memoRequestDto = new MemoRequestDto("test", "testAddress");
-//            memoStrings.add(memoRequestDto);
-//        }
-//
-//        Member member = mock(Member.class);
-//
-//        // when
-//        when(memberQueryService.findById(anyLong())).thenReturn(member);
-//        PostRequestDto postRequestDto = new PostRequestDto(LocalDateTime.now(), LocalDateTime.now(), "test", "test", "test", "test", List.of(Theme.ACTIVITY), memoStrings, "address");
-//        postService.createPost(member.getId(), postRequestDto);
-//        em.clear();
-//
-//        // then
-//        Post post = postRepository.findAll().get(0);
-//        assertThat(post.getMemoList()).hasSameSizeAs(memoStrings);
-//    }
+
+    @Test
+    void name() {
+        // given
+        List<MemoRequestDto> memoStrings = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            MemoRequestDto memoRequestDto = new MemoRequestDto("test", "testAddress");
+            memoStrings.add(memoRequestDto);
+        }
+
+        Member member = mock(Member.class);
+
+        // when
+        when(memberQueryService.findById(anyLong())).thenReturn(member);
+        PostRequestDto postRequestDto = new PostRequestDto(LocalDateTime.now(), LocalDateTime.now(), "test", "test", "test", "test", List.of(Theme.ACTIVITY), memoStrings, "address");
+        postService.createPost(member.getId(), postRequestDto);
+        em.clear();
+
+        // then
+        Post post = postRepository.findAll().get(0);
+        assertThat(post.getMemoList()).hasSameSizeAs(memoStrings);
+    }
 }
