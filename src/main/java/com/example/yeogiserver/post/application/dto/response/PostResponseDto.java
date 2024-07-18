@@ -15,6 +15,7 @@ public record PostResponseDto(
         String content,
         List<MemoResponseDto> memos,
         Long likeCount,
+        Long commentCount,
         List<LikedMembersInfo> likedMembersInfos,
         Long viewCount,
         LocalDateTime createdAt,
@@ -27,7 +28,7 @@ public record PostResponseDto(
         List<Theme> themeList,
         boolean hasLiked
         ) {
-    public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos, boolean hasLiked) {
+    public static PostResponseDto ofPost(Post post, Long likeCount, List<LikedMembersInfo> likedMembersInfos, boolean hasLiked, Long commentCount) {
         return new PostResponseDto(
                 post.getId(),
                 post.getAuthor().getNickname(),
@@ -35,6 +36,7 @@ public record PostResponseDto(
                 post.getContent(),
                 post.getMemoList().stream().map(MemoResponseDto::of).toList(),
                 likeCount,
+                commentCount,
                 likedMembersInfos,
                 post.getViewCount(),
                 post.getCreatedAt(),

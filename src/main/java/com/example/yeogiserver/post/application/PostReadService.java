@@ -56,7 +56,8 @@ public class PostReadService {
             hasLiked = jpaPostLikeRepository.existsByPostIdAndMemberId(postId, memberId);
         }
         applicationEventPublisher.publishEvent(new RecommandEvent(this,postId,memberId));
-        return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList, hasLiked);
+        Long commentCount = commentService.getCommentCount(postId);
+        return PostResponseDto.ofPost(post, likeCount, likedMemberInfoList, hasLiked, commentCount);
     }
 
     public List<LikedMembersInfo> getLikedMemberInfoList(Long postId){
