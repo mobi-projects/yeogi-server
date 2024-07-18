@@ -71,12 +71,12 @@ public class MemberController {
     }
 
     @PutMapping(value = "profileImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String updateProfileImage(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestPart(name = "image") MultipartFile image){
+    public String updateProfileImage(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestPart(name = "image" , value = "image") MultipartFile image){
         return memberService.updateProfileImage(customUserDetails.getId(), image);
     }
 
     @PutMapping(value = "banner", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String updateBanner(@AuthenticationPrincipal CustomUserDetails customUserDetails , @RequestPart(name = "image") MultipartFile image){
+    public String updateBanner(@AuthenticationPrincipal CustomUserDetails customUserDetails , @RequestPart(name = "image" , value = "image") MultipartFile image){
         return memberService.updateBanner(customUserDetails.getId() , image);
     }
 
