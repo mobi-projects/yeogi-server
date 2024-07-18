@@ -60,14 +60,20 @@ public class MemberService {
         memberRepository.delete(email);
     }
 
-    public String updateProfileImage(Member member, MultipartFile image) {
+    public String updateProfileImage(Long memberId, MultipartFile image) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
         String uploadImageUrl = uploadImage(image);
         deleteImage(member.getProfile());
         member.setProfile(uploadImageUrl);
         return uploadImageUrl;
     }
 
-    public String updateBanner(Member member, MultipartFile image) {
+    public String updateBanner(Long memberId, MultipartFile image) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
         String uploadImageUrl = uploadImage(image);
         deleteImage(member.getBanner());
         member.setBanner(uploadImageUrl);
