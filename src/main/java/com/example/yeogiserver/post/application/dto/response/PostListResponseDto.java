@@ -11,6 +11,7 @@ import java.util.List;
 public record PostListResponseDto(
         Long postId,
         String author,
+        String profile,
         String title,
         Long commentCount,
         Long likeCount, // fetch join ?
@@ -32,6 +33,7 @@ public record PostListResponseDto(
         return new PostListResponseDto(
                 post.getId(),
                 post.getAuthor().getNickname(),
+                post.getAuthor().getProfile(),
                 post.getTitle(),
                 commentCount,
                 likeCount,

@@ -11,6 +11,7 @@ import java.util.List;
 public record PostResponseDto(
         Long postId,
         String author,
+        String profile,
         String title,
         String content,
         List<MemoResponseDto> memos,
@@ -32,6 +33,7 @@ public record PostResponseDto(
         return new PostResponseDto(
                 post.getId(),
                 post.getAuthor().getNickname(),
+                post.getAuthor().getProfile(),
                 post.getTitle(),
                 post.getContent(),
                 post.getMemoList().stream().map(MemoResponseDto::of).toList(),
