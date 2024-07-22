@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record ReplyResponseDto(Long id, String content, String nickname, LocalDateTime createdAt, LocalDateTime modifiedAt,
+public record ReplyResponseDto(Long id, String content, String nickname,String profile, LocalDateTime createdAt, LocalDateTime modifiedAt,
                                Long likeCount) {
     public static List<ReplyResponseDto> of(List<Comment> comments) {
         return comments.stream()
@@ -14,6 +14,7 @@ public record ReplyResponseDto(Long id, String content, String nickname, LocalDa
                         comment.getId(),
                         comment.getContent(),
                         comment.getMember().getNickname(),
+                        comment.getMember().getProfile(),
                         comment.getCreatedAt(),
                         comment.getModifiedAt(),
                         (long) comment.getLikeList().size()))
