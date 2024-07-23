@@ -26,6 +26,22 @@ jobs:
         echo "Selected reviewer: $selected_reviewer"
         echo "::set-output name=reviewer::$selected_reviewer"
 
+    - name: Map Reviewer to Alias
+      id: map-reviewer
+      run: |
+        declare -A reviewer_alias_map
+        reviewer_alias_map=( ["ca1af"]="DK" ["Kwonnamhyung"]="Louis" ["Yejun4911"]="jun" )
+
+        selected_reviewer=${{ steps.select-reviewer.outputs.reviewer }}
+        alias=${reviewer_alias_map[$selected_reviewer]}
+
+        if [ -z "$alias" ]; then
+          alias=$selected_reviewer
+        fi
+
+        echo "Mapped alias: $alias"
+        echo "::set-output name=alias::$alias"
+
     - name: Add reviewer to PR
       run: |
         pr_number=${{ github.event.pull_request.number }}
@@ -35,14 +51,14 @@ jobs:
     - name: Send Discord Notification
       run: |
         webhook_url=${{ secrets.DISCORD_WEBHOOK_URL }}
-        reviewer=${{ steps.select-reviewer.outputs.reviewer }}
+        alias=${{ steps.map-reviewer.outputs.alias }}
         pr_number=${{ github.event.pull_request.number }}
         pr_title=${{ github.event.pull_request.title }}
         pr_url=${{ github.event.pull_request.html_url }}
 
         payload=$(cat <<EOF
         {
-          "content": "새로운 PR이 생성되었습니다. [#$pr_number] $pr_title\n@$reviewer 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"
+          "content": "새로운 PR이 생성되었습니다. [#$pr_number] $pr_title\n@$alias 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"
         }
         EOF
         )
