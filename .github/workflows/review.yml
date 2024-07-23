@@ -41,11 +41,11 @@ jobs:
         selected_reviewer=${{ steps.select-reviewer.outputs.reviewer }}
 
         if [[ "$selected_reviewer" == "Kwonnamhyung" ]]; then
-          discord_id="@1028195605954183218"
+          discord_id='<@1028195605954183218>'
         elif [[ "$selected_reviewer" == "Yejun4911" ]]; then
-          discord_id="@347345984688488459"
+          discord_id='<@347345984688488459>'
         elif [[ "$selected_reviewer" == "ca1af" ]]; then
-          discord_id="@345992113109991434"
+          discord_id='<@345992113109991434>'
         else
           discord_id="$selected_reviewer"
         fi
