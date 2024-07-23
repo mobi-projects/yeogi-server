@@ -61,12 +61,8 @@ jobs:
           pr_number=${{ github.event.pull_request.number }}
           pr_title=${{ github.event.pull_request.title }}
           pr_url=${{ github.event.pull_request.html_url }}
-          
-          payload=$(cat <<EOF
-          {
-            "content": "새로운 PR이 생성되었습니다. [#$pr_number] \n $discord_id 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"
-          }
-          EOF
-          )
 
+          payload=$(jq -n --arg pr_number "$pr_number" --arg discord_id "$discord_id" --arg pr_url "$pr_url" \
+            '{"content": "새로운 PR이 생성되었습니다. [#$pr_number] \n $discord_id 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"}')
+          
           curl -X POST -H "Content-Type: application/json" -d "$payload" "$webhook_url"
