@@ -19,24 +19,35 @@ jobs:
     - name: Select Random Reviewer
       id: select-reviewer
       run: |
+        pr_author=${{ github.event.pull_request.user.login }}
         reviewers=$(curl -s -H "Authorization: token ${{ secrets.REVIEW_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/contributors | jq -r '.[].login')
         reviewer_array=($reviewers)
-        random_index=$(($RANDOM % ${#reviewer_array[@]}))
-        selected_reviewer=${reviewer_array[$random_index]}
+        filtered_reviewers=()
+
+        for reviewer in "${reviewer_array[@]}"; do
+          if [ "$reviewer" != "$pr_author" ]; then
+            filtered_reviewers+=("$reviewer")
+          fi
+        done
+
+        random_index=$(($RANDOM % ${#filtered_reviewers[@]}))
+        selected_reviewer=${filtered_reviewers[$random_index]}
         echo "Selected reviewer: $selected_reviewer"
         echo "::set-output name=reviewer::$selected_reviewer"
 
     - name: Map Reviewer to Alias
       id: map-reviewer
       run: |
-        declare -A reviewer_alias_map
-        reviewer_alias_map=( ["ca1af"]="DK" ["Kwonnamhyung"]="Louis" ["Yejun4911"]="jun" )
-
         selected_reviewer=${{ steps.select-reviewer.outputs.reviewer }}
-        alias=${reviewer_alias_map[$selected_reviewer]}
 
-        if [ -z "$alias" ]; then
-          alias=$selected_reviewer
+        if [[ "$selected_reviewer" == "ca1af" ]]; then
+          alias="DK"
+        elif [[ "$selected_reviewer" == "Kwonnamhyung" ]]; then
+          alias="Louis"
+        elif [[ "$selected_reviewer" == "Yejun4911" ]]; then
+          alias="jun"
+        else
+          alias="$selected_reviewer"
         fi
 
         echo "Mapped alias: $alias"
@@ -58,7 +69,7 @@ jobs:
 
         payload=$(cat <<EOF
         {
-          "content": "새로운 PR이 생성되었습니다. [#$pr_number] $pr_title\n@$alias 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"
+          "content": "새로운 PR이 생성되었습니다. [#$pr_number] \n@$alias 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"
         }
         EOF
         )
