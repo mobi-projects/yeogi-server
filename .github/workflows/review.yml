@@ -56,14 +56,12 @@ jobs:
 
       - name: Send Discord Notification
         run: |
-          webhook_url=${{ secrets.DISCORD_WEBHOOK_URL }}
-          discord_id=${{ steps.map-reviewer.outputs.discord_id }}
-          pr_number=${{ github.event.pull_request.number }}
-          pr_title=${{ github.event.pull_request.title }}
-          pr_url=${{ github.event.pull_request.html_url }}
-          
-          payload='{
-            "content": "새로운 PR이 생성되었습니다. [#'"$pr_number"'] \n '"$discord_id"' 님, 아래 URL에서 PR을 리뷰 해 주세요!\n'"$pr_url"'"
-          }'
-          
+          webhook_url=${{ secrets.DISCORD_WEBHOOK_URL }} && \
+          discord_id=${{ steps.map-reviewer.outputs.discord_id }} && \
+          pr_number=${{ github.event.pull_request.number }} && \
+          pr_title=${{ github.event.pull_request.title }} && \
+          pr_url=${{ github.event.pull_request.html_url }} && \
+          payload=$(jq -n \
+                        --arg content "새로운 PR이 생성되었습니다. [#$pr_number] \n $discord_id 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url" \
+                        '{content: $content}') && \
           curl -X POST -H "Content-Type: application/json" -d "$payload" "$webhook_url"
