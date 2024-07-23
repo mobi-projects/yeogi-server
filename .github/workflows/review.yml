@@ -42,13 +42,13 @@ jobs:
 
         if [[ "$selected_reviewer" == "Kwonnamhyung" ]]; then
           alias="Louis"
-          discord_id="<@1028195605954183218>"
+          discord_id="@1028195605954183218"
         elif [[ "$selected_reviewer" == "Yejun4911" ]]; then
           alias="jun"
-          discord_id="<@347345984688488459>"
+          discord_id="@347345984688488459"
         elif [[ "$selected_reviewer" == "ca1af" ]]; then
           alias="DK"
-          discord_id="<@345992113109991434>"
+          discord_id="@345992113109991434"
         else
           alias="$selected_reviewer"
           discord_id="$selected_reviewer"
