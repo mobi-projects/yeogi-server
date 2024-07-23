@@ -1,3 +1,5 @@
+name: Assign Random Reviewer
+
 on:
   pull_request:
     branches:
@@ -60,12 +62,18 @@ jobs:
           pr_title=${{ github.event.pull_request.title }}
           pr_url=${{ github.event.pull_request.html_url }}
 
-          payload=$(jq -n \
-            --arg pr_number "$pr_number" \
-            --arg discord_id "$discord_id" \
-            --arg pr_url "$pr_url" \
-            '{"content": "새로운 PR이 생성되었습니다. [#\($pr_number)] \n \($discord_id) 님, 아래 URL에서 PR을 리뷰 해 주세요!\n\($pr_url)"}')
+          # 변수를 출력하여 디버깅
+          echo "Webhook URL: $webhook_url"
+          echo "Discord ID: $discord_id"
+          echo "PR Number: $pr_number"
+          echo "PR Title: $pr_title"
+          echo "PR URL: $pr_url"
           
+          # JSON 페이로드 수동 생성
+          payload=$(echo '{"content": "새로운 PR이 생성되었습니다. [#'"$pr_number"'] \n '"$discord_id"' 님, 아래 URL에서 PR을 리뷰 해 주세요!\n'"$pr_url"'"}')
+          
+          # 생성된 페이로드를 로그에 출력
           echo "Generated Payload: $payload"
-
+          
+          # Discord 웹훅 호출
           curl -X POST -H "Content-Type: application/json" -d "$payload" "$webhook_url"
