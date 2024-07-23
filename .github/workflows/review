@@ -1,0 +1,49 @@
+name: Assign Random Reviewer
+
+on:
+  pull_request:
+    branches:
+      - "develop"
+
+jobs:
+  assign-reviewer:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up jq
+      run: sudo apt-get install -y jq
+
+    - name: Select Random Reviewer
+      id: select-reviewer
+      run: |
+        reviewers=$(curl -s -H "Authorization: token ${{ secrets.REVIEW_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/contributors | jq -r '.[].login')
+        reviewer_array=($reviewers)
+        random_index=$(($RANDOM % ${#reviewer_array[@]}))
+        selected_reviewer=${reviewer_array[$random_index]}
+        echo "Selected reviewer: $selected_reviewer"
+        echo "::set-output name=reviewer::$selected_reviewer"
+
+    - name: Add reviewer to PR
+      uses: peter-evans/add-reviewers@v3
+      with:
+        reviewers: ${{ steps.select-reviewer.outputs.reviewer }}
+
+    - name: Send Discord Notification
+      run: |
+        webhook_url=${{ secrets.DISCORD_WEBHOOK_URL }}
+        reviewer=${{ steps.select-reviewer.outputs.reviewer }}
+        pr_number=${{ github.event.pull_request.number }}
+        pr_title=${{ github.event.pull_request.title }}
+        pr_url=${{ github.event.pull_request.html_url }}
+
+        payload=$(cat <<EOF
+        {
+          "content": "새로운 PR이 생성되었습니다. [#$pr_number] $pr_title\n@$reviewer 님, 아래 URL에서 PR을 리뷰 해 주세요!\n$pr_url"
+        }
+        EOF
+        )
+
+        curl -X POST -H "Content-Type: application/json" -d "$payload" $webhook_url
