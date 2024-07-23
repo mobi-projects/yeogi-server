@@ -27,9 +27,10 @@ jobs:
         echo "::set-output name=reviewer::$selected_reviewer"
 
     - name: Add reviewer to PR
-      uses: peter-evans/add-reviewers@v3
-      with:
-        reviewers: ${{ steps.select-reviewer.outputs.reviewer }}
+      run: |
+        pr_number=${{ github.event.pull_request.number }}
+        reviewer=${{ steps.select-reviewer.outputs.reviewer }}
+        curl -s -X POST -H "Authorization: token ${{ secrets.REVIEW_TOKEN }}" -d '{"reviewers":["'"$reviewer"'"]}' "https://api.github.com/repos/${{ github.repository }}/pulls/$pr_number/requested_reviewers"
 
     - name: Send Discord Notification
       run: |
