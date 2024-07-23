@@ -40,12 +40,10 @@ jobs:
       run: |
         selected_reviewer=${{ steps.select-reviewer.outputs.reviewer }}
 
-        if [[ "$selected_reviewer" == "ca1af" ]]; then
-          alias="DK"
-        elif [[ "$selected_reviewer" == "Kwonnamhyung" ]]; then
-          alias="Louis"
+        if [[ "$selected_reviewer" == "Kwonnamhyung" ]]; then
+          alias="be_gweonnamhyeong"
         elif [[ "$selected_reviewer" == "Yejun4911" ]]; then
-          alias="jun"
+          alias="pabbalhwa"
         else
           alias="$selected_reviewer"
         fi
