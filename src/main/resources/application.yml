@@ -54,3 +54,8 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+
+logging:
+  discord:
+    webhook-url: ${DISCORD_WEBHOOK_URL_ERROR}
+  config: classpath:logback.xml
