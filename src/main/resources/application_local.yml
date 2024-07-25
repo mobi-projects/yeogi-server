@@ -20,7 +20,7 @@ spring:
       path: /h2-console  # rootPath:port/h2-console (ex : localhost:8080/h2-console)
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -28,14 +28,10 @@ spring:
         default_batch_fetch_size: 1000 # TODO : remove and fetchJoin || ~
 
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://127.0.0.1:5432/postgres
-    username: choeyejun
-    password: choeyejun
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password:
-#    url: jdbc:h2:tcp://localhost/~/yeogi
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;MODE=MYSQL
+    username: sa
+    password:
 
 
 

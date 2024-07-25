@@ -37,3 +37,11 @@ spring:
 #    password:
 #    url: jdbc:h2:tcp://localhost/~/yeogi
 
+logging:
+  discord:
+    webhook-url: ${DISCORD_WEBHOOK_URL_ERROR}
+  config: classpath:logback.xml
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password : ${JASYPT_PASSWORD}
