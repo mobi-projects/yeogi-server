@@ -1,29 +1,4 @@
 spring:
-  data:
-    redis:
-      port: 6379
-      password:
-      host: redis-server
-
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-
-  h2:
-    console:
-      enabled: true # console enabled
-      path: /h2-console  # rootPath:port/h2-console (ex : localhost:8080/h2-console)
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        default_batch_fetch_size: 1000 # TODO : remove and fetchJoin || ~
-    open-in-view: false
-
   security:
     oauth2:
       client:
@@ -64,16 +39,6 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres-server:5432/postgres
-    username: postgres
-    password: postgres
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password:
-#    url: jdbc:h2:tcp://localhost/~/yeogi
 
 jwt:
   secret-key : ENC(wGgdLBkK61mA5r3SUj2IWlhvG1rI26zxlWD7hWxZwoUB3vnfXyyCs61514S3BcvukaP15pswg9M0k3hJ5JXMd44DgtwPjjUK4IvnL/UYb84=)
