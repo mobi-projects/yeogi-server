@@ -27,6 +27,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 swaggerSources {
@@ -104,6 +105,10 @@ dependencies {
 
     //S3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    // discord logging
+    implementation 'com.github.napstr:logback-discord-appender:1.0.0'
+
 }
 
 tasks.named('test') {
