@@ -1,8 +1,8 @@
 package com.example.yeogiserver.comment.domain;
 
-public interface LikeRepository {
-    void save(Like like);
-    void delete(Like like);
+public interface CommentLikeRepository {
+    void save(CommentLike commentLike);
+    void delete(CommentLike commentLike);
     Boolean existsByMemberEmailAndCommentId(String email, Long commentId);
 
     boolean existsByMemberIdAndCommentId(Long memberId, Long commentId);

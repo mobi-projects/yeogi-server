@@ -24,10 +24,8 @@ public record CommentResponseDto(Long id,
                 comment.getPost().getId(),
                 comment.getCreatedAt(),
                 comment.getModifiedAt(),
-                (long) comment.getLikeList().size(),
+                (long) comment.getCommentLikeList().size(),
                 hasLiked,
-                ReplyResponseDto.of(comment.getChildren()))
-                ;
+                comment.getChildren().stream().map(ReplyResponseDto::of).toList());
     }
 }
-

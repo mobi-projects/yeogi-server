@@ -43,7 +43,7 @@ public class Comment extends TimeStamp {
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
-    private List<Like> likeList = new ArrayList<>();
+    private List<CommentLike> commentLikeList = new ArrayList<>();
 
 
 
