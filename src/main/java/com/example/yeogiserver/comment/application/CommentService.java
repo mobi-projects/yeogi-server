@@ -34,7 +34,6 @@ public class CommentService {
         List<Comment> commnetEntityList = commentRepository.findByPostId(postId, pageable);
         return commnetEntityList
                 .stream()
-                .filter(each -> each.getParent() == null)
                 .map(each -> getCommentResponseDto(memberId, each))
                 .toList();
     }
@@ -63,7 +62,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("Comment Not Found"));
         Comment child = Comment.of(member,commentRequestDto.content(),post);
 
-        child.updateParent(comment);
+        child.updateParent(comment.getId());
         commentRepository.saveComment(child);
         return CommentSaveResponse.of(child);
     }
