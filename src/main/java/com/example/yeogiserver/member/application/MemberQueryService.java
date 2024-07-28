@@ -1,6 +1,7 @@
 package com.example.yeogiserver.member.application;
 
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import com.example.yeogiserver.member.dto.SignupMember;
 import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import com.example.yeogiserver.common.exception.CustomException;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberQueryService {
 
-    private final DefaultMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public Member findMember(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
