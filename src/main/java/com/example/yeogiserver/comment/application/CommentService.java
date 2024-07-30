@@ -24,7 +24,7 @@ import java.util.List;
 @Transactional
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final LikeService likeService;
+    private final CommentLikeService commentLikeService;
     private final PostService postService;
     private final MemberQueryService memberQueryService;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -32,6 +32,7 @@ public class CommentService {
     public List<CommentResponseDto> getComments(Long postId, Long memberId, Pageable pageable) {
 
         List<Comment> commnetEntityList = commentRepository.findByPostId(postId, pageable);
+
         return commnetEntityList
                 .stream()
                 .map(each -> getCommentResponseDto(memberId, each))
@@ -42,8 +43,9 @@ public class CommentService {
         boolean hasLiked = false;
 
         if (memberId != null){
-            hasLiked = likeService.hasLiked(memberId, each.getId());
+            hasLiked = commentLikeService.hasLiked(memberId, each.getId());
         }
+
         return CommentResponseDto.of(each, hasLiked);
     }
 
