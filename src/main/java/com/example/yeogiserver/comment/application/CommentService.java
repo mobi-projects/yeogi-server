@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,20 +34,31 @@ public class CommentService {
 
         List<Comment> commnetEntityList = commentRepository.findByPostId(postId, pageable);
 
-        return commnetEntityList
-                .stream()
-                .map(each -> getCommentResponseDto(memberId, each))
+        List<Comment> parentComments = commnetEntityList.stream().filter(each -> each.getParentId() == null).toList();
+        List<Comment> childComments = commnetEntityList.stream().filter(each -> each.getParentId() != null).toList();
+
+        return parentComments.stream()
+                .map(each -> addChildComments(memberId, each, childComments))
                 .toList();
     }
 
-    private CommentResponseDto getCommentResponseDto(Long memberId, Comment each) {
+    private CommentResponseDto addChildComments(Long memberId, Comment each, List<Comment> childComments) {
+        List<CommentResponseDto> childCommentDtos = childComments.stream()
+                .filter(child -> Objects.equals(child.getParentId(), each.getId()))
+                .map(child -> getCommentResponseDto(memberId, child, null))
+                .toList();
+
+        return getCommentResponseDto(memberId, each, childCommentDtos);
+    }
+
+    private CommentResponseDto getCommentResponseDto(Long memberId, Comment each, List<CommentResponseDto> childCommentDtos) {
         boolean hasLiked = false;
 
         if (memberId != null){
             hasLiked = commentLikeService.hasLiked(memberId, each.getId());
         }
 
-        return CommentResponseDto.of(each, hasLiked);
+        return CommentResponseDto.of(each, hasLiked, childCommentDtos);
     }
 
     public CommentSaveResponse addComment(CommentRequestDto commentRequestDto, CustomUserDetails userDetails) {

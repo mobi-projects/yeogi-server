@@ -3,6 +3,7 @@ package com.example.yeogiserver.comment.application.dto;
 import com.example.yeogiserver.comment.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record CommentResponseDto(Long id,
                                  String content,
@@ -13,8 +14,9 @@ public record CommentResponseDto(Long id,
                                  LocalDateTime modifiedAt,
                                  Long likeCount,
                                  boolean hasLiked,
-                                 Long parentId) {
-    public static CommentResponseDto of(Comment comment, boolean hasLiked) {
+                                 Long parentId,
+                                 List<CommentResponseDto> children) {
+    public static CommentResponseDto of(Comment comment, boolean hasLiked, List<CommentResponseDto> children) {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getContent(),
@@ -25,7 +27,8 @@ public record CommentResponseDto(Long id,
                 comment.getModifiedAt(),
                 (long) comment.getCommentLikeList().size(),
                 hasLiked,
-                comment.getParentId()
+                comment.getParentId(),
+                children
         );
     }
 }
