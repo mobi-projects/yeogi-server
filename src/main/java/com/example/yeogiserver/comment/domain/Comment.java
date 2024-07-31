@@ -36,16 +36,10 @@ public class Comment extends TimeStamp {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "parent_id")
-    private Comment parent;
+    private Long parentId;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
-    private List<Comment> children = new ArrayList<>();
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
-    private List<Like> likeList = new ArrayList<>();
-
-
+    private List<CommentLike> commentLikeList = new ArrayList<>();
 
     public static Comment of (Member member, String content, Post post) {
         return Comment.builder()
@@ -54,10 +48,13 @@ public class Comment extends TimeStamp {
                 .post(post)
                 .build();
     }
+
     public void update(String content) {
         this.content = content;
     }
-    public void updateParent(Comment comment) {
-        this.parent = comment;
+
+    public void updateParent(Long parentId) {
+        this.parentId = parentId;
     }
+
 }
