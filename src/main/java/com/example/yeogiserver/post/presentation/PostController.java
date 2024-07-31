@@ -66,7 +66,7 @@ public class PostController {
     @DeleteMapping("/posts/{postId}")
     @Operation(description = "postId 에 해당하는 게시글을 삭제한다.")
     public void deletePost(@PathVariable Long postId , @AuthenticationPrincipal CustomUserDetails userDetails) {
-        postService.delete(postId);
+        postService.delete(postId , userDetails.getId());
         log.info("[DELETE POST] TIME = {} , ID = {} , USER = {} " , commonService.getTime() , postId , commonService.getName(userDetails));
     }
 
