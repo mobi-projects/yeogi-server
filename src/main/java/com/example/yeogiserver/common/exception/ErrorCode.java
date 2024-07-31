@@ -23,8 +23,13 @@ public enum ErrorCode {
     HEADER_REFRESH_TOKEN_NOT_EXISTS(404 , "헤더에 Refresh 토큰이 존재하지 않습니다."),
 
     //OAuth
-    ILLEGAL_REGISTRATION_ID(400 , "올바르지 않은 registrationId 입니다.");
+    ILLEGAL_REGISTRATION_ID(400 , "올바르지 않은 registrationId 입니다."),
 
+    //POST
+    POST_NOT_FOUND(500 , "포스트를 찾을 수 없습니다."),
+    NOT_MY_POST(501 , "사용자가 작성한 포스트가 아닙니다."),
+    MEMBER_ALREADY_LIKE_POST(502 , "사용자가 이미 좋아요를 누른 포스트입니다."),
+    MEMBER_ALREADY_DISLIKE_POST(503 , "사용자가 이미 싫어요를 누른 포스트입니다.");
 
 
     private int status;
