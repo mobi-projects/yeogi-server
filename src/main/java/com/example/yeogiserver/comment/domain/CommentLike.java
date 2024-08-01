@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @Table (name = "comment_like")
-public class Like {
+public class CommentLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,8 +26,8 @@ public class Like {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static Like of (Member member, Comment comment) {
-        return Like.builder()
+    public static CommentLike of (Member member, Comment comment) {
+        return CommentLike.builder()
                 .member(member)
                 .comment(comment)
                 .build();

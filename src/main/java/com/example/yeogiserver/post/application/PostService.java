@@ -33,7 +33,7 @@ public class PostService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private Post getPost(Long id) {
+    public Post getPost(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
     }
 
@@ -59,7 +59,6 @@ public class PostService {
         }
 
         postRepository.savePost(post);
-//        applicationEventPublisher.publishEvent(new RecommandEvent(this,post.getId(),author.getId()));
 
         return post.getId();
     }

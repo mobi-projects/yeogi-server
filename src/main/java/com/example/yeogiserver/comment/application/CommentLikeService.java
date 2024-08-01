@@ -1,9 +1,9 @@
 package com.example.yeogiserver.comment.application;
 
 import com.example.yeogiserver.comment.domain.Comment;
+import com.example.yeogiserver.comment.domain.CommentLike;
 import com.example.yeogiserver.comment.domain.CommentRepository;
-import com.example.yeogiserver.comment.domain.Like;
-import com.example.yeogiserver.comment.domain.LikeRepository;
+import com.example.yeogiserver.comment.domain.CommentLikeRepository;
 import com.example.yeogiserver.member.domain.Member;
 import com.example.yeogiserver.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,35 +13,35 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class LikeService {
+public class CommentLikeService {
 
-    private final LikeRepository likeRepository;
+    private final CommentLikeRepository commentLikeRepository;
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
 
     public void saveLike(String email, Long commentId) {
 
-        if(likeRepository.existsByMemberEmailAndCommentId(email,commentId)) throw new IllegalArgumentException("Already Like : " + email);
+        if(commentLikeRepository.existsByMemberEmailAndCommentId(email,commentId)) throw new IllegalArgumentException("Already Like : " + email);
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found comment id : " + commentId));
 
-        likeRepository.save(Like.of(member,comment));
+        commentLikeRepository.save(CommentLike.of(member,comment));
 
     }
     public void deleteLike(String email, Long commentId) {
-        if(!likeRepository.existsByMemberEmailAndCommentId(email,commentId)) throw new IllegalArgumentException("Could not found like : " + email);
+        if(!commentLikeRepository.existsByMemberEmailAndCommentId(email,commentId)) throw new IllegalArgumentException("Could not found like : " + email);
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found member id : " + email));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new IllegalArgumentException("Could not found comment id : " + commentId));
-        likeRepository.delete(Like.of(member,comment));
+        commentLikeRepository.delete(CommentLike.of(member,comment));
     }
 
     public boolean hasLiked(Long memberId, Long commentId) {
-        return likeRepository.existsByMemberIdAndCommentId(memberId, commentId);
+        return commentLikeRepository.existsByMemberIdAndCommentId(memberId, commentId);
     }
 }
