@@ -4,7 +4,7 @@ import com.example.yeogiserver.common.application.RedisService;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import com.example.yeogiserver.security.domain.OAuth2UserInfo;
@@ -37,7 +37,7 @@ public class AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
-    private final DefaultMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoClientId;

@@ -1,7 +1,7 @@
 package com.example.yeogiserver.security.application;
 
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import com.example.yeogiserver.security.config.CustomAuthorityUtils;
 import com.example.yeogiserver.security.domain.CustomOAuth2User;
 import com.example.yeogiserver.security.domain.OAuth2UserInfo;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final DefaultMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

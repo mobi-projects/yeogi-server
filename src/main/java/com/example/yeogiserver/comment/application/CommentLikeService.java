@@ -5,7 +5,7 @@ import com.example.yeogiserver.comment.domain.CommentLike;
 import com.example.yeogiserver.comment.domain.CommentRepository;
 import com.example.yeogiserver.comment.domain.CommentLikeRepository;
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ public class CommentLikeService {
 
     private final CommentLikeRepository commentLikeRepository;
     private final CommentRepository commentRepository;
-    private final DefaultMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public void saveLike(String email, Long commentId) {
 
