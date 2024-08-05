@@ -32,13 +32,10 @@ class DefaultPostReadRepositoryTest {
 
     private Member testMemberFixture;
 
-    @Autowired
-    private QueryDslPostRepository queryDslPostRepository;
-
     @BeforeEach
     void setUp() {
-        Member testMemberFixture = MemberFixture.TEST_MEMBER_FIXTURE;
-        memberJpaRepository.save(testMemberFixture);
+        Member testMember = MemberFixture.TEST_MEMBER_FIXTURE;
+        memberJpaRepository.save(testMember);
     }
 
     @Test
