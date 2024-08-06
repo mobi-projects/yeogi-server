@@ -40,13 +40,19 @@ public class PostReadController {
 
     @GetMapping("/posts")
     @Operation(description = "검색 조건(postSearchType), 정렬 조건(postSortCondition)에 따라 포스트 리스트를 리턴한다")
-    public List<PostListResponseDto> getAllPosts(
+    public List<PostListResponseDto> getAllPosts( @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam PostSearchType postSearchType,
             @RequestParam(required = false) String searchString,
             @RequestParam(required = false) String continent,
             @RequestParam PostSortCondition postSortCondition,
             @RequestParam(required = false) List<Theme> themes) {
-        return postReadService.getPostList(postSearchType, searchString, postSortCondition, continent, themes);
+
+        Long memberId = null;
+        if (!Objects.isNull(customUserDetails)){
+            memberId = customUserDetails.getId();
+        }
+
+        return postReadService.getPostList(postSearchType, searchString, postSortCondition, continent, themes, memberId);
     }
 
     @GetMapping("/posts/popular") // popular 말고 더 좋은 것은 없나?
@@ -55,14 +61,6 @@ public class PostReadController {
         return postReadService.getPopularPostListByTheme(themeList);
     }
 
-    @GetMapping("/posts/recommand")
-    public List<PostListResponseDto> getRecommandPostListByTheme( @AuthenticationPrincipal CustomUserDetails customUserDetails){
-        Long memberId = null;
-        if (!Objects.isNull(customUserDetails)){
-            memberId = customUserDetails.getId();
-        }
-        return postReadService.getRecommandPost(memberId);
-    }
     @GetMapping("/posts/mine")
     @Operation(description = "사용자의 토큰 정보 바탕으로, 내가 쓴 게시글 목록을 리턴한다.")
     public List<PostListResponseDto> getMinePostListByTheme(@AuthenticationPrincipal CustomUserDetails customUserDetails) {

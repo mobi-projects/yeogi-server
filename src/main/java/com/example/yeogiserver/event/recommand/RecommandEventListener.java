@@ -17,19 +17,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class RecommandEventListener {
 
     private final RecommandService recommandService;
-    private final TransactionTemplate transactionTemplate;
 
     @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Async
     public void handleRecommandEvent(RecommandEvent recommandEvent) {
         recommandService.saveRecommand(recommandEvent);
-
-//        transactionTemplate.executeWithoutResult(status -> {
-//            try {
-//            } catch (Exception e) {
-////                status.setRollbackOnly();
-//            }
-//        });
     }
 }
