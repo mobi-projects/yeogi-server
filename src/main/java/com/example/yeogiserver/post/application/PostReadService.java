@@ -21,10 +21,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -71,8 +68,13 @@ public class PostReadService {
         return postReadRepository.getLikeCount(postId);
     }
 
-    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String continent, List<Theme> themes){
+    public List<PostListResponseDto> getPostList(PostSearchType postSearchType, String searchString, PostSortCondition postSortCondition, String continent, List<Theme> themes, Long memberId){
         List<Post> postList = postReadRepository.findPostListBySearchTypeAndSortCondition(postSearchType, searchString, postSortCondition, continent, themes);
+
+        if (memberId != null) {
+            return getRecommandPost(memberId,postList);
+        }
+
         return postList.stream()
                 .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
                 .toList();
@@ -87,18 +89,22 @@ public class PostReadService {
 
 
 
-    public List<PostListResponseDto> getRecommandPost(Long memberId) {
-        Recommand recommand = recommandRepository.findByMemberId(memberId).orElseThrow(
-                () -> new IllegalArgumentException("Member has not recommend this post")
-        );
+    public List<PostListResponseDto> getRecommandPost(Long memberId, List<Post> postList) {
+        Optional<Recommand> recommand = recommandRepository.findByMemberId(memberId);
 
-        List<String> topThemes = recommand.getTheme().entrySet().stream()
+        if(recommand.isEmpty()) {
+            return postList.stream()
+                    .map(each -> PostListResponseDto.of(each, commentService.getCommentCount(each.getId()), getLikeCount(each.getId())))
+                    .toList();
+        }
+
+        List<String> topThemes = recommand.get().getTheme().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(2)
                 .map(Map.Entry::getKey)
                 .toList();
 
-        List<String> topCountry = recommand.getCountry().entrySet().stream()
+        List<String> topCountry = recommand.get().getCountry().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(2)
                 .map(Map.Entry::getKey)
