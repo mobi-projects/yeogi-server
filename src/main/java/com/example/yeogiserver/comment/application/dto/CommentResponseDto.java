@@ -14,8 +14,9 @@ public record CommentResponseDto(Long id,
                                  LocalDateTime modifiedAt,
                                  Long likeCount,
                                  boolean hasLiked,
-                                 List<ReplyResponseDto> child) {
-    public static CommentResponseDto of(Comment comment, boolean hasLiked) {
+                                 Long parentId,
+                                 List<CommentResponseDto> children) {
+    public static CommentResponseDto of(Comment comment, boolean hasLiked, List<CommentResponseDto> children) {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getContent(),
@@ -24,10 +25,10 @@ public record CommentResponseDto(Long id,
                 comment.getPost().getId(),
                 comment.getCreatedAt(),
                 comment.getModifiedAt(),
-                (long) comment.getLikeList().size(),
+                (long) comment.getCommentLikeList().size(),
                 hasLiked,
-                ReplyResponseDto.of(comment.getChildren()))
-                ;
+                comment.getParentId(),
+                children
+        );
     }
 }
-

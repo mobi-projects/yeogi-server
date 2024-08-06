@@ -19,14 +19,17 @@ public class DefaultMemberRepository implements MemberRepository {
         return memberJpaRepository.save(member);
     }
 
+    @Override
     public Optional<Member> findById(Long id) {
         return memberJpaRepository.findById(id);
     }
 
+    @Override
     public Optional<Member> findByEmail(String email) {
         return memberJpaRepository.findByEmail(email);
     }
 
+    @Override
     public void delete(String email) {
         memberJpaRepository.deleteByEmail(email);
     }

@@ -2,7 +2,7 @@ package com.example.yeogiserver.common.resolver;
 
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import com.example.yeogiserver.security.config.JwtTokenProvider;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class CustomResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final DefaultMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

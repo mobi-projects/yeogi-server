@@ -62,7 +62,6 @@ public class PostService {
         }
 
         postRepository.savePost(post);
-//        applicationEventPublisher.publishEvent(new RecommandEvent(this,post.getId(),author.getId()));
 
         return post.getId();
     }

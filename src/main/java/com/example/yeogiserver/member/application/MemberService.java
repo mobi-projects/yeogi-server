@@ -5,10 +5,11 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.yeogiserver.common.exception.CustomException;
 import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.member.domain.Keyword;
+import com.example.yeogiserver.member.domain.KeywordRepository;
 import com.example.yeogiserver.member.domain.Member;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import com.example.yeogiserver.member.dto.*;
 import com.example.yeogiserver.member.repository.DefaultKeywordRepository;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +26,8 @@ import java.util.UUID;
 public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
-    private final DefaultMemberRepository memberRepository;
-    private final DefaultKeywordRepository keywordRepository;
+    private final MemberRepository memberRepository;
+    private final KeywordRepository keywordRepository;
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucketName}")

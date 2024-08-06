@@ -46,7 +46,7 @@ public class JwtTokenProvider {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    private long accessTokenExpirationMillis = 60 * 60 * 1000L * 2 * 24 * 7;
+    private long accessTokenExpirationMillis = 60 * 60 * 1000L;
 
     private long refreshTokenExpirationMillis = 7 * 24 * 60 * 60 * 1000L;
 
@@ -169,14 +169,12 @@ public class JwtTokenProvider {
 
     public Claims parseClaims(String token) {
         try {
-            Claims body = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return body;
         } catch (Exception e){
-            log.error("invalid token : {}", token);
             throw new IllegalArgumentException("invalid token : " + token);
         }
     }

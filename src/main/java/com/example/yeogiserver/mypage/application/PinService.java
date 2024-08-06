@@ -1,7 +1,7 @@
 package com.example.yeogiserver.mypage.application;
 
 import com.example.yeogiserver.member.domain.Member;
-import com.example.yeogiserver.member.repository.DefaultMemberRepository;
+import com.example.yeogiserver.member.domain.MemberRepository;
 import com.example.yeogiserver.mypage.application.dto.PinRequestDto;
 import com.example.yeogiserver.mypage.application.dto.PinResponseDto;
 import com.example.yeogiserver.mypage.application.dto.PinResponseWrapperDto;
@@ -22,7 +22,7 @@ import java.util.List;
 public class PinService {
 
     private final PinRepository pinRepository;
-    private final DefaultMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
     public PinResponseDto addPin(PinRequestDto pinRequestDto, CustomUserDetails userDetails) {
