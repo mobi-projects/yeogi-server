@@ -102,40 +102,11 @@ public class AuthService {
         }
     }
 
-    public SignupResponseDto generateToken(String registrationId, String code , String redirectUri , String state) {
+    public SignupResponseDto generateToken(String registrationId, String token) {
 
         log.info("요청 시작");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        MultiValueMap<String, String> params = null;
-
-        switch (registrationId) {
-            case "kakao" :
-                params = accessTokenKaKao(code , redirectUri);
-                break;
-            case "google" :
-                params = accessTokenGoogle(code , redirectUri);
-                break;
-            case "naver" :
-                params = accessTokenNaver(code , redirectUri , state);
-        }
-
-        HttpEntity<MultiValueMap<String, String>> requestBody = new HttpEntity<>(params, headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<Object> response = restTemplate.exchange(
-                tokenMap.get(registrationId),
-                HttpMethod.POST,
-                requestBody,
-                Object.class
-        );
-
-        LinkedHashMap<String , String> map = (LinkedHashMap<String, String>) response.getBody();
-
-        LinkedHashMap<String, Object> property = generateProperty(registrationId , map.get("access_token"));
+        LinkedHashMap<String, Object> property = generateProperty(registrationId , token);
 
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(registrationId, property);
 
@@ -151,12 +122,12 @@ public class AuthService {
         }
 
         // 로그인이라면 해야하는 시퀀스
-        Token token = jwtTokenProvider.generateToken(member.getEmail(), member.getRole());
+        Token jwtToken = jwtTokenProvider.generateToken(member.getEmail(), member.getRole());
 
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
-        redisService.setValue(member.getEmail() , token.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));
+        redisService.setValue(member.getEmail() , jwtToken.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));
 
-        return new SignupResponseDto(member.getId(), member.getEmail(), false, token);
+        return new SignupResponseDto(member.getId(), member.getEmail(), false, jwtToken);
     }
 
     private LinkedHashMap<String, Object> generateProperty(String registrationId , String accessToken) {
@@ -221,5 +192,38 @@ public class AuthService {
 
         Member member = oAuth2UserInfo.toEntity();
         return memberRepository.save(member);
+    }
+
+    public String generateCode(String registrationId, String code, String redirectUri, String state) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = null;
+
+        switch (registrationId) {
+            case "kakao" :
+                params = accessTokenKaKao(code , redirectUri);
+                break;
+            case "google" :
+                params = accessTokenGoogle(code , redirectUri);
+                break;
+            case "naver" :
+                params = accessTokenNaver(code , redirectUri , state);
+        }
+
+        HttpEntity<MultiValueMap<String, String>> requestBody = new HttpEntity<>(params, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Object> response = restTemplate.exchange(
+                tokenMap.get(registrationId),
+                HttpMethod.POST,
+                requestBody,
+                Object.class
+        );
+
+        LinkedHashMap<String , String> map = (LinkedHashMap<String, String>) response.getBody();
+
+        return map.get("access_token");
     }
 }
