@@ -23,7 +23,7 @@ public class DefaultPinRepository implements PinRepository {
     }
 
     @Override
-    public Boolean isExistPin(Long postId, String email) {
+    public boolean isExistPin(Long postId, String email) {
         return jpaPinRepository.existsByPostIdAndMemberEmail(postId, email);
     }
 

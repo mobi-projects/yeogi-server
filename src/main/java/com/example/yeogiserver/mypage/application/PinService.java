@@ -31,7 +31,9 @@ public class PinService {
         Post post = postRepository.findById(pinRequestDto.postId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
 
-        if(pinRepository.isExistPin(post.getId(),member.getEmail())) new IllegalArgumentException("Exist Pin");
+        if(pinRepository.isExistPin(post.getId(),member.getEmail())) {
+            throw new IllegalArgumentException("Exist Pin");
+        }
 
 
 

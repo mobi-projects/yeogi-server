@@ -7,7 +7,7 @@ public interface PinRepository {
     Pin save(Pin pin);
     void delete(Long id);
 
-    Boolean isExistPin(Long postId, String email);
+    boolean isExistPin(Long postId, String email);
 
     List<Pin> getPins(String email);
 }
