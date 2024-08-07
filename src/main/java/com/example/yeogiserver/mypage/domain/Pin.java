@@ -21,6 +21,7 @@ public class Pin extends TimeStamp {
 
     @Column
     private String x;
+
     @Column
     private String y;
 
@@ -32,13 +33,15 @@ public class Pin extends TimeStamp {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public static Pin of(String x, String y, Member member, Post post) {
+    public static Pin of(Member member, Post post) {
         return Pin.builder()
-                .x(x)
-                .y(y)
                 .member(member)
                 .post(post)
                 .build();
+    }
 
+    public void fixPin(String x, String y) {
+        this.x = x;
+        this.y = y;
     }
 }

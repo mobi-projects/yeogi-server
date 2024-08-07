@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -30,5 +31,10 @@ public class DefaultPinRepository implements PinRepository {
     @Override
     public List<Pin> getPins(String email) {
         return jpaPinRepository.findByMemberEmail(email);
+    }
+
+    @Override
+    public Optional<Pin> findById(Long id) {
+        return jpaPinRepository.findById(id);
     }
 }

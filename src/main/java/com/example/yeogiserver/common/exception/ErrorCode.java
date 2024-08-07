@@ -23,9 +23,15 @@ public enum ErrorCode {
     HEADER_REFRESH_TOKEN_NOT_EXISTS(404 , "헤더에 Refresh 토큰이 존재하지 않습니다."),
 
     //OAuth
-    ILLEGAL_REGISTRATION_ID(400 , "올바르지 않은 registrationId 입니다.");
+    ILLEGAL_REGISTRATION_ID(400 , "올바르지 않은 registrationId 입니다."),
+
+    // PIN
+    PIN_NOT_FOUND(400, "핀이 없습니다"),
+    NOT_MY_PIN(400, "내 핀이 아닙니다"),
 
 
+
+    ;
 
     private int status;
     private String message;
