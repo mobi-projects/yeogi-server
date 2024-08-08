@@ -32,6 +32,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -117,7 +118,7 @@ class AuthControllerTest {
         httpHeaders.set("Authorization" , "Bearer " + accessToken);
         httpHeaders.set("Refresh" , refreshToken);
 
-        mocMvc.perform(post("/auth/logout")
+        mocMvc.perform(get("/auth/logout")
                         .headers(httpHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -148,7 +149,7 @@ class AuthControllerTest {
         httpHeaders.set("Authorization" , "Bearer " + accessToken);
         httpHeaders.set("Refresh" , refreshToken);
 
-        mocMvc.perform(post("/auth/reissue")
+        mocMvc.perform(get("/auth/reissue")
                         .headers(httpHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
