@@ -53,6 +53,8 @@ public class Post extends TimeStamp {
 
     private Long viewCount;
 
+    private String thumbnail;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member author;
@@ -118,5 +120,9 @@ public class Post extends TimeStamp {
 
     public void addViewCount(){
         this.viewCount++;
+    }
+
+    public void uploadImage(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
