@@ -22,16 +22,12 @@ public class OAuth2UserInfo {
     private String profile;
 
     public static OAuth2UserInfo of(String registrationId , Map<String, Object> attributes) {
-         switch (registrationId) {
-            case "google" :
-                return ofGoogle(attributes);
-             case "naver" :
-                 return ofNaver(attributes);
-             case "kakao" :
-                 return ofKakao(attributes);
-            default :
-                throw new CustomException(ErrorCode.ILLEGAL_REGISTRATION_ID);
-        }
+        return switch (registrationId) {
+            case "google" -> ofGoogle(attributes);
+            case "naver" -> ofNaver(attributes);
+            case "kakao" -> ofKakao(attributes);
+            default -> throw new CustomException(ErrorCode.ILLEGAL_REGISTRATION_ID);
+        };
     }
 
     private static OAuth2UserInfo ofGoogle(Map<String, Object> attributes) {

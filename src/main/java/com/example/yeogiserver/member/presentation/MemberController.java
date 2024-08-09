@@ -96,9 +96,4 @@ public class MemberController {
         return new ResponseEntity("탈퇴 되었습니다." , HttpStatus.OK);
     }
 
-    @GetMapping("test")
-    public String test() {
-        return "TEST";
-    }
-
 }

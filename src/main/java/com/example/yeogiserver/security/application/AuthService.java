@@ -198,18 +198,12 @@ public class AuthService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        MultiValueMap<String, String> params = null;
-
-        switch (registrationId) {
-            case "kakao" :
-                params = accessTokenKaKao(code , redirectUri);
-                break;
-            case "google" :
-                params = accessTokenGoogle(code , redirectUri);
-                break;
-            case "naver" :
-                params = accessTokenNaver(code , redirectUri , state);
-        }
+        MultiValueMap<String, String> params = switch (registrationId) {
+            case "kakao" -> accessTokenKaKao(code, redirectUri);
+            case "google" -> accessTokenGoogle(code, redirectUri);
+            case "naver" -> accessTokenNaver(code, redirectUri, state);
+            default -> null;
+        };
 
         HttpEntity<MultiValueMap<String, String>> requestBody = new HttpEntity<>(params, headers);
 

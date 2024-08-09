@@ -2,6 +2,7 @@ package com.example.yeogiserver.security.domain;
 
 import com.example.yeogiserver.member.domain.Member;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @AllArgsConstructor
 public class CustomOAuth2User implements OAuth2User , Serializable {
 
@@ -32,7 +34,4 @@ public class CustomOAuth2User implements OAuth2User , Serializable {
         return member.getEmail();
     }
 
-    public Member getMember() {
-        return member;
-    }
 }
