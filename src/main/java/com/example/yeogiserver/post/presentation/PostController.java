@@ -1,5 +1,6 @@
 package com.example.yeogiserver.post.presentation;
 
+import com.example.yeogiserver.common.application.CommonService;
 import com.example.yeogiserver.post.application.PostService;
 import com.example.yeogiserver.post.application.dto.request.PostRequestDto;
 import com.example.yeogiserver.post.application.dto.request.PostUpdateRequest;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,9 +26,11 @@ import java.net.URI;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
 @Tag(name = "게시글 쓰기(C,U,D) 컨트롤러")
+@Slf4j
 public class PostController {
 
     private final PostService postService;
+    private final CommonService commonService;
 
     @PostMapping("/posts")
     @Operation(description = "게시글을 생성한다.")
@@ -45,7 +49,7 @@ public class PostController {
 
     @PostMapping("/posts/{postId}/views")
     @Operation(description = "postId 에 해당하는 게시글의 조회수를 추가 한다.")
-    public void addViewCount(@PathVariable Long postId){
+    public void addViewCount(@PathVariable Long postId , @AuthenticationPrincipal CustomUserDetails userDetails){
         postService.addViewCount(postId);
     }
 
@@ -57,8 +61,8 @@ public class PostController {
 
     @DeleteMapping("/posts/{postId}")
     @Operation(description = "postId 에 해당하는 게시글을 삭제한다.")
-    public void deletePost(@PathVariable Long postId) {
-        postService.delete(postId);
+    public void deletePost(@PathVariable Long postId , @AuthenticationPrincipal CustomUserDetails userDetails) {
+        postService.delete(postId , userDetails.getId());
     }
 
     @PostMapping("/posts/{postId}/likes")

@@ -1,5 +1,7 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.common.exception.CustomException;
+import com.example.yeogiserver.common.exception.ErrorCode;
 import com.example.yeogiserver.event.recommand.RecommandEvent;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
@@ -33,12 +35,13 @@ public class PostService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public Post getPost(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
+    private Post getPost(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
     }
 
     public void addViewCount(Long postId){
-        postRepository.addViewCount(postId);
+        Post post = getPost(postId);
+        postRepository.addViewCount(post.getId());
     }
 
     public Long createPost(Long memberId, PostRequestDto postRequestDto) {
@@ -67,7 +70,7 @@ public class PostService {
         Post post = getPost(id);
 
         if (!Objects.equals(post.getAuthor().getId(), memberId)) {
-            throw new IllegalArgumentException("Not my Post");
+            throw new CustomException(ErrorCode.NOT_MY_POST);
         }
 
         post.updateFields(postUpdateRequest.continent(), postUpdateRequest.country(), postUpdateRequest.tripStartDate(), postUpdateRequest.tripEndDate(), postUpdateRequest.title(), postUpdateRequest.content(), postUpdateRequest.address());
@@ -104,14 +107,20 @@ public class PostService {
         post.replaceThemeList(postThemeList);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id , Long memberId) {
+        Post post = getPost(id);
+
+        if (!Objects.equals(post.getAuthor().getId(), memberId)) {
+            throw new CustomException(ErrorCode.NOT_MY_POST);
+        }
+
         postRepository.deleteById(id);
     }
 
     public void likePost(Long memberId, Long postId){
         boolean likeExist = postRepository.isLikeExist(postId, memberId);
         if (likeExist){
-            throw new IllegalArgumentException("Member already like this post");
+            throw new CustomException(ErrorCode.MEMBER_ALREADY_LIKE_POST);
         }
 
         Post post = getPost(postId);
@@ -122,7 +131,7 @@ public class PostService {
 
     public void dislikePost(Long memberId, Long postId){
         PostLike postLike = postRepository.findPostLikeByPostIdAndMemberId(postId, memberId).orElseThrow(
-                () -> new IllegalArgumentException("Member has not like this post")
+                () -> new CustomException(ErrorCode.MEMBER_ALREADY_DISLIKE_POST)
         );
 
         Post post = getPost(postId);
