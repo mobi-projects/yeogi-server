@@ -21,8 +21,8 @@ public record PostListResponseDto(
         String continent,
         String country,
         String address,
-        List<Theme> themeList
-        // thumbnail
+        List<Theme> themeList,
+        String thumbnail
 ) {
     public static PostListResponseDto of(Post post, Long commentCount, Long likeCount) {
         List<Theme> themes = new ArrayList<>();
@@ -43,7 +43,8 @@ public record PostListResponseDto(
                 post.getContinent(),
                 post.getCountry(),
                 post.getAddress(),
-                themes
+                themes,
+                post.getThumbnail()
         );
     }
 }

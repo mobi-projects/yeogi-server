@@ -10,12 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -71,5 +67,17 @@ public class PostController {
     @Operation(description = "postId 에 해당하는 게시글의 좋아요를 삭제한다.")
     public void unlikePost(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
         postService.dislikePost(userDetails.getId(), postId);
+    }
+
+    @PostMapping("/posts/images/{postId}")
+    @Operation(description = "postId 에 해당하는 게시글의 썸네일을 등록한다.")
+    public void uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails , @PathVariable("postId") Long postId , @RequestPart("image")MultipartFile image) {
+        postService.uploadImage(userDetails.getId() , postId , image);
+    }
+
+    @GetMapping("/posts/images/{postId}")
+    @Operation(description = "postId 에 해당하는 게시글의 썸네일을 조회한다.")
+    public String getImage(@PathVariable("postId")Long postId) {
+        return postService.getImage(postId);
     }
 }

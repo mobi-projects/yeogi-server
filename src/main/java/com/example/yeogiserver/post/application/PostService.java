@@ -1,5 +1,6 @@
 package com.example.yeogiserver.post.application;
 
+import com.example.yeogiserver.common.application.S3Service;
 import com.example.yeogiserver.event.recommand.RecommandEvent;
 import com.example.yeogiserver.member.application.MemberQueryService;
 import com.example.yeogiserver.member.domain.Member;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +34,8 @@ public class PostService {
     private final MemberQueryService memberQueryService;
 
     private final ApplicationEventPublisher applicationEventPublisher;
+
+    private final S3Service s3Service;
 
     public Post getPost(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
@@ -127,5 +131,21 @@ public class PostService {
 
         Post post = getPost(postId);
         post.removePostLike(postLike);
+    }
+
+    public void uploadImage(Long memberId , Long postId , MultipartFile image) {
+        Post post = getPost(postId);
+
+        if (!Objects.equals(post.getAuthor().getId(), memberId)) {
+            throw new IllegalArgumentException("Not my Post");
+        }
+        String uploadImageUrl = s3Service.uploadImage(image);
+        s3Service.deleteImage(post.getThumbnail());
+        post.uploadImage(uploadImageUrl);
+    }
+
+    public String getImage(Long postId) {
+        Post post = getPost(postId);
+        return post.getThumbnail();
     }
 }
