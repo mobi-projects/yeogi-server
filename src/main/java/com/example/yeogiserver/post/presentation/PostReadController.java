@@ -8,6 +8,7 @@ import com.example.yeogiserver.post.presentation.search_condition.PostSearchType
 import com.example.yeogiserver.post.presentation.search_condition.PostSortCondition;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @Tag(name = "게시글 조회 컨트롤러")
 public class PostReadController {
 
