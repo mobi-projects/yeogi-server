@@ -117,17 +117,13 @@ public class AuthService {
 
         log.info("member : {}", member);
 
-        if (member.isFirst()){
-            return new SignupResponseDto(member.getId(), member.getEmail(), true,null);
-        }
-
         // 로그인이라면 해야하는 시퀀스
         Token jwtToken = jwtTokenProvider.generateToken(member.getEmail(), member.getRole());
 
         long refreshTokenExpirationMillis = jwtTokenProvider.getRefreshTokenExpirationMillis();
         redisService.setValue(member.getEmail() , jwtToken.getRefreshToken() , Duration.ofMillis(refreshTokenExpirationMillis));
 
-        return new SignupResponseDto(member.getId(), member.getEmail(), false, jwtToken);
+        return new SignupResponseDto(member.getId(), member.getEmail(), member.isFirst(), jwtToken);
     }
 
     private LinkedHashMap<String, Object> generateProperty(String registrationId , String accessToken) {
