@@ -5,6 +5,8 @@ import com.example.yeogiserver.mypage.application.dto.PinFixRequestDto;
 import com.example.yeogiserver.mypage.application.dto.PinRequestDto;
 import com.example.yeogiserver.mypage.application.dto.PinResponseDto;
 import com.example.yeogiserver.security.domain.CustomUserDetails;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 public class PinController {
 
     private final PinService pinService;
